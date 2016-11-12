@@ -16,7 +16,7 @@ public class MainApp extends Application {
         String fxmlFile = "/fxml/main_window.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-        stage.setTitle("Прелесть Загребаева");
+        stage.setTitle("Система обработки данных");
         stage.setScene(new Scene(root));
         stage.show();
     }

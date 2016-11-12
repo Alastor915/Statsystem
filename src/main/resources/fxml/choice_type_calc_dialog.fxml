@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ComboBox layoutX="63.0" layoutY="55.0" prefWidth="200.0" promptText="Интерполяция">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="15.0" />
+         </padding>
+      </ComboBox>
+      <Label layoutX="28.0" layoutY="19.0" text="Выберите тип статистического анализа">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="163.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="OK" />
+      <Button layoutX="245.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="Отмена" />
+   </children>
+</AnchorPane>
