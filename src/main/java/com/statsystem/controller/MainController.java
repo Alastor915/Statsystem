@@ -1,8 +1,9 @@
 package com.statsystem.controller;
 
+import com.statsystem.entity.Sample;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.*;
@@ -15,18 +16,19 @@ public class MainController implements Initializable {
     @FXML private InterpolationController interpolationController;
 
     public void initialize(URL location, ResourceBundle resources) {
-        List<Point2D> staticSelection = new ArrayList<>();
+        Sample staticSample = new Sample("Мега Выборка");
 
-        staticSelection.add(new Point2D(1,2));
-        staticSelection.add(new Point2D(2d,3d));
-        staticSelection.add(new Point2D(3d,4d));
-        staticSelection.add(new Point2D(4d,5d));
-        staticSelection.add(new Point2D(5d, 6d));
-        staticSelection.add(new Point2D(6d,7d));
-        staticSelection.add(new Point2D(7d, 8d));
-        staticSelection.add(new Point2D(8d, 9d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()),2d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+100000000000L),2.3d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+200000000000L),2.4d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+300000000000L),2.5d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+400000000000L),2.1d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+500000000000L),2.2d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+600000000000L),2.8d));
+        staticSample.add(new Pair<>(new Date(System.currentTimeMillis()+700000000000L),2.9d));
+        System.out.println(System.currentTimeMillis());
         interpolationController.setMainController(this);
-        interpolationController.setSelection(staticSelection);
+        interpolationController.setSample(staticSample);
         interpolationController.start();
     }
 }

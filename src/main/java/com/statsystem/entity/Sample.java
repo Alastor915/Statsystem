@@ -2,6 +2,7 @@ package com.statsystem.entity;
 
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class Sample {
     public Sample(String name){
         this.setId(-1);
         this.setName(name);
+        this.setData(new ArrayList<>());
+        this.setSize(0L);
+        this.setAnalysises(new ArrayList<>());
     }
 
     public long getId() {
@@ -76,6 +80,11 @@ public class Sample {
 
     public void setAnalysises(List<Analysis> analysises) {
         this.analysises = analysises;
+    }
+
+    public void add(Pair<Date,Double> pair){
+        data.add(pair);
+        size++;
     }
 
     @Override

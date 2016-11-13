@@ -1,5 +1,6 @@
 package com.statsystem.controller;
 
+import com.statsystem.entity.Sample;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,15 +17,11 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import org.gillius.jfxutils.chart.ChartPanManager;
 import org.gillius.jfxutils.chart.JFXChartUtil;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -37,13 +34,13 @@ public class InterpolationController implements Initializable {
     @FXML StableTicksAxis yAxis;
     @FXML CheckBox drawChart;
     MainController mainController;
-    List<Point2D> selection;
+    private Sample sample;
 
 
     public void initialize(URL location, ResourceBundle resources) {
     }
-    public void setSelection(List<Point2D> selection) {
-        this.selection = selection;
+    public void setSample(Sample sample) {
+        this.sample = sample;
     }
 
     public void setMainController(MainController controller) {
@@ -60,15 +57,11 @@ public class InterpolationController implements Initializable {
         yAxis.setLabel("Параметр Y");
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("Выборка");
-        XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-        series2.setName("Выборка 2");
-        for (int i = 0; i < selection.size(); ++i) {
-            series.getData().add(new XYChart.Data<>(selection.get(i).getX(), selection.get(i).getY()));
-            series2.getData().add(new XYChart.Data<>(selection.get(i).getX()/100, selection.get(i).getY()/100));
+        series.setName(sample.getName());
+        for (int i = 0; i < sample.getSize(); ++i) {
+            series.getData().add(new XYChart.Data<>((double) sample.getData().get(i).getKey().getTime(), sample.getData().get(i).getValue()));
         }
         lineChart.getData().add(series);
-        lineChart.getData().add(series2);
 
         ChartPanManager panner = new ChartPanManager( lineChart );
         panner.setMouseFilter(new EventHandler<MouseEvent>() {
