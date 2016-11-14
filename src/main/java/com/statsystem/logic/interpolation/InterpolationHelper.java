@@ -1,9 +1,6 @@
 package com.statsystem.logic.interpolation;
 
-import com.statsystem.entity.Analysis;
-import com.statsystem.entity.AnalysisType;
-import com.statsystem.entity.Sample;
-import com.statsystem.entity.Unit;
+import com.statsystem.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;

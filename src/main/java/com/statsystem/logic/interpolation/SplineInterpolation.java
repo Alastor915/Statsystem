@@ -2,6 +2,8 @@ package com.statsystem.logic.interpolation;
 
 import com.statsystem.entity.*;
 import org.apache.commons.math3.analysis.interpolation.*;
+import org.apache.commons.math3.analysis.polynomials.*;
+import org.apache.commons.math3.exception.*;
 
 /**
  * Created by DELL on 15.11.2016.

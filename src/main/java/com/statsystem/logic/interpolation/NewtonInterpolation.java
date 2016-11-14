@@ -3,9 +3,8 @@ package com.statsystem.logic.interpolation;
 
 import com.statsystem.entity.*;
 import org.apache.commons.math3.analysis.interpolation.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.math3.analysis.polynomials.*;
+import org.apache.commons.math3.exception.*;
 
 /**
  * Created by DELL on 14.11.2016.
