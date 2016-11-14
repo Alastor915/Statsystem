@@ -20,6 +20,6 @@ public class InterpolationHelper {
             dataList.add(new Unit(null, new Double(c)));
         }
 
-        return new Analysis(id, name, AnalysisType.NEWTON, dataList);
+        return new Analysis(id, name, type, dataList);
     }
 }
