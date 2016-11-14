@@ -1,6 +1,7 @@
 package com.statsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,7 +9,7 @@ import java.util.*;
  */
 @Entity
 @Table(name = "samples")
-public class Sample {
+public class Sample implements Serializable {
 
     @Id
     @Column(name = "id")

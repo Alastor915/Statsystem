@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
@@ -27,7 +28,8 @@ public class ProjectDAOImpl implements ProjectDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(project);
+            Query ins = session.createSQLQuery("insert into project values ('1', '"+project.getName()+"')");
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++"+ins.executeUpdate());
             session.getTransaction().commit();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
