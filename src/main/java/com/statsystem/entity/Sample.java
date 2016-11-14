@@ -84,4 +84,13 @@ public class Sample {
                 ", analyses=" + analyses +
                 '}';
     }
+
+    public double[] getValues(){
+        double [] values = new double [data.size()];
+        for (int i = 0; i < data.size();  i++){
+            values[i] = data.get(i).getValue().doubleValue();
+        }
+
+        return values;
+    }
 }
