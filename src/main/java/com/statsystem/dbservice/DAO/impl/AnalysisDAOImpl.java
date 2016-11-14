@@ -11,6 +11,7 @@ import com.statsystem.dbService.execute.HibernateUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.management.Query;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 
@@ -25,7 +26,6 @@ public class AnalysisDAOImpl implements AnalysisDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(analysis);
             session.getTransaction().commit();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);

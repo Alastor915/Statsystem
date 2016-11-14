@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,13 +45,10 @@ public class AppTest
         assertTrue( true );
     }
 
-    public void testALLDATABASENOOOW()
+    public void testAddAndGetProject()
     {
         DBService dbService = DBService.getInstance();
-        Project project = new Project("Первый проект");
-        Sample sample = new Sample("Супервыборка");
-        sample.getData().add(new Unit(new Date(System.currentTimeMillis()),2.345));
-        project.getSamples().add(sample);
+        Project project = new Project(1L, "Первый проект", new ArrayList<>());
         List<Project> projects = null;
         try {
             dbService.getProjectDAO().addProject(project);
@@ -59,6 +57,5 @@ public class AppTest
             assertTrue( false );
         }
         assertEquals( projects.get(0).getName(), "Первый проект");
-        assertEquals( projects.get(0).getSamples().get(0).getName(), "Супервыборка");
     }
 }

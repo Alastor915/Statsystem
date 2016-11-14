@@ -47,7 +47,7 @@ Contributor(s):
     <property name="hibernate.connection.username">app</property>
     <property name="hibernate.connection.password">app</property>
     <property name="show_sql">true</property>
-    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.hbm2ddl.auto">create-drop</property>
     <!--         <mapping jar="hibernate-mappings.jar"/>  -->
     <mapping class="com.statsystem.entity.Project"/>
     <mapping class="com.statsystem.entity.Sample"/>
