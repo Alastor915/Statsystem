@@ -47,6 +47,11 @@
       <artifactId>h2</artifactId>
       <version>1.4.187</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.6.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -86,4 +91,5 @@
       <url>file:${project.basedir}/lib</url>
     </repository>
   </repositories>
+
 </project>
