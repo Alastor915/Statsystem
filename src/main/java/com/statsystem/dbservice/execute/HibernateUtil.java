@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.statsystem.dbService.execute;
+package com.statsystem.dbservice.execute;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;

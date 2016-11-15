@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.statsystem.dbService.DAO.impl;
+package com.statsystem.dbservice.DAO.impl;
 
-import com.statsystem.dbService.DAO.AnalysisDAO;
+import com.statsystem.dbservice.DAO.AnalysisDAO;
 import com.statsystem.entity.Analysis;
-import com.statsystem.dbService.execute.HibernateUtil;
+import com.statsystem.dbservice.execute.HibernateUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.management.Query;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 

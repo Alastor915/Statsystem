@@ -19,10 +19,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.gillius.jfxutils.chart.ChartPanManager;
+import org.gillius.jfxutils.chart.FixedFormatTickFormatter;
 import org.gillius.jfxutils.chart.JFXChartUtil;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -55,7 +57,8 @@ public class InterpolationController implements Initializable {
         lineChart.setTitle("График");
         lineChart.setAnimated(false);
 
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss");
+        xAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
         xAxis.setLabel("Параметр X");
         yAxis.setLabel("Параметр Y");
 

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.statsystem.dbService.execute;
+package com.statsystem.dbservice.execute;
 
-import com.statsystem.dbService.DAO.*;
-import com.statsystem.dbService.DAO.impl.*;
+import com.statsystem.dbservice.DAO.*;
+import com.statsystem.dbservice.DAO.impl.*;
 
 /**
  *
@@ -17,6 +17,7 @@ public class DBService {
     private static ProjectDAO projectDAO = null;
     private static AnalysisDAO analysisDAO = null;
     private static SampleDAO sampleDAO = null;
+    private static UnitDAO unitDAO = null;
     private static DBService instance = null;
 
     public static synchronized DBService getInstance(){
@@ -31,17 +32,23 @@ public class DBService {
         return projectDAO;
     }
     
-    private AnalysisDAO getAnalysisTypeDAO(){
+    private AnalysisDAO getAnalysisDAO(){
         if (analysisDAO == null)
             analysisDAO = new AnalysisDAOImpl();
         return analysisDAO;
     }
     
 
-    private SampleDAO getSelectionDAO(){
+    private SampleDAO getSampleDAO(){
         if (sampleDAO == null)
             sampleDAO = new SampleDAOImpl();
         return sampleDAO;
+    }
+
+    private UnitDAO getUnitDAO(){
+        if (unitDAO == null)
+            unitDAO = new UnitDAOImpl();
+        return unitDAO;
     }
 
 }
