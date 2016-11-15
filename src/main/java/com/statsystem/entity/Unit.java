@@ -16,7 +16,7 @@ public class Unit implements Serializable {
     private Long id;
 
     @Column(name = "date")
-    private Date date;
+    private Double date; //todo переделать в Date, пока что так проще считать интерполяцию
 
     @Column(name = "value")
     private Double value;
@@ -26,13 +26,13 @@ public class Unit implements Serializable {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Unit(Long id, Date date, Double value) {
+    public Unit(Long id, Double date, Double value) {
         this.setId(id);
         this.setDate(date);
         this.setValue(value);
     }
 
-    public Unit(Date date, Double value) {
+    public Unit(Double date, Double value) {
         this.setId(-1L);
         this.setDate(date);
         this.setValue(value);
@@ -46,11 +46,11 @@ public class Unit implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
+    public Double getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Double date) {
         this.date = date;
     }
 
