@@ -1,5 +1,6 @@
 package com.statsystem.controller;
 
+import com.statsystem.entity.Sample;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,8 +26,6 @@ import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -39,13 +38,13 @@ public class InterpolationController implements Initializable {
     @FXML StableTicksAxis yAxis;
     @FXML CheckBox drawChart;
     MainController mainController;
-    List<Point2D> selection;
+    Sample sample;
 
 
     public void initialize(URL location, ResourceBundle resources) {
     }
-    public void setSelection(List<Point2D> selection) {
-        this.selection = selection;
+    public void setSample(Sample sample) {
+        this.sample = sample;
     }
 
     public void setMainController(MainController controller) {
@@ -63,15 +62,11 @@ public class InterpolationController implements Initializable {
         yAxis.setLabel("Параметр Y");
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("Выборка");
-        XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-        series2.setName("Выборка 2");
-        for (int i = 0; i < selection.size(); ++i) {
-            series.getData().add(new XYChart.Data<>(selection.get(i).getX(), selection.get(i).getY()));
-            series2.getData().add(new XYChart.Data<>(selection.get(i).getX()/100, selection.get(i).getY()/100));
+        series.setName(sample.getName());
+        for (int i = 0; i < sample.getData().size(); ++i) {
+            series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
         }
         lineChart.getData().add(series);
-        lineChart.getData().add(series2);
 
         ChartPanManager panner = new ChartPanManager( lineChart );
         panner.setMouseFilter(new EventHandler<MouseEvent>() {
