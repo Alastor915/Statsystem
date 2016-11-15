@@ -94,4 +94,13 @@ public class Sample implements Serializable {
 
         return values;
     }
+
+    public double[] getDate(){
+        double [] values = new double [data.size()];
+        for (int i = 0; i < data.size();  i++){
+            values[i] = data.get(i).getDate().doubleValue();
+        }
+
+        return values;
+    }
 }
