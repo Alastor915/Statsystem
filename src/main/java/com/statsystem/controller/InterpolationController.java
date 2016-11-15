@@ -65,7 +65,9 @@ public class InterpolationController implements Initializable {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss");
         xAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
         xAxis.setLabel("Параметр X");
+        xAxis.setForceZeroInRange(false);
         yAxis.setLabel("Параметр Y");
+        yAxis.setForceZeroInRange(false);
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.setName(sample.getName());
