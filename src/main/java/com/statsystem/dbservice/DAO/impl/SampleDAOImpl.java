@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.statsystem.dbService.DAO.impl;
+package com.statsystem.dbservice.DAO.impl;
 
-import com.statsystem.dbService.DAO.SampleDAO;
+import com.statsystem.dbservice.DAO.SampleDAO;
 import com.statsystem.entity.Sample;
-import com.statsystem.dbService.execute.HibernateUtil;
+import com.statsystem.dbservice.execute.HibernateUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

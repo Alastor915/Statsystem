@@ -1,6 +1,6 @@
 package com.statsystem;
 
-import com.statsystem.dbService.execute.DBService;
+import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.Project;
 import junit.framework.Test;
 import junit.framework.TestCase;

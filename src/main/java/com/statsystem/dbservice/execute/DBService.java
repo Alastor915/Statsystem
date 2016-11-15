@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.statsystem.dbService.execute;
+package com.statsystem.dbservice.execute;
 
-import com.statsystem.dbService.DAO.*;
-import com.statsystem.dbService.DAO.impl.*;
+import com.statsystem.dbservice.DAO.*;
+import com.statsystem.dbservice.DAO.impl.*;
 
 /**
  *
