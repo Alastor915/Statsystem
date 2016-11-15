@@ -2,6 +2,7 @@ package com.statsystem.logic.interpolation;
 
 
 import com.statsystem.entity.*;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.*;
 import org.apache.commons.math3.analysis.polynomials.*;
 import org.apache.commons.math3.exception.*;
@@ -14,12 +15,12 @@ import org.apache.commons.math3.exception.*;
 
 public class NewtonInterpolation {
 
-    public double interpolite(Sample sample, double val) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
+    public static double interpolite(Sample sample, double val) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
 
-        DividedDifferenceInterpolator interpolator = new DividedDifferenceInterpolator();
-        PolynomialFunctionNewtonForm f = interpolator.interpolate(sample.getValues(), sample.getDate());
+        UnivariateInterpolator interpolator = new SplineInterpolator(); //fixme это не ньютонская интерполяция
+        UnivariateFunction f = interpolator.interpolate(sample.getDates(), sample.getValues());
 
-        double[] coeff = f.getNewtonCoefficients();
+//        double[] coeff = f.getNewtonCoefficients();
 
         //Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
         //String name = "Newton"; // todo read from UI or db or auto generate

@@ -1,6 +1,7 @@
 package com.statsystem.controller;
 
 import com.statsystem.entity.Sample;
+import com.statsystem.entity.Unit;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,12 +40,17 @@ public class InterpolationController implements Initializable {
     @FXML CheckBox drawChart;
     MainController mainController;
     Sample sample;
+    Unit result;
 
 
     public void initialize(URL location, ResourceBundle resources) {
     }
     public void setSample(Sample sample) {
         this.sample = sample;
+    }
+
+    public void setResult(Unit result) {
+        this.result = result;
     }
 
     public void setMainController(MainController controller) {
@@ -63,10 +69,14 @@ public class InterpolationController implements Initializable {
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.setName(sample.getName());
+        XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
+        series2.setName("Интерполяция");
         for (int i = 0; i < sample.getData().size(); ++i) {
             series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
         }
         lineChart.getData().add(series);
+        series2.getData().add(new XYChart.Data<>(result.getDate(),result.getValue()));
+        lineChart.getData().add(series2);
 
         ChartPanManager panner = new ChartPanManager( lineChart );
         panner.setMouseFilter(new EventHandler<MouseEvent>() {

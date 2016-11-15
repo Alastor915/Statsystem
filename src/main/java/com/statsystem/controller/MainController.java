@@ -2,6 +2,7 @@ package com.statsystem.controller;
 
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
+import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -21,6 +22,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Sample sample = new Sample("Выборка, полученная из xlsx");
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
+        Double dateForResult = null;
         try {
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 0:04:02").getTime()).doubleValue(),2.739726027));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 0:14:02").getTime()).doubleValue(),2.739726027));
@@ -29,7 +31,7 @@ public class MainController implements Initializable {
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 0:44:05").getTime()).doubleValue(),2.739726027));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 0:53:02").getTime()).doubleValue(),2.749510763));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 1:04:04").getTime()).doubleValue(),2.749510763));
-            sample.getData().add(new Unit(new Long(format.parse("08.04.2013 1:14:05").getTime()).doubleValue(),2.749510763));
+            sample.getData().add(new Unit(new Long(format.parse("08.04.2013 1:14:05").getTime()).doubleValue(),2.759510763));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 1:24:05").getTime()).doubleValue(),2.739726027));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 1:34:03").getTime()).doubleValue(),2.749510763));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 1:44:02").getTime()).doubleValue(),2.739726027));
@@ -166,12 +168,14 @@ public class MainController implements Initializable {
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 23:34:03").getTime()).doubleValue(),2.720156556));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 23:44:02").getTime()).doubleValue(),2.71037182));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 23:54:03").getTime()).doubleValue(),2.720156556));
+            dateForResult = new Long(format.parse("08.04.2013 21:19:14").getTime()).doubleValue();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         interpolationController.setMainController(this);
         interpolationController.setSample(sample);
+        interpolationController.setResult(new Unit(dateForResult, NewtonInterpolation.interpolite(sample,dateForResult)));
         interpolationController.start();
     }
 }

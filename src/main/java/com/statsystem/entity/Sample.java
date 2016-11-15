@@ -89,18 +89,16 @@ public class Sample implements Serializable {
     public double[] getValues(){
         double [] values = new double [data.size()];
         for (int i = 0; i < data.size();  i++){
-            values[i] = data.get(i).getValue().doubleValue();
+            values[i] = data.get(i).getValue();
         }
-
         return values;
     }
 
-    public double[] getDate(){
-        double [] values = new double [data.size()];
+    public double[] getDates(){
+        double [] dates = new double [data.size()];
         for (int i = 0; i < data.size();  i++){
-            values[i] = data.get(i).getDate().doubleValue();
+            dates[i] = data.get(i).getDate();
         }
-
-        return values;
+        return dates;
     }
 }
