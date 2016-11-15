@@ -2,15 +2,12 @@ package com.statsystem;
 
 import com.statsystem.dbService.execute.DBService;
 import com.statsystem.entity.Project;
-import com.statsystem.entity.Sample;
-import com.statsystem.entity.Unit;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
