@@ -20,8 +20,7 @@ public class Project implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany
-    @JoinColumn(name="sample_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
     private List<Sample> samples;
 
     @SuppressWarnings("UnusedDeclaration")

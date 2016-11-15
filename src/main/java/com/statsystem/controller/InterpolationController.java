@@ -1,5 +1,7 @@
 package com.statsystem.controller;
 
+import com.statsystem.entity.Sample;
+import com.statsystem.entity.Unit;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,12 +21,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.gillius.jfxutils.chart.ChartPanManager;
+import org.gillius.jfxutils.chart.FixedFormatTickFormatter;
 import org.gillius.jfxutils.chart.JFXChartUtil;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 /**
@@ -37,13 +39,18 @@ public class InterpolationController implements Initializable {
     @FXML StableTicksAxis yAxis;
     @FXML CheckBox drawChart;
     MainController mainController;
-    List<Point2D> selection;
+    Sample sample;
+    Unit result;
 
 
     public void initialize(URL location, ResourceBundle resources) {
     }
-    public void setSelection(List<Point2D> selection) {
-        this.selection = selection;
+    public void setSample(Sample sample) {
+        this.sample = sample;
+    }
+
+    public void setResult(Unit result) {
+        this.result = result;
     }
 
     public void setMainController(MainController controller) {
@@ -55,19 +62,20 @@ public class InterpolationController implements Initializable {
         lineChart.setTitle("График");
         lineChart.setAnimated(false);
 
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss");
+        xAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
         xAxis.setLabel("Параметр X");
         yAxis.setLabel("Параметр Y");
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("Выборка");
+        series.setName(sample.getName());
         XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-        series2.setName("Выборка 2");
-        for (int i = 0; i < selection.size(); ++i) {
-            series.getData().add(new XYChart.Data<>(selection.get(i).getX(), selection.get(i).getY()));
-            series2.getData().add(new XYChart.Data<>(selection.get(i).getX()/100, selection.get(i).getY()/100));
+        series2.setName("Интерполяция");
+        for (int i = 0; i < sample.getData().size(); ++i) {
+            series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
         }
         lineChart.getData().add(series);
+        series2.getData().add(new XYChart.Data<>(result.getDate(),result.getValue()));
         lineChart.getData().add(series2);
 
         ChartPanManager panner = new ChartPanManager( lineChart );
