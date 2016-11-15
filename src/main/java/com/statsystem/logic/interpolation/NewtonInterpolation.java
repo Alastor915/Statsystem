@@ -14,17 +14,18 @@ import org.apache.commons.math3.exception.*;
 
 public class NewtonInterpolation {
 
-    public Analysis interpolite(Sample sampleX, Sample sampleY) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
+    public double interpolite(Sample sample, double val) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
 
         DividedDifferenceInterpolator interpolator = new DividedDifferenceInterpolator();
-        PolynomialFunctionNewtonForm f = interpolator.interpolate(sampleX.getValues(), sampleY.getValues());
+        PolynomialFunctionNewtonForm f = interpolator.interpolate(sample.getValues(), sample.getValues());
 
         double[] coeff = f.getNewtonCoefficients();
 
-        Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
-        String name = "Newton"; // todo read from UI or auto generate
+        //Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
+        //String name = "Newton"; // todo read from UI or db or auto generate
 
-        return InterpolationHelper.createResult(id, name, AnalysisType.NEWTON, coeff);
+        return f.value(val);
+        //return InterpolationHelper.createResult(id, name, AnalysisType.NEWTON, coeff);
     }
 }
 
