@@ -17,14 +17,14 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         List<Point2D> staticSelection = new ArrayList<>();
 
-        staticSelection.add(new Point2D(1,2));
-        staticSelection.add(new Point2D(2d,3d));
-        staticSelection.add(new Point2D(3d,4d));
-        staticSelection.add(new Point2D(4d,5d));
-        staticSelection.add(new Point2D(5d, 6d));
-        staticSelection.add(new Point2D(6d,7d));
-        staticSelection.add(new Point2D(7d, 8d));
-        staticSelection.add(new Point2D(8d, 9d));
+        staticSelection.add(new Point2D(100000000000d,2));
+        staticSelection.add(new Point2D(200000000000d,3d));
+        staticSelection.add(new Point2D(300000000000d,4d));
+        staticSelection.add(new Point2D(400000000000d,5d));
+        staticSelection.add(new Point2D(500000000000d, 6d));
+        staticSelection.add(new Point2D(600000000000d,7d));
+        staticSelection.add(new Point2D(700000000000d, 8d));
+        staticSelection.add(new Point2D(800000000000d, 9d));
         interpolationController.setMainController(this);
         interpolationController.setSelection(staticSelection);
         interpolationController.start();
