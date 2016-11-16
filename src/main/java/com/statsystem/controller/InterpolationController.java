@@ -2,6 +2,7 @@ package com.statsystem.controller;
 
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
+import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,23 +11,26 @@ import javafx.geometry.Point2D;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.Node;
 import javafx.scene.Cursor;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.gillius.jfxutils.chart.ChartPanManager;
 import org.gillius.jfxutils.chart.FixedFormatTickFormatter;
 import org.gillius.jfxutils.chart.JFXChartUtil;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -38,12 +42,20 @@ public class InterpolationController implements Initializable {
     @FXML StableTicksAxis xAxis;
     @FXML StableTicksAxis yAxis;
     @FXML CheckBox drawChart;
+    @FXML Button calcBtn;
+    @FXML TextField xField;
     MainController mainController;
     Sample sample;
     Unit result;
-
+    double defTickXAxis = 0;
+    int defPointsCount = 3000;
+    DateFormat format;
+    int temp = 0;
+    UnivariateFunction f;
+    //test date 08.04.2013 21:19:14
 
     public void initialize(URL location, ResourceBundle resources) {
+        format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
     }
     public void setSample(Sample sample) {
         this.sample = sample;
@@ -71,15 +83,14 @@ public class InterpolationController implements Initializable {
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.setName(sample.getName());
-        XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-        series2.setName("Интерполяция");
         for (int i = 0; i < sample.getData().size(); ++i) {
             series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
         }
         lineChart.getData().add(series);
-        series2.getData().add(new XYChart.Data<>(result.getDate(),result.getValue()));
-        lineChart.getData().add(series2);
-
+        //interpolate();
+//        series2.getData().add(new XYChart.Data<>(result.getDate(),result.getValue()));
+//        lineChart.getData().add(series2);
+        defTickXAxis = xAxis.getTickLength();
         ChartPanManager panner = new ChartPanManager( lineChart );
         panner.setMouseFilter(new EventHandler<MouseEvent>() {
             @Override
@@ -109,7 +120,7 @@ public class InterpolationController implements Initializable {
 
         for (Data<Number, Number> data : series.getData()) {
             Node node = data.getNode() ;
-            Tooltip.install(node, new Tooltip('(' + String.format("%.2f", data.getXValue()) + ';' + String.format("%.2f", data.getYValue()) + ')'));
+            Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
             node.setCursor(Cursor.HAND);
             node.setOnMouseDragged(e -> {
                 Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
@@ -119,8 +130,44 @@ public class InterpolationController implements Initializable {
                 Number y = yAxis.getValueForDisplay(yAxisLoc);
                 data.setXValue(x);
                 data.setYValue(y);
-                Tooltip.install(node, new Tooltip('(' + String.format("%.2f", data.getXValue()) + ';' + String.format("%.2f", data.getYValue()) + ')'));
+                Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
             });
+        }
+        calcBtn.setOnAction(e -> {
+            interpolate();
+        });
+    }
+    public void interpolate() {
+        try {
+            double date = new Long(format.parse(xField.getText().trim()).getTime()).doubleValue();
+            if (temp == 0) {
+                f = NewtonInterpolation.interpolite(sample, 0);
+                XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
+                series2.setName("Интерполяционный полином");
+                double start = sample.getData().get(0).getDate();
+                double end = sample.getData().get(sample.getData().size() - 1).getDate();
+                double step = (end - start) / 3000;
+                while (start < end) {
+                    XYChart.Data<Number, Number> data = new XYChart.Data<>(start, f.value(start));
+                    Rectangle rect = new Rectangle(0, 0);
+                    rect.setVisible(false);
+                    data.setNode(rect);
+                    series2.getData().add(data);
+                    start += step;
+                }
+                lineChart.getData().add(series2);
+                ++temp;
+            }
+            XYChart.Series<Number, Number> series = new XYChart.Series<>();
+            XYChart.Data<Number, Number> data = new XYChart.Data<>(date, f.value(date));
+            series.getData().add(data);
+            series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
+            Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
+            lineChart.getData().add(series);
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 

@@ -32,7 +32,7 @@
                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#871fff00" height="97.0" stroke="BLACK" strokeType="OUTSIDE" width="170.0" />
                                 <Label layoutX="10.0" layoutY="10.0" text="Значение X :" textOverrun="CLIP" translateY="45.0" />
                                 <TextField prefWidth="50.0" translateX="100.0" translateY="21.0" />
-                                <TextField prefWidth="50.0" translateX="100.0" translateY="51.0" />
+                                <TextField fx:id="xField" prefWidth="50.0" translateX="100.0" translateY="51.0" />
                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="20.0" layoutY="-6.0" stroke="BLACK" strokeType="OUTSIDE" translateX="11.0" translateY="-4.0" width="132.0" />
                                 <Label text="Параметры расчета" textOverrun="CLIP" translateX="20.0" translateY="-10.0">
                                     <font>
@@ -72,7 +72,7 @@
                             <bottom>
                                 <Group BorderPane.alignment="CENTER_RIGHT">
                                     <children>
-                                        <Button prefWidth="80.0" mnemonicParsing="false" text="Рассчитать" />
+                                        <Button fx:id="calcBtn" prefWidth="80.0" mnemonicParsing="false" text="Рассчитать" />
                                         <Button prefWidth="80.0" mnemonicParsing="false" text="Сохранить" translateY="30.0" />
                                     </children>
                                     <BorderPane.margin>
