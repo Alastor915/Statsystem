@@ -44,6 +44,7 @@ public class InterpolationController implements Initializable {
     @FXML CheckBox drawChart;
     @FXML Button calcBtn;
     @FXML TextField xField;
+    @FXML TextArea resultTextArea;
     MainController mainController;
     Sample sample;
     Unit result;
@@ -51,6 +52,7 @@ public class InterpolationController implements Initializable {
     int defPointsCount = 3000;
     DateFormat format;
     int temp = 0;
+    int temp2 = 0;
     UnivariateFunction f;
     //test date 08.04.2013 21:19:14
 
@@ -140,31 +142,36 @@ public class InterpolationController implements Initializable {
     public void interpolate() {
         try {
             double date = new Long(format.parse(xField.getText().trim()).getTime()).doubleValue();
-            if (temp == 0) {
+            if (temp2 == 0) {
                 f = NewtonInterpolation.interpolite(sample, 0);
-                XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-                series2.setName("Интерполяционный полином");
-                double start = sample.getData().get(0).getDate();
-                double end = sample.getData().get(sample.getData().size() - 1).getDate();
-                double step = (end - start) / 3000;
-                while (start < end) {
-                    XYChart.Data<Number, Number> data = new XYChart.Data<>(start, f.value(start));
-                    Rectangle rect = new Rectangle(0, 0);
-                    rect.setVisible(false);
-                    data.setNode(rect);
-                    series2.getData().add(data);
-                    start += step;
-                }
-                lineChart.getData().add(series2);
-                ++temp;
+                ++temp2;
             }
-            XYChart.Series<Number, Number> series = new XYChart.Series<>();
-            XYChart.Data<Number, Number> data = new XYChart.Data<>(date, f.value(date));
-            series.getData().add(data);
-            series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
-            Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
-            lineChart.getData().add(series);
-
+            if (drawChart.isSelected()) {
+                if (temp == 0) {
+                    XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
+                    series2.setName("Интерполяционный полином");
+                    double start = sample.getData().get(0).getDate();
+                    double end = sample.getData().get(sample.getData().size() - 1).getDate();
+                    double step = (end - start) / 3000;
+                    while (start < end) {
+                        XYChart.Data<Number, Number> data = new XYChart.Data<>(start, f.value(start));
+                        Rectangle rect = new Rectangle(0, 0);
+                        rect.setVisible(false);
+                        data.setNode(rect);
+                        series2.getData().add(data);
+                        start += step;
+                    }
+                    lineChart.getData().add(series2);
+                    ++temp;
+                }
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                XYChart.Data<Number, Number> data = new XYChart.Data<>(date, f.value(date));
+                series.getData().add(data);
+                series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
+                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
+                lineChart.getData().add(series);
+            }
+            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "         " + String.format("%.2f", f.value(date)));
         }
         catch (Exception ex){
             ex.printStackTrace();
