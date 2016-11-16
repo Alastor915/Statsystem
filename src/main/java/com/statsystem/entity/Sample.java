@@ -14,7 +14,7 @@ public class Sample implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -22,7 +22,7 @@ public class Sample implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
     private List<Unit> data;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private List<Analysis> analyses;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -30,7 +30,7 @@ public class Sample implements Serializable {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Sample(Long id, String name, List<Unit> data, List<Analysis> analyses) {
+    public Sample(long id, String name, List<Unit> data, List<Analysis> analyses) {
         this.setId(id);
         this.setName(name);
         this.setData(data);
@@ -44,11 +44,11 @@ public class Sample implements Serializable {
         this.setAnalyses(new ArrayList<>());
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

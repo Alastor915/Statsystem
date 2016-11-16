@@ -13,7 +13,7 @@ public class Unit implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "date")
     private Double date; //todo переделать в Date, пока что так проще считать интерполяцию
@@ -26,7 +26,7 @@ public class Unit implements Serializable {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Unit(Long id, Double date, Double value) {
+    public Unit(long id, Double date, Double value) {
         this.setId(id);
         this.setDate(date);
         this.setValue(value);
@@ -38,11 +38,11 @@ public class Unit implements Serializable {
         this.setValue(value);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
