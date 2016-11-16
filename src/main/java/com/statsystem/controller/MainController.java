@@ -20,9 +20,17 @@ public class MainController implements Initializable {
     @FXML private InterpolationController interpolationController;
 
     public void initialize(URL location, ResourceBundle resources) {
-        Sample sample = new Sample("Выборка, полученная из xlsx");
+        Double dateForResult = 1365441275000d;
+        Sample sample = hardcode();
+        interpolationController.setMainController(this);
+        interpolationController.setSample(sample);
+        interpolationController.setResult(new Unit(dateForResult, NewtonInterpolation.interpolite(sample, dateForResult)));
+        interpolationController.start();
+    }
+
+    private Sample hardcode() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
-        Double dateForResult = null;
+        Sample sample = new Sample("Выборка, полученная из xlsx");
         try {
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 0:04:02").getTime()).doubleValue(),2.739726027));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 0:14:02").getTime()).doubleValue(),2.739726027));
@@ -168,14 +176,9 @@ public class MainController implements Initializable {
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 23:34:03").getTime()).doubleValue(),2.720156556));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 23:44:02").getTime()).doubleValue(),2.71037182));
             sample.getData().add(new Unit(new Long(format.parse("08.04.2013 23:54:03").getTime()).doubleValue(),2.720156556));
-            dateForResult = new Long(format.parse("08.04.2013 21:19:14").getTime()).doubleValue();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        interpolationController.setMainController(this);
-        interpolationController.setSample(sample);
-        interpolationController.setResult(new Unit(dateForResult, NewtonInterpolation.interpolite(sample,dateForResult)));
-        interpolationController.start();
+        return sample;
     }
 }
