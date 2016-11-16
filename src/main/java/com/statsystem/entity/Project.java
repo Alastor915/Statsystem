@@ -15,12 +15,12 @@ public class Project implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private List<Sample> samples;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -28,7 +28,7 @@ public class Project implements Serializable {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Project(Long id, String name, List<Sample> samples) {
+    public Project(long id, String name, List<Sample> samples) {
         this.setId(id);
         this.setName(name);
         this.setSamples(samples);
@@ -40,11 +40,11 @@ public class Project implements Serializable {
         this.setSamples(new ArrayList<>());
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

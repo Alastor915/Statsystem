@@ -15,7 +15,7 @@ public class Analysis implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -32,7 +32,7 @@ public class Analysis implements Serializable {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Analysis(Long id, String name, AnalysisType type, List<Unit> data) {
+    public Analysis(long id, String name, AnalysisType type, List<Unit> data) {
         this.setId(id);
         this.setName(name);
         this.setType(type);
@@ -45,11 +45,11 @@ public class Analysis implements Serializable {
         this.setData(new ArrayList<>());
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
