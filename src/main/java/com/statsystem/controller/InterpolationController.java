@@ -46,6 +46,7 @@ public class InterpolationController implements Initializable {
     @FXML TextField xField;
     @FXML TextArea resultTextArea;
     MainController mainController;
+    private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
     Sample sample;
     Unit result;
     double defTickXAxis = 0;
@@ -54,10 +55,10 @@ public class InterpolationController implements Initializable {
     int temp = 0;
     int temp2 = 0;
     UnivariateFunction f;
-    //test date 08.04.2013 21:19:14
 
     public void initialize(URL location, ResourceBundle resources) {
         format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
+        xField.setText(DEFULT_X_FIELD_VALUE);
     }
     public void setSample(Sample sample) {
         this.sample = sample;
