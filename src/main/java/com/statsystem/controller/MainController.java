@@ -178,10 +178,6 @@ public class MainController implements Initializable {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        interpolationController.setMainController(this);
-        interpolationController.setSample(sample);
-      //  interpolationController.setResult(new Unit(dateForResult, NewtonInterpolation.interpolite(sample,dateForResult)));
-        interpolationController.start();
         return sample;
     }
 }
