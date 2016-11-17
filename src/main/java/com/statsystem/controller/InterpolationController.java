@@ -113,17 +113,17 @@ public class InterpolationController implements Initializable {
        JFXChartUtil.setupZooming(lineChart, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() != MouseButton.PRIMARY ||
-                        mouseEvent.isShortcutDown())
+                if (mouseEvent.getButton() == MouseButton.PRIMARY ||
+                        mouseEvent.isShortcutDown() ||
+                        mouseEvent.getButton() == MouseButton.SECONDARY)
                     mouseEvent.consume();
             }
         });
-
         JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(lineChart);
 
         for (Data<Number, Number> data : series.getData()) {
             Node node = data.getNode() ;
-            Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
+            Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
             node.setCursor(Cursor.HAND);
             node.setOnMouseDragged(e -> {
                 Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
@@ -133,7 +133,7 @@ public class InterpolationController implements Initializable {
                 Number y = yAxis.getValueForDisplay(yAxisLoc);
                 data.setXValue(x);
                 data.setYValue(y);
-                Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
+                Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
             });
         }
         calcBtn.setOnAction(e -> {
@@ -169,10 +169,11 @@ public class InterpolationController implements Initializable {
                 XYChart.Data<Number, Number> data = new XYChart.Data<>(date, f.value(date));
                 series.getData().add(data);
                 series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
-                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.2f", data.getYValue()) + ')'));
                 lineChart.getData().add(series);
+                series.getData().get(0).getNode().setCursor(Cursor.HAND);
+                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
             }
-            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "         " + String.format("%.2f", f.value(date)));
+            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "         " + String.format("%.3f", f.value(date)));
         }
         catch (Exception ex){
             ex.printStackTrace();

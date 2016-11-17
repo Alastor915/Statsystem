@@ -5,6 +5,7 @@ import com.statsystem.entity.Unit;
 import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -18,6 +19,7 @@ import java.util.*;
 public class MainController implements Initializable {
 
     @FXML private InterpolationController interpolationController;
+    @FXML private Tab sampleTab;
 
     public void initialize(URL location, ResourceBundle resources) {
         Double dateForResult = 1365441275000d;
@@ -25,6 +27,7 @@ public class MainController implements Initializable {
         interpolationController.setMainController(this);
         interpolationController.setSample(sample);
         interpolationController.start();
+        sampleTab.setText(sample.getName());
     }
 
     private Sample hardcode() {

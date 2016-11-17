@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <?import org.gillius.jfxutils.chart.StableTicksAxis?>
-<Tab text="Расчет № 1" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
+<Tab text="Интерполяция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
     <content>
         <SplitPane fx:id="splitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
             <items>
@@ -40,7 +40,7 @@
                                     </font></Label>
                             </children>
                             <VBox.margin>
-                                <Insets left="15.0" top="30.0" />
+                                <Insets left="15.0" top="30.0" right="10" />
                             </VBox.margin>
                         </Group>
                         <CheckBox fx:id="drawChart" mnemonicParsing="false" text="Отобразить на графике">

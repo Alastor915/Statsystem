@@ -39,7 +39,7 @@
    <center>
       <TabPane prefHeight="366.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab text="Выборка № 1">
+            <Tab text="Выборка № 1" fx:id="sampleTab">
                 <content>
                     <TabPane prefHeight="371.0" prefWidth="600.0">
                         <tabs>
