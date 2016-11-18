@@ -16,7 +16,7 @@ public class Unit implements Serializable {
     private long id;
 
     @Column(name = "date")
-    private Double date; //todo переделать в Date, пока что так проще считать интерполяцию
+    private Double date;
 
     @Column(name = "value")
     private Double value;

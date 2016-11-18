@@ -23,16 +23,16 @@ public class Analysis implements Serializable {
     @Column(name = "type")
     private AnalysisType type;
 
-    /** Результаты расчета для интерполяции */
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
-    private List<Unit> data;
+    @Lob
+    @Column(name = "data")
+    private AnalysisData data;
 
     @SuppressWarnings("UnusedDeclaration")
     public Analysis() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Analysis(long id, String name, AnalysisType type, List<Unit> data) {
+    public Analysis(long id, String name, AnalysisType type, AnalysisData data) {
         this.setId(id);
         this.setName(name);
         this.setType(type);
@@ -42,7 +42,6 @@ public class Analysis implements Serializable {
     public Analysis(String name, AnalysisType type){
         this.setId(-1L);
         this.setName(name);
-        this.setData(new ArrayList<>());
     }
 
     public long getId() {
@@ -69,11 +68,11 @@ public class Analysis implements Serializable {
         this.type = type;
     }
 
-    public List<Unit> getData() {
+    public AnalysisData getData() {
         return data;
     }
 
-    public void setData(List<Unit> data) {
+    public void setData(AnalysisData data) {
         this.data = data;
     }
 
