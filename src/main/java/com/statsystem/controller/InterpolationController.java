@@ -146,12 +146,10 @@ public class InterpolationController implements Initializable {
         JFXChartUtil.setupZooming(lineChart, mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.PRIMARY ||
                     mouseEvent.isShortcutDown() ||
-                    mouseEvent.getButton() == MouseButton.SECONDARY){
-            }
-            else {
+                    mouseEvent.getButton() == MouseButton.SECONDARY)
                 mouseEvent.consume();
-            }
         });
+
         JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(lineChart);
 
         for (Data<Number, Number> data : series.getData()) {
@@ -159,14 +157,16 @@ public class InterpolationController implements Initializable {
             Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
             node.setCursor(Cursor.HAND);
             node.setOnMouseDragged(e -> {
-                Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
-                double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
-                double yAxisLoc = yAxis.sceneToLocal(pointInScene).getY();
-                Number x = xAxis.getValueForDisplay(xAxisLoc);
-                Number y = yAxis.getValueForDisplay(yAxisLoc);
-                data.setXValue(x);
-                data.setYValue(y);
-                Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                if(e.getButton() == MouseButton.PRIMARY) {
+                    Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
+                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
+                    double yAxisLoc = yAxis.sceneToLocal(pointInScene).getY();
+                    Number x = xAxis.getValueForDisplay(xAxisLoc);
+                    Number y = yAxis.getValueForDisplay(yAxisLoc);
+                    data.setXValue(x);
+                    data.setYValue(y);
+                    Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                }
             });
         }
     }
