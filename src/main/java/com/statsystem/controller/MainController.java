@@ -30,7 +30,6 @@ public class MainController implements Initializable {
     private Stage m_stage;
 
     public void initialize(URL location, ResourceBundle resources) {
-        Double dateForResult = 1365441275000d;
         Sample sample = hardcode();
         interpolationController.setMainController(this);
         interpolationController.setSample(sample);
@@ -40,8 +39,8 @@ public class MainController implements Initializable {
             try {
                 String fxmlFile = "/fxml/create_project_dialog.fxml";
                 FXMLLoader loader = new FXMLLoader();
-                Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-                CreateProjectController createProjectController = (CreateProjectController)loader.getController();
+                Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
+                CreateProjectController createProjectController = loader.getController();
                 Stage stage = new Stage();
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(m_stage);
@@ -57,7 +56,15 @@ public class MainController implements Initializable {
         });
     }
 
-    private Sample hardcode() {
+    public Stage getM_stage() {
+        return m_stage;
+    }
+
+    public void setM_stage(Stage m_stage) {
+        this.m_stage = m_stage;
+    }
+
+    public static Sample hardcode() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
         Sample sample = new Sample("Выборка, полученная из xlsx");
         try {
@@ -209,12 +216,5 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
         return sample;
-    }
-    public Stage getM_stage() {
-        return m_stage;
-    }
-
-    public void setM_stage(Stage m_stage) {
-        this.m_stage = m_stage;
     }
 }

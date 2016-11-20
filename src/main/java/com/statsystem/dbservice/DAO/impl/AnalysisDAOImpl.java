@@ -25,6 +25,7 @@ public class AnalysisDAOImpl implements AnalysisDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
+            session.save(analysis);
             session.getTransaction().commit();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -56,7 +57,7 @@ public class AnalysisDAOImpl implements AnalysisDAO {
         Analysis analysis = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            analysis =(Analysis) session.load(Analysis.class, id);
+            analysis = session.load(Analysis.class, id);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         } finally {
@@ -67,7 +68,7 @@ public class AnalysisDAOImpl implements AnalysisDAO {
         return analysis;
     }
 
-    public List getAllAnalyses() throws SQLException {
+    public List<Analysis> getAllAnalyses() throws SQLException {
         Session session = null;
         List<Analysis> analyses = new ArrayList<>();
         try {

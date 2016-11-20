@@ -10,15 +10,17 @@ import org.apache.commons.math3.exception.*;
  */
 public class SplineInterpolation {
 
-    public Analysis interpolite(Sample sampleX, Sample sampleY) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
-        LinearInterpolator interpolator = new LinearInterpolator();
-        PolynomialSplineFunction f = interpolator.interpolate(sampleX.getValues(), sampleY.getValues());
+    public static PolynomialSplineFunction interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
 
-        double[] coeff = f.getKnots();
+        SplineInterpolator interpolator = new SplineInterpolator(); //fixme это не ньютонская интерполяция
+        PolynomialSplineFunction f = interpolator.interpolate(sample.getDates(), sample.getValues());
 
-        Long id = Long.valueOf(1123215); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
-        String name = "Spline"; // todo read from UI or auto generate
+//        double[] coeff = f.getNewtonCoefficients();
 
-        return InterpolationHelper.createResult(id, name, AnalysisType.SPLINE, coeff);
+        //Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
+        //String name = "Newton"; // todo read from UI or db or auto generate
+
+        return f;
+        //return InterpolationHelper.createResult(id, name, AnalysisType.NEWTON, coeff);
     }
 }

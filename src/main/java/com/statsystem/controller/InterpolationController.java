@@ -50,22 +50,19 @@ public class InterpolationController implements Initializable {
     private MainController mainController;
     private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
     private Sample sample;
-    private Unit result;
     private DateFormat format;
+    private DateFormat formatView;
     private boolean isInterpolationDrawn = false;
     private UnivariateFunction f;
 
     public void initialize(URL location, ResourceBundle resources) {
         format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
+        formatView = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
         xField.setText(DEFULT_X_FIELD_VALUE);
         resultTextArea.setEditable(false);
     }
     public void setSample(Sample sample) {
         this.sample = sample;
-    }
-
-    public void setResult(Unit result) {
-        this.result = result;
     }
 
     public void setMainController(MainController controller) {
@@ -106,9 +103,9 @@ public class InterpolationController implements Initializable {
                 series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
                 lineChart.getData().add(series);
                 series.getData().get(0).getNode().setCursor(Cursor.HAND);
-                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
+                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
             }
-            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "         " + String.format("%.3f", f.value(date)));
+            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "; " + String.format("%.5f", f.value(date)));
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -125,7 +122,7 @@ public class InterpolationController implements Initializable {
         xAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
         xAxis.setLabel("Время");
         xAxis.setForceZeroInRange(false);
-        yAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.000")));
+        yAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.0000")));
         yAxis.setLabel("Мощность");
         yAxis.setForceZeroInRange(false);
 
@@ -136,33 +133,27 @@ public class InterpolationController implements Initializable {
         }
         lineChart.getData().add(series);
         ChartPanManager panner = new ChartPanManager( lineChart );
-        panner.setMouseFilter(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() == MouseButton.SECONDARY ||
-                        (mouseEvent.getButton() == MouseButton.PRIMARY &&
-                                mouseEvent.isShortcutDown())) {
-                } else {
-                    mouseEvent.consume();
-                }
+        panner.setMouseFilter(mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY ||
+                    (mouseEvent.getButton() == MouseButton.PRIMARY &&
+                            mouseEvent.isShortcutDown())) {
+            } else {
+                mouseEvent.consume();
             }
         });
         panner.start();
 
-        JFXChartUtil.setupZooming(lineChart, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() == MouseButton.PRIMARY ||
-                        mouseEvent.isShortcutDown() ||
-                        mouseEvent.getButton() == MouseButton.SECONDARY)
-                    mouseEvent.consume();
-            }
+        JFXChartUtil.setupZooming(lineChart, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY ||
+                    mouseEvent.isShortcutDown() ||
+                    mouseEvent.getButton() == MouseButton.SECONDARY)
+                mouseEvent.consume();
         });
         JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(lineChart);
 
         for (Data<Number, Number> data : series.getData()) {
             Node node = data.getNode() ;
-            Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
+            Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
             node.setCursor(Cursor.HAND);
             node.setOnMouseDragged(e -> {
                 Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
@@ -172,7 +163,7 @@ public class InterpolationController implements Initializable {
                 Number y = yAxis.getValueForDisplay(yAxisLoc);
                 data.setXValue(x);
                 data.setYValue(y);
-                Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
+                Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
             });
         }
     }

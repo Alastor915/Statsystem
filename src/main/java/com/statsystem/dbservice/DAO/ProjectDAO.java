@@ -18,6 +18,6 @@ public interface ProjectDAO {
     void addProject(Project project) throws SQLException;
     void updateProject(Project project) throws SQLException;
     Project getProjectById(Integer id) throws SQLException;
-    List getAllProjects() throws SQLException;
+    List<Project> getAllProjects() throws SQLException;
     void deleteProject(Project project) throws SQLException;
 }

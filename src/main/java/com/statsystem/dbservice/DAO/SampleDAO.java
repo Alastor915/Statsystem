@@ -17,6 +17,6 @@ public interface SampleDAO {
     void addSample(Sample sample) throws SQLException;
     void updateSample(Sample sample) throws SQLException;
     Sample getSampleById(Integer id) throws SQLException;
-    List getAllSamples() throws SQLException;
+    List<Sample> getAllSamples() throws SQLException;
     void deleteSample(Sample sample) throws SQLException;
 }

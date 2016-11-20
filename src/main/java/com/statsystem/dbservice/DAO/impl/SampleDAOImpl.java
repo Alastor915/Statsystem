@@ -68,7 +68,7 @@ public class SampleDAOImpl implements SampleDAO {
         return sample;
     }
 
-    public List getAllSamples() throws SQLException {
+    public List<Sample> getAllSamples() throws SQLException {
         Session session = null;
         List<Sample> samples = new ArrayList<Sample>();
         try {
