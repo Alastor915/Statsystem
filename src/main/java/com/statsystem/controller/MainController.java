@@ -4,8 +4,14 @@ import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
 import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -20,6 +26,8 @@ public class MainController implements Initializable {
 
     @FXML private InterpolationController interpolationController;
     @FXML private Tab sampleTab;
+    @FXML private MenuItem createProject;
+    private Stage m_stage;
 
     public void initialize(URL location, ResourceBundle resources) {
         Double dateForResult = 1365441275000d;
@@ -28,6 +36,25 @@ public class MainController implements Initializable {
         interpolationController.setSample(sample);
         interpolationController.start();
         sampleTab.setText(sample.getName());
+        createProject.setOnAction(e->{
+            try {
+                String fxmlFile = "/fxml/create_project_dialog.fxml";
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+                CreateProjectController createProjectController = (CreateProjectController)loader.getController();
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(m_stage);
+                stage.setTitle("Система обработки данных");
+                stage.setScene(new Scene(root));
+                createProjectController.setM_stage(stage);
+                stage.showAndWait();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        });
     }
 
     private Sample hardcode() {
@@ -182,5 +209,12 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
         return sample;
+    }
+    public Stage getM_stage() {
+        return m_stage;
+    }
+
+    public void setM_stage(Stage m_stage) {
+        this.m_stage = m_stage;
     }
 }

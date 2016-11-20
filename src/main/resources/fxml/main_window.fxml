@@ -20,7 +20,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Файл">
             <items>
-              <MenuItem mnemonicParsing="false" text="Создать проект" />
+              <MenuItem fx:id="createProject" mnemonicParsing="false" text="Создать проект" />
                   <MenuItem mnemonicParsing="false" text="Загрузить проект" />
                   <MenuItem mnemonicParsing="false" text="Сохранить проект" />
             </items>
