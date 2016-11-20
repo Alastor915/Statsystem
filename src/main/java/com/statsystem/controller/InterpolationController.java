@@ -146,8 +146,11 @@ public class InterpolationController implements Initializable {
         JFXChartUtil.setupZooming(lineChart, mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.PRIMARY ||
                     mouseEvent.isShortcutDown() ||
-                    mouseEvent.getButton() == MouseButton.SECONDARY)
+                    mouseEvent.getButton() == MouseButton.SECONDARY){
+            }
+            else {
                 mouseEvent.consume();
+            }
         });
         JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(lineChart);
 
