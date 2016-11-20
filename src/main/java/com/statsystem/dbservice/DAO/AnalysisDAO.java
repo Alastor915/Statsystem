@@ -18,6 +18,6 @@ public interface AnalysisDAO {
     void addAnalysis(Analysis analysis) throws SQLException;
     void updateAnalysis(Analysis analysis) throws SQLException;
     Analysis getAnalysisById(Integer id) throws SQLException;
-    List getAllAnalyses() throws SQLException;
+    List<Analysis> getAllAnalyses() throws SQLException;
     void deleteAnalysis(Analysis analysis) throws SQLException;
 }

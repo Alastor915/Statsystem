@@ -32,14 +32,14 @@ public class DBService {
         return projectDAO;
     }
     
-    private AnalysisDAO getAnalysisDAO(){
+    public AnalysisDAO getAnalysisDAO(){
         if (analysisDAO == null)
             analysisDAO = new AnalysisDAOImpl();
         return analysisDAO;
     }
     
 
-    private SampleDAO getSampleDAO(){
+    public SampleDAO getSampleDAO(){
         if (sampleDAO == null)
             sampleDAO = new SampleDAOImpl();
         return sampleDAO;
