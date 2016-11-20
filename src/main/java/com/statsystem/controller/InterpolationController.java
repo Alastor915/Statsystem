@@ -28,7 +28,9 @@ import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -45,20 +47,18 @@ public class InterpolationController implements Initializable {
     @FXML Button calcBtn;
     @FXML TextField xField;
     @FXML TextArea resultTextArea;
-    MainController mainController;
+    private MainController mainController;
     private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
-    Sample sample;
-    Unit result;
-    double defTickXAxis = 0;
-    int defPointsCount = 3000;
-    DateFormat format;
-    int temp = 0;
-    int temp2 = 0;
-    UnivariateFunction f;
+    private Sample sample;
+    private Unit result;
+    private DateFormat format;
+    private boolean isInterpolationDrawn = false;
+    private UnivariateFunction f;
 
     public void initialize(URL location, ResourceBundle resources) {
         format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
         xField.setText(DEFULT_X_FIELD_VALUE);
+        resultTextArea.setEditable(false);
     }
     public void setSample(Sample sample) {
         this.sample = sample;
@@ -73,15 +73,60 @@ public class InterpolationController implements Initializable {
 
     }
     public void start() {
+        f = NewtonInterpolation.interpolite(sample);
+        chartInit();
+        calcBtn.setOnAction(e -> {
+            interpolate();
+        });
+    }
+    public void interpolate() {
+        try {
+            double date = new Long(format.parse(xField.getText().trim()).getTime()).doubleValue();
+            if (drawChart.isSelected()) {
+                if (!isInterpolationDrawn) {
+                    XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
+                    series2.setName("Интерполяционный полином");
+                    double start = sample.getData().get(0).getDate();
+                    double end = sample.getData().get(sample.getData().size() - 1).getDate();
+                    double step = (end - start) / 3000;
+                    while (start < end) {
+                        XYChart.Data<Number, Number> data = new XYChart.Data<>(start, f.value(start));
+                        Rectangle rect = new Rectangle(0, 0);
+                        rect.setVisible(false);
+                        data.setNode(rect);
+                        series2.getData().add(data);
+                        start += step;
+                    }
+                    lineChart.getData().add(series2);
+                    isInterpolationDrawn = true;
+                }
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                XYChart.Data<Number, Number> data = new XYChart.Data<>(date, f.value(date));
+                series.getData().add(data);
+                series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
+                lineChart.getData().add(series);
+                series.getData().get(0).getNode().setCursor(Cursor.HAND);
+                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
+            }
+            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "         " + String.format("%.3f", f.value(date)));
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    private void chartInit(){
         lineChart.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
-        lineChart.setTitle("График");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        lineChart.setTitle("График зависимости мощности от времени. Рассматриваемый день: " +
+                dateFormat.format(new Date(sample.getData().get(0).getDate().longValue())));
         lineChart.setAnimated(false);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         xAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
-        xAxis.setLabel("Параметр X");
+        xAxis.setLabel("Время");
         xAxis.setForceZeroInRange(false);
-        yAxis.setLabel("Параметр Y");
+        yAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.000")));
+        yAxis.setLabel("Мощность");
         yAxis.setForceZeroInRange(false);
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
@@ -90,10 +135,6 @@ public class InterpolationController implements Initializable {
             series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
         }
         lineChart.getData().add(series);
-        //interpolate();
-//        series2.getData().add(new XYChart.Data<>(result.getDate(),result.getValue()));
-//        lineChart.getData().add(series2);
-        defTickXAxis = xAxis.getTickLength();
         ChartPanManager panner = new ChartPanManager( lineChart );
         panner.setMouseFilter(new EventHandler<MouseEvent>() {
             @Override
@@ -101,7 +142,6 @@ public class InterpolationController implements Initializable {
                 if (mouseEvent.getButton() == MouseButton.SECONDARY ||
                         (mouseEvent.getButton() == MouseButton.PRIMARY &&
                                 mouseEvent.isShortcutDown())) {
-                    //let it through
                 } else {
                     mouseEvent.consume();
                 }
@@ -109,8 +149,7 @@ public class InterpolationController implements Initializable {
         });
         panner.start();
 
-        //Zooming works only via primary mouse button without ctrl held down
-       JFXChartUtil.setupZooming(lineChart, new EventHandler<MouseEvent>() {
+        JFXChartUtil.setupZooming(lineChart, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton() == MouseButton.PRIMARY ||
@@ -135,48 +174,6 @@ public class InterpolationController implements Initializable {
                 data.setYValue(y);
                 Tooltip.install(node, new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
             });
-        }
-        calcBtn.setOnAction(e -> {
-            interpolate();
-        });
-    }
-    public void interpolate() {
-        try {
-            double date = new Long(format.parse(xField.getText().trim()).getTime()).doubleValue();
-            if (temp2 == 0) {
-                f = NewtonInterpolation.interpolite(sample, 0);
-                ++temp2;
-            }
-            if (drawChart.isSelected()) {
-                if (temp == 0) {
-                    XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-                    series2.setName("Интерполяционный полином");
-                    double start = sample.getData().get(0).getDate();
-                    double end = sample.getData().get(sample.getData().size() - 1).getDate();
-                    double step = (end - start) / 3000;
-                    while (start < end) {
-                        XYChart.Data<Number, Number> data = new XYChart.Data<>(start, f.value(start));
-                        Rectangle rect = new Rectangle(0, 0);
-                        rect.setVisible(false);
-                        data.setNode(rect);
-                        series2.getData().add(data);
-                        start += step;
-                    }
-                    lineChart.getData().add(series2);
-                    ++temp;
-                }
-                XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                XYChart.Data<Number, Number> data = new XYChart.Data<>(date, f.value(date));
-                series.getData().add(data);
-                series.setName("x = " + format.format(new Date(data.getXValue().longValue())));
-                lineChart.getData().add(series);
-                series.getData().get(0).getNode().setCursor(Cursor.HAND);
-                Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + format.format(new Date(data.getXValue().longValue())) + ';' + String.format("%.3f", data.getYValue()) + ')'));
-            }
-            resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "         " + String.format("%.3f", f.value(date)));
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
         }
     }
 

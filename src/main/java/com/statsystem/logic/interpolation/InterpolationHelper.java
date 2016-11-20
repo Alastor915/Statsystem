@@ -17,6 +17,6 @@ public class InterpolationHelper {
             dataList.add(new Unit(null, new Double(c)));
         }
 
-        return new Analysis(id, name, type, dataList);
+        return null; //new Analysis(id, name, type, dataList);
     }
 }

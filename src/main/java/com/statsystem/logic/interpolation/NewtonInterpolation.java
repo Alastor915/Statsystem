@@ -15,7 +15,7 @@ import org.apache.commons.math3.exception.*;
 
 public class NewtonInterpolation {
 
-    public static UnivariateFunction interpolite(Sample sample, double val) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
+    public static UnivariateFunction interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
 
         UnivariateInterpolator interpolator = new SplineInterpolator(); //fixme это не ньютонская интерполяция
         UnivariateFunction f = interpolator.interpolate(sample.getDates(), sample.getValues());
