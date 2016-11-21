@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.embed.swing.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import org.gillius.jfxutils.chart.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import org.gillius.jfxutils.chart.StableTicksAxis?>
+<Tab text="Интерполяция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
+    <content>
+        <SplitPane fx:id="splitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
+            <items>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Label text="Интерполяция" textOverrun="CLIP" translateX="22.0" translateY="15.0">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font></Label>
+                        <Group>
+                            <children>
+                                <!--<Label layoutX="10.0" layoutY="10.0" text="Точность :" textOverrun="CLIP" translateY="15.0" />-->
+                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#871fff00" height="97.0" stroke="BLACK" strokeType="OUTSIDE" width="240.0" />
+                                <Label layoutX="10.0" layoutY="10.0" text="Значение X :" textOverrun="CLIP" translateY="30.0" />
+                                <!--<TextField prefWidth="120.0" translateX="100.0" translateY="21.0" />-->
+                                <TextField fx:id="xField" prefWidth="120.0" translateX="100.0" translateY="36.0" />
+                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="20.0" layoutY="-6.0" stroke="BLACK" strokeType="OUTSIDE" translateX="11.0" translateY="-4.0" width="132.0" />
+                                <Label text="Параметры расчета" textOverrun="CLIP" translateX="20.0" translateY="-10.0">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font></Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets left="15.0" top="30.0" right="10" />
+                            </VBox.margin>
+                        </Group>
+                        <CheckBox fx:id="drawChart" mnemonicParsing="false" text="Отобразить на графике">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="15.0" top="10.0" bottom="7" />
+                            </VBox.margin>
+                        </CheckBox>
+                        <BorderPane prefHeight="288.0" prefWidth="397.0">
+                            <center>
+                                <TextArea fx:id="resultTextArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <BorderPane.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                                    </BorderPane.margin>
+                                </TextArea>
+                            </center>
+                            <top>
+                                <Label text="Результат" BorderPane.alignment="CENTER_LEFT">
+                                    <BorderPane.margin>
+                                        <Insets bottom="10.0" left="15.0" top="5.0" />
+                                    </BorderPane.margin>
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                            </top>
+                            <bottom>
+                                <Group BorderPane.alignment="CENTER_RIGHT">
+                                    <children>
+                                        <Button fx:id="calcBtn" prefWidth="80.0" mnemonicParsing="false" text="Рассчитать" />
+                                        <Button prefWidth="80.0" mnemonicParsing="false" text="Сохранить" translateY="30.0" />
+                                    </children>
+                                    <BorderPane.margin>
+                                        <Insets bottom="10.0" right="10.0" />
+                                    </BorderPane.margin>
+                                </Group>
+                            </bottom>
+                        </BorderPane>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </VBox>
+                <StackPane>
+                    <LineChart fx:id="lineChart">
+                        <xAxis>
+                            <StableTicksAxis fx:id="xAxis" animated="true" side="BOTTOM" />
+                        </xAxis>
+                        <yAxis>
+                            <StableTicksAxis fx:id="yAxis" animated="true" side="LEFT" />
+                        </yAxis>
+                    </LineChart>
+                </StackPane>
+            </items>
+        </SplitPane>
+    </content>
+</Tab>
