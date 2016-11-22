@@ -1,6 +1,7 @@
 package com.statsystem.entity.impl;
 
 import com.statsystem.entity.AnalysisData;
+import com.statsystem.logic.statchars.DistributionFunction;
 import javafx.util.Pair;
 
 import java.util.List;
@@ -11,16 +12,32 @@ import java.util.List;
 public class DistributionAnalysisData implements AnalysisData {
 
     /**
-     * distribution.get(i).getKey() -> value выборки,
-     * distribution.get(i).getValue() -> количество таких значений в выборке
+     * quantity[i] = количество вхождений value[i] в выборку
      */
-    private List<Pair<Double,Double>> distribution;
+    private double[] values;
 
-    public DistributionAnalysisData(List<Pair<Double, Double>> distribution) {
-        this.distribution = distribution;
+    private double[] quantity;
+
+    private transient DistributionFunction f;
+
+    public DistributionAnalysisData() {
     }
 
-    public List<Pair<Double, Double>> getDistribution() {
-        return distribution;
+    public DistributionAnalysisData(double[] values, double[] quantity) {
+        this.values = values;
+        this.quantity = quantity;
+        this.f = new DistributionFunction(values, quantity);
+    }
+
+    public double[] getValues() {
+        return values;
+    }
+
+    public double[] getQuantity() {
+        return quantity;
+    }
+
+    public DistributionFunction getF() {
+        return f;
     }
 }

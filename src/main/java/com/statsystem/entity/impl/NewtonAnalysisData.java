@@ -31,6 +31,9 @@ public class NewtonAnalysisData implements AnalysisData{
      */
     private transient PolynomialFunctionNewtonForm f;
 
+    public NewtonAnalysisData() {
+    }
+
     public NewtonAnalysisData(double[] newtonCoefficients, double[] centers, List<Unit> units) {
         this.newtonCoefficients = newtonCoefficients;
         this.centers = centers;

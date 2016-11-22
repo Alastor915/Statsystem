@@ -5,11 +5,14 @@ import com.statsystem.entity.AnalysisData;
 /**
  * Данные для хранения мат ожидания и дисперсии
  */
-public class SimleAnalysisData implements AnalysisData{
+public class SimpleAnalysisData implements AnalysisData{
 
     private Double value;
 
-    public SimleAnalysisData(Double value) {
+    public SimpleAnalysisData() {
+    }
+
+    public SimpleAnalysisData(Double value) {
         this.value = value;
     }
 

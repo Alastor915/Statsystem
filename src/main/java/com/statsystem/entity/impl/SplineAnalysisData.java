@@ -32,6 +32,9 @@ public class SplineAnalysisData implements AnalysisData {
      */
     private transient PolynomialSplineFunction f;
 
+    public SplineAnalysisData() {
+    }
+
     public SplineAnalysisData(double[] knots, List<double[]> polynomialCoefficients, List<Unit> units) {
         this.knots = knots;
         this.polynomialCoefficients = polynomialCoefficients;
