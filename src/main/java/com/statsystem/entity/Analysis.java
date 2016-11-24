@@ -27,21 +27,26 @@ public class Analysis implements Serializable {
     @Column(name = "data")
     private AnalysisData data;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sample sample;
+
     @SuppressWarnings("UnusedDeclaration")
     public Analysis() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Analysis(long id, String name, AnalysisType type, AnalysisData data) {
+    public Analysis(long id, String name, AnalysisType type, AnalysisData data, Sample sample) {
         this.setId(id);
         this.setName(name);
         this.setType(type);
         this.setData(data);
+        this.setSample(sample);
     }
 
     public Analysis(String name, AnalysisType type){
         this.setId(-1L);
         this.setName(name);
+        this.setType(type);
     }
 
     public long getId() {
@@ -74,6 +79,14 @@ public class Analysis implements Serializable {
 
     public void setData(AnalysisData data) {
         this.data = data;
+    }
+
+    public Sample getSample() {
+        return sample;
+    }
+
+    public void setSample(Sample sample) {
+        this.sample = sample;
     }
 
     @Override

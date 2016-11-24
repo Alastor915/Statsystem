@@ -55,7 +55,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         }
     }
 
-    public Project getProjectById(Integer id) throws SQLException {
+    public Project getProjectById(long id) throws SQLException {
         Session session = null;
         Project project = null;
         try {

@@ -58,10 +58,10 @@ public class AppTest
         } catch (SQLException e) {
             assertTrue( false );
         }
-        assertEquals( projects.get(0).getName(), "Первый проект");
+        assertEquals( projects.get(projects.size()-1).getName(), "Первый проект");
     }
 
-    public void testAddAndGetAnalysis()
+    public void testAddAndGetAll()
     {
         DBService dbService = DBService.getInstance();
         Project project = new Project("Первый проект");
@@ -94,9 +94,9 @@ public class AppTest
         } catch (SQLException e) {
             assertTrue( false );
         }
-        assertEquals( projects.get(0).getName(), "Первый проект");
-        assertEquals( samples.get(0).getName(), "Первая выборка");
-        assertEquals( analyses.get(0).getName(), "Первый расчет");
+        assertEquals( projects.get(projects.size()-1).getName(), "Первый проект");
+        assertEquals( samples.get(analyses.size()-1).getName(), "Первая выборка");
+        assertEquals( analyses.get(analyses.size()-1).getName(), "Первый расчет");
         SplineAnalysisData dataFromDb =(SplineAnalysisData) analyses.get(0).getData();
         assertEquals(data.getKnots()[0], dataFromDb.getKnots()[0]);
     }
@@ -112,10 +112,12 @@ public class AppTest
         try {
             dbService.getProjectDAO().addProject(project);
             projects = dbService.getProjectDAO().getAllProjects();
+            project = dbService.getProjectDAO().getProjectById(projects.get(0).getId());
         } catch (SQLException e) {
             assertTrue( false );
         }
-        assertEquals( projects.get(0).getName(), "Первый проект");
-        assertEquals( projects.get(0).getSamples().get(0).getName(), "Супервыборка");
+        assertFalse(project.getId() != -1L);
+        assertEquals( project.getName(), "Первый проект");
+        assertEquals( project.getSamples().get(0).getName(), "Супервыборка");
     }
 }

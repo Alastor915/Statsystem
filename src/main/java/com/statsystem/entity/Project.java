@@ -20,7 +20,7 @@ public class Project implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<Sample> samples;
 
     @SuppressWarnings("UnusedDeclaration")

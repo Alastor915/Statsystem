@@ -19,10 +19,13 @@ public class Sample implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Project project;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sample")
     private List<Unit> data;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sample")
     private List<Analysis> analyses;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -30,9 +33,10 @@ public class Sample implements Serializable {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Sample(long id, String name, List<Unit> data, List<Analysis> analyses) {
+    public Sample(long id, String name, Project project, List<Unit> data, List<Analysis> analyses) {
         this.setId(id);
         this.setName(name);
+        this.setProject(project);
         this.setData(data);
         this.setAnalyses(analyses);
     }
@@ -74,6 +78,14 @@ public class Sample implements Serializable {
 
     public void setAnalyses(List<Analysis> analyses) {
         this.analyses = analyses;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     @Override
