@@ -64,12 +64,12 @@ public class Project implements Serializable {
         this.samples = samples;
     }
 
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", samples=" + samples +
-                '}';
-    }
+    //@Override
+    //public String toString() {
+      //  return "Project{" +
+        //        "id=" + id +
+          //      ", name='" + name + '\'' +
+            //    ", samples=" + samples +
+              //  '}';
+    //}
 }
