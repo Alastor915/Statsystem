@@ -1,7 +1,9 @@
 package com.statsystem;
 
 import com.statsystem.controller.MainController;
+import com.statsystem.dbservice.DAO.impl.ProjectDAOImpl;
 import com.statsystem.dbservice.execute.DBService;
+import com.statsystem.dbservice.execute.HibernateUtil;
 import com.statsystem.entity.*;
 import com.statsystem.entity.impl.SplineAnalysisData;
 import com.statsystem.logic.interpolation.SplineInterpolation;
@@ -10,9 +12,11 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -61,13 +65,13 @@ public class AppTest
         assertEquals( projects.get(projects.size()-1).getName(), "Первый проект");
     }
 
-    public void testAddAndGetAll()
-    {
+    public void testAddAndGetAll() throws SQLException {
         DBService dbService = DBService.getInstance();
         Project project = new Project("Первый проект");
         Analysis analysis = new Analysis("Первый расчет", AnalysisType.SPLINE);
         Sample sample = MainController.hardcode();
         sample.setName("Первая выборка");
+        sample.setProject(project);
         PolynomialSplineFunction f = SplineInterpolation.interpolite(sample);
         PolynomialFunction polynomials[] = f.getPolynomials();
         ArrayList<double[]> fcoeff = new ArrayList<>();
@@ -79,6 +83,7 @@ public class AppTest
         results.add(new Unit(1365441075000d, f.value(1365441075000d)));
         SplineAnalysisData data = new SplineAnalysisData(f.getKnots(), fcoeff, results);
         analysis.setData(data);
+        analysis.setSample(sample);
         sample.getAnalyses().add(analysis);
         project.getSamples().add(sample);
         List<Project> projects = null;
@@ -91,6 +96,7 @@ public class AppTest
             projects = dbService.getProjectDAO().getAllProjects();
             samples = dbService.getSampleDAO().getAllSamples();
             analyses = dbService.getAnalysisDAO().getAllAnalyses();
+
         } catch (SQLException e) {
             assertTrue( false );
         }
@@ -99,6 +105,9 @@ public class AppTest
         assertEquals( analyses.get(analyses.size()-1).getName(), "Первый расчет");
         SplineAnalysisData dataFromDb =(SplineAnalysisData) analyses.get(0).getData();
         assertEquals(data.getKnots()[0], dataFromDb.getKnots()[0]);
+        Project pr = dbService.getProjectByIdWithDetails(project.getId());
+        HashMap testmap = dbService.getData(project.getId());
+        System.out.print("mchf");
     }
 
     public void testAddAndGetSampleInProject()
@@ -119,5 +128,11 @@ public class AppTest
         assertFalse(project.getId() != -1L);
         assertEquals( project.getName(), "Первый проект");
         assertEquals( project.getSamples().get(0).getName(), "Супервыборка");
+    }
+
+    public void testGetDataById() throws SQLException {
+        testAddAndGetAll();
+        DBService dbService = DBService.getInstance();
+        HashMap hashtest = dbService.getData((long) 1);
     }
 }
