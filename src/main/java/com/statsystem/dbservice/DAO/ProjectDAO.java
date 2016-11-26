@@ -6,7 +6,7 @@ import org.hibernate.HibernateException;
 import java.util.List;
 
 public interface ProjectDAO {
-    long insertProject(String name) throws HibernateException;
+    long insertProject(Project project) throws HibernateException;
     void updateProject(Project project) throws HibernateException;
     Project getProject(long id) throws HibernateException;
     List<Project> getAllProjects() throws HibernateException;

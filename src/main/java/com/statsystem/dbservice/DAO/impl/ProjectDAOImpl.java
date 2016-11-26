@@ -1,9 +1,11 @@
 package com.statsystem.dbservice.DAO.impl;
 
 import com.statsystem.dbservice.DAO.ProjectDAO;
+import com.statsystem.dbservice.DAO.SampleDAO;
 import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
+import com.statsystem.entity.Unit;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -18,13 +20,21 @@ public class ProjectDAOImpl implements ProjectDAO{
     }
 
     @Override
-    public long insertProject(String name) throws HibernateException {
-        return (Long) session.save(new Project(name));
+    public long insertProject(Project project) throws HibernateException {
+        long id = (Long) session.save(project);
+        List<Sample> samples = project.getSamples();
+        if (!samples.isEmpty()) {
+            SampleDAO dao = new SampleDAOImpl(session);
+            for (Sample sample : samples) {
+                dao.insertSample(sample);
+            }
+        }
+        return id;
     }
 
     @Override
     public void updateProject(Project project) throws HibernateException {
-
+        session.update(project);
     }
 
     @Override
@@ -53,6 +63,13 @@ public class ProjectDAOImpl implements ProjectDAO{
 
     @Override
     public void deleteProject(Project project) throws HibernateException {
-
+        session.delete(project);
+        List<Sample> samples = project.getSamples();
+        if (!samples.isEmpty()) {
+            SampleDAO dao = new SampleDAOImpl(session);
+            for (Sample sample : samples) {
+                dao.deleteSample(sample);
+            }
+        }
     }
 }

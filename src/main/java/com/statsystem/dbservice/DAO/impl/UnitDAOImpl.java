@@ -16,11 +16,7 @@ public class UnitDAOImpl implements UnitDAO {
 
     @Override
     public void updateUnit(Unit unit) throws HibernateException {
-
+        session.update(unit);
     }
 
-    @Override
-    public void deleteUnit(Unit unit) throws HibernateException {
-
-    }
 }

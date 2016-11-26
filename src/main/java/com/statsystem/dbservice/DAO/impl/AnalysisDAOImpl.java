@@ -14,17 +14,17 @@ public class AnalysisDAOImpl implements AnalysisDAO {
     }
 
     @Override
-    public long insertAnalysis(String name) throws HibernateException {
-        return 0;
+    public long insertAnalysis(Analysis analysis) throws HibernateException {
+        return (Long) session.save(analysis);
     }
 
     @Override
     public void updateAnalysis(Analysis analysis) throws HibernateException {
-
+        session.update(analysis);
     }
 
     @Override
     public void deleteAnalysis(Analysis analysis) throws HibernateException {
-
+        session.delete(analysis);
     }
 }

@@ -1,8 +1,14 @@
 package com.statsystem.dbservice.execute;
 
 
+import com.statsystem.dbservice.DAO.AnalysisDAO;
 import com.statsystem.dbservice.DAO.ProjectDAO;
+import com.statsystem.dbservice.DAO.SampleDAO;
+import com.statsystem.dbservice.DAO.UnitDAO;
+import com.statsystem.dbservice.DAO.impl.AnalysisDAOImpl;
 import com.statsystem.dbservice.DAO.impl.ProjectDAOImpl;
+import com.statsystem.dbservice.DAO.impl.SampleDAOImpl;
+import com.statsystem.dbservice.DAO.impl.UnitDAOImpl;
 import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
@@ -10,6 +16,7 @@ import com.statsystem.entity.Unit;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -78,6 +85,144 @@ public class DBServiceImpl implements DBService {
             session.close();
         }
     }
+
+    public long insertProject(Project project) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            ProjectDAO dao = new ProjectDAOImpl(session);
+            long result = dao.insertProject(project);
+            transaction.commit();
+            return result;
+        } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw new DBException(e);
+        } finally {
+            session.close();
+        }
+    }
+
+    public long insertSample(Sample project) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            SampleDAO dao = new SampleDAOImpl(session);
+            long result = dao.insertSample(project);
+            transaction.commit();
+            session.close();
+            return result;
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public long insertAnalysis(Analysis analysis) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            AnalysisDAO dao = new AnalysisDAOImpl(session);
+            long result = dao.insertAnalysis(analysis);
+            transaction.commit();
+            session.close();
+            return result;
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void updateProject(Project project) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ProjectDAO dao = new ProjectDAOImpl(session);
+            dao.updateProject(project);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void updateSample(Sample project) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            SampleDAO dao = new SampleDAOImpl(session);
+            dao.updateSample(project);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void updateAnalysis(Analysis analysis) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            AnalysisDAO dao = new AnalysisDAOImpl(session);
+            dao.updateAnalysis(analysis);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void updateUnit(Unit unit) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            UnitDAO dao = new UnitDAOImpl(session);
+            dao.updateUnit(unit);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void deleteProject(Project project) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ProjectDAO dao = new ProjectDAOImpl(session);
+            dao.deleteProject(project);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void deleteSample(Sample project) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            SampleDAO dao = new SampleDAOImpl(session);
+            dao.deleteSample(project);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void deleteAnalysis(Analysis analysis) throws DBException{
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            AnalysisDAO dao = new AnalysisDAOImpl(session);
+            dao.deleteAnalysis(analysis);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
