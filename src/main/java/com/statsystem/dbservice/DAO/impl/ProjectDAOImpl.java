@@ -25,9 +25,7 @@ public class ProjectDAOImpl implements ProjectDAO{
         List<Sample> samples = project.getSamples();
         if (!samples.isEmpty()) {
             SampleDAO dao = new SampleDAOImpl(session);
-            for (Sample sample : samples) {
-                dao.insertSample(sample);
-            }
+            samples.forEach(dao::insertSample);
         }
         return id;
     }
@@ -67,9 +65,7 @@ public class ProjectDAOImpl implements ProjectDAO{
         List<Sample> samples = project.getSamples();
         if (!samples.isEmpty()) {
             SampleDAO dao = new SampleDAOImpl(session);
-            for (Sample sample : samples) {
-                dao.deleteSample(sample);
-            }
+            samples.forEach(dao::deleteSample);
         }
     }
 }
