@@ -104,125 +104,161 @@ public class DBServiceImpl implements DBService {
         }
     }
 
-    public long insertSample(Sample project) throws DBException{
+    public long insertSample(Sample sample) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             SampleDAO dao = new SampleDAOImpl(session);
-            long result = dao.insertSample(project);
+            long result = dao.insertSample(sample);
             transaction.commit();
-            session.close();
             return result;
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
     public long insertAnalysis(Analysis analysis) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             AnalysisDAO dao = new AnalysisDAOImpl(session);
             long result = dao.insertAnalysis(analysis);
             transaction.commit();
-            session.close();
             return result;
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
     public void updateProject(Project project) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             ProjectDAO dao = new ProjectDAOImpl(session);
             dao.updateProject(project);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
     public void updateSample(Sample project) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             SampleDAO dao = new SampleDAOImpl(session);
             dao.updateSample(project);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
     public void updateAnalysis(Analysis analysis) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             AnalysisDAO dao = new AnalysisDAOImpl(session);
             dao.updateAnalysis(analysis);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
-    public void updateUnit(Unit unit) throws DBException{
+    public void updateUnit(Unit project) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             UnitDAO dao = new UnitDAOImpl(session);
-            dao.updateUnit(unit);
+            dao.updateUnit(project);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
+
 
     public void deleteProject(Project project) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             ProjectDAO dao = new ProjectDAOImpl(session);
             dao.deleteProject(project);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
-    public void deleteSample(Sample project) throws DBException{
+    public void deleteSample(Sample sample) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             SampleDAO dao = new SampleDAOImpl(session);
-            dao.deleteSample(project);
+            dao.deleteSample(sample);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
 
     public void deleteAnalysis(Analysis analysis) throws DBException{
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
         try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             AnalysisDAO dao = new AnalysisDAOImpl(session);
             dao.deleteAnalysis(analysis);
             transaction.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
             throw new DBException(e);
+        } finally {
+            session.close();
         }
     }
-
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
