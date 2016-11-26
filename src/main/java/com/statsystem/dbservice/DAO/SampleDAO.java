@@ -1,22 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.statsystem.dbservice.DAO;
 
 import com.statsystem.entity.Sample;
-import java.sql.SQLException;
-import java.util.List;
+import org.hibernate.HibernateException;
 
-/**
- *
- * @author sereg
- */
 public interface SampleDAO {
-    void addSample(Sample sample) throws SQLException;
-    void updateSample(Sample sample) throws SQLException;
-    Sample getSampleById(Integer id) throws SQLException;
-    List<Sample> getAllSamples() throws SQLException;
-    void deleteSample(Sample sample) throws SQLException;
+    long addSample(Sample sample) throws HibernateException;
+    void updateSample(Sample sample) throws HibernateException;
+    void deleteSample(Sample sample) throws HibernateException;
 }

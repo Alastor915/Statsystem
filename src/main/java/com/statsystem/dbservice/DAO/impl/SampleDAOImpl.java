@@ -1,103 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.statsystem.dbservice.DAO.impl;
 
 import com.statsystem.dbservice.DAO.SampleDAO;
 import com.statsystem.entity.Sample;
-import com.statsystem.dbservice.execute.HibernateUtil;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-/**
- *
- * @author sereg
- */
 public class SampleDAOImpl implements SampleDAO {
 
-    public void addSample(Sample sample) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(sample);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
+    private Session session;
+
+    public SampleDAOImpl(Session session) {
+        this.session = session;
     }
 
-    public void updateSample(Sample sample) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(sample);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
+    @Override
+    public long addSample(Sample sample) throws HibernateException {
+        return 0;
     }
 
-    public Sample getSampleById(Integer id) throws SQLException {
-        Session session = null;
-        Sample sample = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            sample =(Sample) session.load(Sample.class, id);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
-        return sample;
+    @Override
+    public void updateSample(Sample sample) throws HibernateException {
+
     }
 
-    public List<Sample> getAllSamples() throws SQLException {
-        Session session = null;
-        List<Sample> samples = new ArrayList<Sample>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            samples = session.createCriteria(Sample.class).list();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
-        return samples;
-    }
+    @Override
+    public void deleteSample(Sample sample) throws HibernateException {
 
-    public void deleteSample(Sample sample) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(sample);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
     }
-    
 }
