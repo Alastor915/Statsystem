@@ -1,5 +1,9 @@
 package com.statsystem.entity;
 
+import com.sun.istack.internal.Nullable;
+import org.hibernate.annotations.Cascade;
+import org.omg.CORBA.PERSIST_STORE;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -86,6 +90,36 @@ public class Sample implements Serializable {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public boolean addUnit(Unit unit){
+        boolean result = data.add(unit);
+        if (result)
+            unit.setSample(this);
+        return result;
+    }
+
+    public boolean addAnalysis(Analysis analysis){
+        boolean result = analyses.add(analysis);
+        if (result)
+            analysis.setSample(this);
+        return result;
+    }
+
+    public boolean removeAnalysis(Analysis analysis){
+        return analyses.remove(analysis);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Sample other = (Sample) obj;
+        return id == other.getId();
     }
 
     @Override

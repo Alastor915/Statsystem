@@ -90,6 +90,18 @@ public class Analysis implements Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Analysis other = (Analysis) obj;
+        return id == other.getId();
+    }
+
+    @Override
     public String toString() {
         return "Analysis{" +
                 "id=" + id +
