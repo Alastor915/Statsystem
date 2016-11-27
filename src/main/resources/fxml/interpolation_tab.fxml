@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <?import org.gillius.jfxutils.chart.StableTicksAxis?>
-<Tab text="Расчет № 1" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
+<Tab text="Интерполяция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
     <content>
         <SplitPane fx:id="splitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
             <items>
@@ -28,11 +28,11 @@
                             </font></Label>
                         <Group>
                             <children>
-                                <Label layoutX="10.0" layoutY="10.0" text="Точность :" textOverrun="CLIP" translateY="15.0" />
-                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#871fff00" height="97.0" stroke="BLACK" strokeType="OUTSIDE" width="170.0" />
-                                <Label layoutX="10.0" layoutY="10.0" text="Значение X :" textOverrun="CLIP" translateY="45.0" />
-                                <TextField prefWidth="50.0" translateX="100.0" translateY="21.0" />
-                                <TextField prefWidth="50.0" translateX="100.0" translateY="51.0" />
+                                <!--<Label layoutX="10.0" layoutY="10.0" text="Точность :" textOverrun="CLIP" translateY="15.0" />-->
+                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#871fff00" height="97.0" stroke="BLACK" strokeType="OUTSIDE" width="240.0" />
+                                <Label layoutX="10.0" layoutY="10.0" text="Значение X :" textOverrun="CLIP" translateY="30.0" />
+                                <!--<TextField prefWidth="120.0" translateX="100.0" translateY="21.0" />-->
+                                <TextField fx:id="xField" prefWidth="120.0" translateX="100.0" translateY="36.0" />
                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="20.0" layoutY="-6.0" stroke="BLACK" strokeType="OUTSIDE" translateX="11.0" translateY="-4.0" width="132.0" />
                                 <Label text="Параметры расчета" textOverrun="CLIP" translateX="20.0" translateY="-10.0">
                                     <font>
@@ -40,7 +40,7 @@
                                     </font></Label>
                             </children>
                             <VBox.margin>
-                                <Insets left="15.0" top="30.0" />
+                                <Insets left="15.0" top="30.0" right="10" />
                             </VBox.margin>
                         </Group>
                         <CheckBox fx:id="drawChart" mnemonicParsing="false" text="Отобразить на графике">
@@ -53,7 +53,7 @@
                         </CheckBox>
                         <BorderPane prefHeight="288.0" prefWidth="397.0">
                             <center>
-                                <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <TextArea fx:id="resultTextArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                     <BorderPane.margin>
                                         <Insets bottom="10.0" left="10.0" right="10.0" />
                                     </BorderPane.margin>
@@ -72,7 +72,7 @@
                             <bottom>
                                 <Group BorderPane.alignment="CENTER_RIGHT">
                                     <children>
-                                        <Button prefWidth="80.0" mnemonicParsing="false" text="Рассчитать" />
+                                        <Button fx:id="calcBtn" prefWidth="80.0" mnemonicParsing="false" text="Рассчитать" />
                                         <Button prefWidth="80.0" mnemonicParsing="false" text="Сохранить" translateY="30.0" />
                                     </children>
                                     <BorderPane.margin>

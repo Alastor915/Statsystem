@@ -7,22 +7,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="com.statsystem.controller.CreateProjectController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label layoutX="28.0" layoutY="19.0" prefHeight="20.0" text="Укажите путь к файлу">
          <font>
             <Font size="14.0" />
          </font>
         </Label>
-        <Button layoutX="161.0" layoutY="176.0" mnemonicParsing="false" prefWidth="65.0" text="OK" />
-        <Button layoutX="243.0" layoutY="176.0" mnemonicParsing="false" prefWidth="65.0" text="Отмена" />
-      <TextField layoutX="28.0" layoutY="47.0" prefHeight="25.0" prefWidth="188.0" />
-      <Button layoutX="226.0" layoutY="47.0" mnemonicParsing="false" prefWidth="65.0" text="Выбрать" />
+        <Button fx:id="okBtn" layoutX="161.0" layoutY="176.0" mnemonicParsing="false" prefWidth="65.0" text="OK" />
+        <Button fx:id="cancelBtn" layoutX="243.0" layoutY="176.0" mnemonicParsing="false" prefWidth="65.0" text="Отмена" />
+      <TextField fx:id="pathField" layoutX="28.0" layoutY="47.0" prefHeight="25.0" prefWidth="188.0" />
+      <Button fx:id="chooseBtn" layoutX="226.0" layoutY="47.0" mnemonicParsing="false" prefWidth="65.0" text="Выбрать" />
       <Label layoutX="28.0" layoutY="101.0" prefHeight="20.0" text="Укажите название проекта">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="28.0" layoutY="131.0" prefHeight="25.0" prefWidth="188.0" />
+      <TextField fx:id="projectName" layoutX="28.0" layoutY="131.0" prefHeight="25.0" prefWidth="188.0" />
     </children>
 </AnchorPane>

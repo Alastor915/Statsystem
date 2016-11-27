@@ -15,7 +15,7 @@ public class Analysis implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -23,33 +23,37 @@ public class Analysis implements Serializable {
     @Column(name = "type")
     private AnalysisType type;
 
-    /** Результаты расчета для интерполяции */
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
-    private List<Unit> data;
+    @Lob
+    @Column(name = "data")
+    private AnalysisData data;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sample sample;
 
     @SuppressWarnings("UnusedDeclaration")
     public Analysis() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Analysis(Long id, String name, AnalysisType type, List<Unit> data) {
+    public Analysis(long id, String name, AnalysisType type, AnalysisData data, Sample sample) {
         this.setId(id);
         this.setName(name);
         this.setType(type);
         this.setData(data);
+        this.setSample(sample);
     }
 
     public Analysis(String name, AnalysisType type){
         this.setId(-1L);
         this.setName(name);
-        this.setData(new ArrayList<>());
+        this.setType(type);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -69,12 +73,32 @@ public class Analysis implements Serializable {
         this.type = type;
     }
 
-    public List<Unit> getData() {
+    public AnalysisData getData() {
         return data;
     }
 
-    public void setData(List<Unit> data) {
+    public void setData(AnalysisData data) {
         this.data = data;
+    }
+
+    public Sample getSample() {
+        return sample;
+    }
+
+    public void setSample(Sample sample) {
+        this.sample = sample;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Analysis other = (Analysis) obj;
+        return id == other.getId();
     }
 
     @Override

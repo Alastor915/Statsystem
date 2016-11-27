@@ -1,103 +1,59 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.statsystem.dbservice.DAO.impl;
 
 import com.statsystem.dbservice.DAO.SampleDAO;
+import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Sample;
-import com.statsystem.dbservice.execute.HibernateUtil;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
+import com.statsystem.entity.Unit;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-/**
- *
- * @author sereg
- */
+import java.util.List;
+
 public class SampleDAOImpl implements SampleDAO {
 
-    public void addSample(Sample sample) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(sample);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
+    private Session session;
+
+    public SampleDAOImpl(Session session) {
+        this.session = session;
     }
 
-    public void updateSample(Sample sample) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(sample);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
+    @Override
+    public long insertSample(Sample sample) throws HibernateException {
+        long id = (Long) session.save(sample);
+        List<Unit> data = sample.getData();
+        if (!data.isEmpty()) {
+            for (Unit unit : data) {
+                session.save(unit);
             }
         }
+        List<Analysis> analyses = sample.getAnalyses();
+        if (!analyses.isEmpty()) {
+            for (Analysis analysis : analyses) {
+                session.save(analysis);
+            }
+        }
+        return id;
     }
 
-    public Sample getSampleById(Integer id) throws SQLException {
-        Session session = null;
-        Sample sample = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            sample =(Sample) session.load(Sample.class, id);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
-        return sample;
+    @Override
+    public void updateSample(Sample sample) throws HibernateException {
+        session.update(sample);
     }
 
-    public List getAllSamples() throws SQLException {
-        Session session = null;
-        List<Sample> samples = new ArrayList<Sample>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            samples = session.createCriteria(Sample.class).list();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
+    @Override
+    public void deleteSample(Sample sample) throws HibernateException {
+        session.delete(sample);
+        List<Unit> data = sample.getData();
+        if (!data.isEmpty()) {
+            for (Unit unit : data) {
+                session.delete(unit);
             }
         }
-        return samples;
-    }
-
-    public void deleteSample(Sample sample) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(sample);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
+        List<Analysis> analyses = sample.getAnalyses();
+        if (!analyses.isEmpty()) {
+            for (Analysis analysis : analyses) {
+                session.delete(analysis);
             }
         }
     }
-    
 }

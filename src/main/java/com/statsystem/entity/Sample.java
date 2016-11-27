@@ -1,5 +1,9 @@
 package com.statsystem.entity;
 
+import com.sun.istack.internal.Nullable;
+import org.hibernate.annotations.Cascade;
+import org.omg.CORBA.PERSIST_STORE;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -14,25 +18,29 @@ public class Sample implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
-    private List<Unit> data;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Project project;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
-    private List<Analysis> analyses;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sample")
+    private List<Unit> data = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sample")
+    private List<Analysis> analyses = new ArrayList<>();
 
     @SuppressWarnings("UnusedDeclaration")
     public Sample() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Sample(Long id, String name, List<Unit> data, List<Analysis> analyses) {
+    public Sample(long id, String name, Project project, List<Unit> data, List<Analysis> analyses) {
         this.setId(id);
         this.setName(name);
+        this.setProject(project);
         this.setData(data);
         this.setAnalyses(analyses);
     }
@@ -40,15 +48,13 @@ public class Sample implements Serializable {
     public Sample(String name){
         this.setId(-1L);
         this.setName(name);
-        this.setData(new ArrayList<>());
-        this.setAnalyses(new ArrayList<>());
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -65,6 +71,9 @@ public class Sample implements Serializable {
     }
 
     public void setData(List<Unit> data) {
+        for (Unit unit : data){
+            unit.setSample(this);
+        }
         this.data = data;
     }
 
@@ -73,7 +82,48 @@ public class Sample implements Serializable {
     }
 
     public void setAnalyses(List<Analysis> analyses) {
+        for (Analysis analysis : analyses){
+            analysis.setSample(this);
+        }
         this.analyses = analyses;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public boolean addUnit(Unit unit){
+        boolean result = data.add(unit);
+        if (result)
+            unit.setSample(this);
+        return result;
+    }
+
+    public boolean addAnalysis(Analysis analysis){
+        boolean result = analyses.add(analysis);
+        if (result)
+            analysis.setSample(this);
+        return result;
+    }
+
+    public boolean removeAnalysis(Analysis analysis){
+        return analyses.remove(analysis);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Sample other = (Sample) obj;
+        return id == other.getId();
     }
 
     @Override

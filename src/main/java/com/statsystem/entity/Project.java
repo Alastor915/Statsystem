@@ -1,5 +1,7 @@
 package com.statsystem.entity;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,20 +17,20 @@ public class Project implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
-    private List<Sample> samples;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    private List<Sample> samples = new ArrayList<>();
 
     @SuppressWarnings("UnusedDeclaration")
     public Project() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Project(Long id, String name, List<Sample> samples) {
+    public Project(long id, String name, List<Sample> samples) {
         this.setId(id);
         this.setName(name);
         this.setSamples(samples);
@@ -37,14 +39,13 @@ public class Project implements Serializable {
     public Project(String name) {
         this.setId(-1L);
         this.setName(name);
-        this.setSamples(new ArrayList<>());
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,7 +62,33 @@ public class Project implements Serializable {
     }
 
     public void setSamples(List<Sample> samples) {
+        for (Sample sample : samples){
+            sample.setProject(this);
+        }
         this.samples = samples;
+    }
+
+    public boolean addSample(Sample sample){
+        boolean result = samples.add(sample);
+        if (result)
+            sample.setProject(this);
+        return result;
+    }
+
+    public boolean removeSample(Sample sample){
+        return samples.remove(sample);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Project other = (Project) obj;
+        return id == other.getId();
     }
 
     @Override

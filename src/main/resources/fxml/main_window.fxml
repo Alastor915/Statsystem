@@ -20,8 +20,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="Файл">
             <items>
-              <MenuItem mnemonicParsing="false" text="Создать проект" />
-                  <MenuItem mnemonicParsing="false" text="Загрузить проект" />
+              <MenuItem fx:id="createProject" mnemonicParsing="false" text="Создать проект" />
+                  <MenuItem fx:id="loadProject" mnemonicParsing="false" text="Загрузить проект" />
                   <MenuItem mnemonicParsing="false" text="Сохранить проект" />
             </items>
           </Menu>
@@ -37,23 +37,9 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane prefHeight="366.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <TabPane fx:id="samplesTab" prefHeight="366.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab text="Выборка № 1">
-                <content>
-                    <TabPane prefHeight="371.0" prefWidth="600.0">
-                        <tabs>
-                            <fx:include fx:id="interpolation" source="/fxml/interpolation_tab.fxml" />
-                            <Tab closable="false" text="+">
-                                <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                </content>
-                            </Tab>
-                        </tabs>
-                    </TabPane>
-                </content>
-            </Tab>
-            <Tab closable="false" text="+">
+            <Tab closable="false" text="+" fx:id="addSample">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                 </content>
