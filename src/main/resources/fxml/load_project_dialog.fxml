@@ -8,8 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:controller="com.statsystem.controller.LoadProjectController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" >
-    <children>
-        <ComboBox fx:id="chooseBox" layoutX="63.0" layoutY="48.0" prefWidth="200.0" promptText="Проект №1 ">
+        <ComboBox fx:id="chooseBox" layoutX="63.0" layoutY="48.0" prefWidth="200.0" promptText="Выберите проект">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
@@ -24,5 +23,4 @@
         </Label>
         <Button fx:id="okBtn" layoutX="163.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="OK" />
         <Button fx:id="cancelBtn" layoutX="245.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="Отмена" />
-    </children>
 </AnchorPane>

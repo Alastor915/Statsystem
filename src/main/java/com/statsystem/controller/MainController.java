@@ -1,5 +1,7 @@
 package com.statsystem.controller;
 
+import com.statsystem.dbservice.execute.DBService;
+import com.statsystem.dbservice.execute.DBServiceImpl;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
 import javafx.fxml.FXML;
@@ -32,8 +34,10 @@ public class MainController implements Initializable {
     @FXML private Tab newCalc;
     @FXML private TabPane calcTabPane;
     private Stage m_stage;
+    private DBService dbService;
 
     public void initialize(URL location, ResourceBundle resources) {
+        dbService = new DBServiceImpl();
         Sample sample = hardcode();
         interpolationController.setMainController(this);
         interpolationController.setSample(sample);
@@ -71,6 +75,7 @@ public class MainController implements Initializable {
                 stage.setTitle("Система обработки данных");
                 stage.setScene(new Scene(root));
                 loadProjectController.setM_stage(stage);
+                loadProjectController.setDBService(dbService);
                 stage.showAndWait();
             }
             catch (Exception ex) {
