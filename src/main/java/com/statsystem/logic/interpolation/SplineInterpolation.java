@@ -1,24 +1,32 @@
 package com.statsystem.logic.interpolation;
 
+
 import com.statsystem.entity.*;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.*;
 import org.apache.commons.math3.analysis.polynomials.*;
 import org.apache.commons.math3.exception.*;
 
 /**
- * Created by DELL on 15.11.2016.
+ * Created by DELL on 14.11.2016.
  */
+
+//http://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/org/apache/commons/math3/analysis/interpolation/DividedDifferenceInterpolator.html
+
 public class SplineInterpolation {
 
-    public Analysis interpolite(Sample sampleX, Sample sampleY) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
-        LinearInterpolator interpolator = new LinearInterpolator();
-        PolynomialSplineFunction f = interpolator.interpolate(sampleX.getValues(), sampleY.getValues());
+    public static double interpolite(Sample sample, double val) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
 
-        double[] coeff = f.getKnots();
+        UnivariateInterpolator interpolator = new SplineInterpolator(); //fixme это не ньютонская интерполяция
+        UnivariateFunction f = interpolator.interpolate(sample.getDates(), sample.getValues());
 
-        Long id = Long.valueOf(1123215); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
-        String name = "Spline"; // todo read from UI or auto generate
+//        double[] coeff = f.getNewtonCoefficients();
 
-        return InterpolationHelper.createResult(id, name, AnalysisType.SPLINE, coeff);
+        //Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
+        //String name = "Newton"; // todo read from UI or db or auto generate
+
+        return f.value(val);
+        //return InterpolationHelper.createResult(id, name, AnalysisType.NEWTON, coeff);
     }
 }
+
