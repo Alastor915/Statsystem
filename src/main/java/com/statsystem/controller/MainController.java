@@ -2,6 +2,7 @@ package com.statsystem.controller;
 
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.dbservice.execute.DBServiceImpl;
+import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
 import javafx.fxml.FXML;
@@ -36,6 +37,7 @@ public class MainController implements Initializable {
     private List<SampleTabController> tabControllers = Collections.EMPTY_LIST;
     private Stage m_stage;
     private DBService dbService;
+    private Project project;
 
     public Stage getM_stage() {
         return m_stage;
@@ -51,6 +53,14 @@ public class MainController implements Initializable {
 
     public void setDbService(DBService dbService) {
         this.dbService = dbService;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,6 +83,7 @@ public class MainController implements Initializable {
                 stage.setScene(new Scene(root));
                 createProjectController.setM_stage(stage);
                 createProjectController.setMainController(this);
+                createProjectController.setDbService(dbService);
                 stage.showAndWait();
             }
             catch (Exception ex) {
@@ -93,7 +104,8 @@ public class MainController implements Initializable {
                 stage.setTitle("Система обработки данных");
                 stage.setScene(new Scene(root));
                 loadProjectController.setM_stage(stage);
-                loadProjectController.setDBService(dbService);
+                loadProjectController.setMainController(this);
+                loadProjectController.setDbService(dbService);
                 stage.showAndWait();
             }
             catch (Exception ex) {

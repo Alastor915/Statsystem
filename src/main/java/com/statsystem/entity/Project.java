@@ -23,7 +23,7 @@ public class Project implements Serializable {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-    private List<Sample> samples;
+    private List<Sample> samples = new ArrayList<>();
 
     @SuppressWarnings("UnusedDeclaration")
     public Project() {
@@ -39,7 +39,6 @@ public class Project implements Serializable {
     public Project(String name) {
         this.setId(-1L);
         this.setName(name);
-        this.setSamples(new ArrayList<>());
     }
 
     public long getId() {
@@ -63,6 +62,9 @@ public class Project implements Serializable {
     }
 
     public void setSamples(List<Sample> samples) {
+        for (Sample sample : samples){
+            sample.setProject(this);
+        }
         this.samples = samples;
     }
 
