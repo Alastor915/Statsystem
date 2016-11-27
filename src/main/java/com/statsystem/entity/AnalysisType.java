@@ -8,3 +8,4 @@ import java.io.Serializable;
 public enum AnalysisType implements Serializable {
     NEWTON, SPLINE, LSM, EXPECTATION, VARIANCE, DISTRIBUTION
 }
+

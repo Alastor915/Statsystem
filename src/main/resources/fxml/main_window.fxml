@@ -21,7 +21,7 @@
           <Menu mnemonicParsing="false" text="Файл">
             <items>
               <MenuItem fx:id="createProject" mnemonicParsing="false" text="Создать проект" />
-                  <MenuItem mnemonicParsing="false" text="Загрузить проект" />
+                  <MenuItem fx:id="loadProject" mnemonicParsing="false" text="Загрузить проект" />
                   <MenuItem mnemonicParsing="false" text="Сохранить проект" />
             </items>
           </Menu>

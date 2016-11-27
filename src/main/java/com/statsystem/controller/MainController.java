@@ -1,8 +1,9 @@
 package com.statsystem.controller;
 
+import com.statsystem.dbservice.execute.DBService;
+import com.statsystem.dbservice.execute.DBServiceImpl;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
-import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,12 +31,17 @@ public class MainController implements Initializable {
     @FXML private Tab sampleTab;
     @FXML private Tab addSample;
     @FXML private MenuItem createProject;
+    @FXML private MenuItem loadProject;
+    @FXML private Tab newCalc;
+    @FXML private TabPane calcTabPane;
     @FXML private TabPane samplesTab;
     private List<SampleTabController> tabControllers = Collections.EMPTY_LIST;
     private Stage m_stage;
+    private DBService dbService;
 
     public void initialize(URL location, ResourceBundle resources) {
         tabControllers = new ArrayList<>();
+        dbService = new DBServiceImpl();
        /* Sample sample = hardcode();
         interpolationController.setMainController(this);
         interpolationController.setSample(sample);
@@ -60,6 +66,48 @@ public class MainController implements Initializable {
                 ex.printStackTrace();
             }
 
+        });
+
+        loadProject.setOnAction(e->{
+            try {
+                String fxmlFile = "/fxml/load_project_dialog.fxml";
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
+                LoadProjectController loadProjectController = loader.getController();
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(m_stage);
+                stage.setTitle("Система обработки данных");
+                stage.setScene(new Scene(root));
+                loadProjectController.setM_stage(stage);
+                loadProjectController.setDBService(dbService);
+                stage.showAndWait();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        newCalc.setOnSelectionChanged(e->{
+            try {
+                if (newCalc.isSelected()) {
+                    String fxmlFile = "/fxml/choice_type_calc_dialog.fxml";
+                    FXMLLoader loader = new FXMLLoader();
+                    Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
+                    NewCalcController newCalcController = loader.getController();
+                    Stage stage = new Stage();
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(m_stage);
+                    stage.setTitle("Система обработки данных");
+                    stage.setScene(new Scene(root));
+                    newCalcController.setM_stage(stage);
+                    newCalcController.setMainController(this);
+                    stage.showAndWait();
+                }
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
     }
 
@@ -223,6 +271,13 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
         return sample;
+    }
+    public TabPane getCalcTabPane(){
+        return calcTabPane;
+    }
+
+    public Tab getCalcNew(){
+        return newCalc;
     }
     public void loadXLSXSamples(List<Sample> samples) {
         if(samples.isEmpty())

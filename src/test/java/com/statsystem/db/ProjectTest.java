@@ -24,7 +24,7 @@ public class ProjectTest extends Assert {
 
     @BeforeClass
     public static void initialize() throws DBException{
-        dbService = new DBServiceImpl(true, "create-drop");
+        dbService = new DBServiceImpl(false, "create");
         project = new Project("Первый проект");
         Sample sample = new Sample("Первая выборка");
         sample.addUnit(new Unit(111d, 222d));
