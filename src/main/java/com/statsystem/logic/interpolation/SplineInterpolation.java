@@ -15,18 +15,15 @@ import org.apache.commons.math3.exception.*;
 
 public class SplineInterpolation {
 
-    public static double interpolite(Sample sample, double val) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
+    UnivariateFunction f = null;
 
+    private void interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
         UnivariateInterpolator interpolator = new SplineInterpolator(); //fixme это не ньютонская интерполяция
         UnivariateFunction f = interpolator.interpolate(sample.getDates(), sample.getValues());
+    }
 
-//        double[] coeff = f.getNewtonCoefficients();
-
-        //Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
-        //String name = "Newton"; // todo read from UI or db or auto generate
-
+    public double getValue(double val){
         return f.value(val);
-        //return InterpolationHelper.createResult(id, name, AnalysisType.NEWTON, coeff);
     }
 }
 
