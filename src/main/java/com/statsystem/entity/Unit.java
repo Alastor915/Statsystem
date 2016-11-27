@@ -21,15 +21,19 @@ public class Unit implements Serializable {
     @Column(name = "value")
     private Double value;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sample sample;
+
     @SuppressWarnings("UnusedDeclaration")
     public Unit() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Unit(long id, Double date, Double value) {
+    public Unit(long id, Double date, Double value, Sample sample) {
         this.setId(id);
         this.setDate(date);
         this.setValue(value);
+        this.setSample(sample);
     }
 
     public Unit(Double date, Double value) {
@@ -60,6 +64,14 @@ public class Unit implements Serializable {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public Sample getSample() {
+        return sample;
+    }
+
+    public void setSample(Sample sample) {
+        this.sample = sample;
     }
 
     @Override

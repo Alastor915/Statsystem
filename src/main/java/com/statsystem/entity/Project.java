@@ -1,5 +1,7 @@
 package com.statsystem.entity;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class Project implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<Sample> samples;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -62,6 +64,29 @@ public class Project implements Serializable {
 
     public void setSamples(List<Sample> samples) {
         this.samples = samples;
+    }
+
+    public boolean addSample(Sample sample){
+        boolean result = samples.add(sample);
+        if (result)
+            sample.setProject(this);
+        return result;
+    }
+
+    public boolean removeSample(Sample sample){
+        return samples.remove(sample);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Project other = (Project) obj;
+        return id == other.getId();
     }
 
     @Override
