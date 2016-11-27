@@ -56,7 +56,7 @@ public class ProjectDAOImpl implements ProjectDAO{
     @Override
     @SuppressWarnings("unchecked")
     public List<Project> getAllProjects() throws HibernateException {
-        return session.createCriteria(Project.class).list();
+        return (List<Project>) session.createCriteria(Project.class).list();
     }
 
     @Override

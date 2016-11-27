@@ -1,13 +1,12 @@
 package com.statsystem.db;
 
-import com.statsystem.controller.MainController;
+import com.statsystem.AppTest;
 import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.dbservice.execute.DBServiceImpl;
 import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class ProjectTest extends Assert {
 
     @BeforeClass
     public static void initialize() throws DBException{
-        dbService = new DBServiceImpl(true, "create-drop");
+        dbService = new DBServiceImpl(false, "create");
         project = new Project("Первый проект");
         Sample sample = new Sample("Первая выборка");
         sample.addUnit(new Unit(111d, 222d));
@@ -81,9 +80,9 @@ public class ProjectTest extends Assert {
     @Test
         public void testInsertProject() throws DBException {
         Project project = new Project("Хардкод");
-        Sample sample = MainController.hardcode();
+        Sample sample = AppTest.hardcode();
         project.addSample(sample);
-        project.addSample(MainController.hardcode());
+        project.addSample(AppTest.hardcode());
         long id = dbService.insertProject(project);
 
         Project projectFromDB =  dbService.getProject(id);
