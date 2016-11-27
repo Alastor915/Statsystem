@@ -32,8 +32,6 @@ public class MainController implements Initializable {
     @FXML private Tab addSample;
     @FXML private MenuItem createProject;
     @FXML private MenuItem loadProject;
-    @FXML private Tab newCalc;
-    @FXML private TabPane calcTabPane;
     @FXML private TabPane samplesTab;
     private List<SampleTabController> tabControllers = Collections.EMPTY_LIST;
     private Stage m_stage;
@@ -82,28 +80,6 @@ public class MainController implements Initializable {
                 loadProjectController.setM_stage(stage);
                 loadProjectController.setDBService(dbService);
                 stage.showAndWait();
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-
-        newCalc.setOnSelectionChanged(e->{
-            try {
-                if (newCalc.isSelected()) {
-                    String fxmlFile = "/fxml/choice_type_calc_dialog.fxml";
-                    FXMLLoader loader = new FXMLLoader();
-                    Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
-                    NewCalcController newCalcController = loader.getController();
-                    Stage stage = new Stage();
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.initOwner(m_stage);
-                    stage.setTitle("Система обработки данных");
-                    stage.setScene(new Scene(root));
-                    newCalcController.setM_stage(stage);
-                    newCalcController.setMainController(this);
-                    stage.showAndWait();
-                }
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -272,33 +248,27 @@ public class MainController implements Initializable {
         }
         return sample;
     }
-    public TabPane getCalcTabPane(){
-        return calcTabPane;
-    }
 
-    public Tab getCalcNew(){
-        return newCalc;
-    }
     public void loadXLSXSamples(List<Sample> samples) {
         if(samples.isEmpty())
             return;
+        samplesTab.getTabs().remove(addSample);
         for(Sample sample : samples) {
             try {
                 String fxmlFile = "/fxml/samples_tabs.fxml";
                 FXMLLoader loader = new FXMLLoader();
-                Tab tab = (Tab)loader.load(getClass().getResource(fxmlFile).openStream());
+                Tab tab = loader.load(getClass().getResource(fxmlFile).openStream());
                 tab.setText(sample.getName());
                 SampleTabController sampleTabController = loader.getController();
                 sampleTabController.setMainController(this);
                 sampleTabController.setSample(sample);
                 sampleTabController.start();
-                samplesTab.getTabs().remove(addSample);
                 samplesTab.getTabs().addAll(tab);
-                samplesTab.getTabs().addAll(addSample);
             }
             catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+        samplesTab.getTabs().addAll(addSample);
     }
 }

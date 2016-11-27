@@ -17,51 +17,52 @@ import java.util.ResourceBundle;
 
 /**
  * Created by Нестеренко on 27.11.2016.
+ *
  */
     public class NewCalcController implements Initializable {
-        @FXML ComboBox choiceCalcBox;
-        @FXML Button cancelBtn;
-        @FXML Button okBtn;
-        private Stage m_stage;
-        private MainController mainController;
+    @FXML
+    ComboBox choiceCalcBox;
+    @FXML
+    Button cancelBtn;
+    @FXML
+    Button okBtn;
+    private Stage m_stage;
+    private SampleTabController sampleTabController;
 
-        @Override
-        public void initialize(URL location, ResourceBundle resources) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
-            cancelBtn.setOnAction(e->{
+        cancelBtn.setOnAction(e -> m_stage.close());
+        okBtn.setOnAction(e -> {
+            try {
                 m_stage.close();
-            });
-            okBtn.setOnAction(e-> {
-                try {
-                    m_stage.close();
-                    String fxmlFile = "/fxml/interpolation_tab.fxml";
-                    mainController.getCalcTabPane().getTabs().remove(mainController.getCalcNew());
-                    mainController.getCalcTabPane().getTabs().addAll((Tab)FXMLLoader.load(this.getClass().getResource(fxmlFile)));
-                    mainController.getCalcTabPane().getTabs().addAll(mainController.getCalcNew());
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
+                String fxmlFile = "/fxml/interpolation_tab.fxml";
+                sampleTabController.getCalcTabPane().getTabs().remove(sampleTabController.getCalcNew());
+                sampleTabController.getCalcTabPane().getTabs().addAll((Tab) FXMLLoader.load(this.getClass().getResource(fxmlFile)));
+                sampleTabController.getCalcTabPane().getTabs().addAll(sampleTabController.getCalcNew());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-            choiceCalcBox.setOnAction(e-> {
+        choiceCalcBox.setOnAction(e -> {
 
-            });
-        }
-        public Stage getM_stage() {
-            return m_stage;
-        }
-
-        public void setM_stage(Stage m_stage) {
-            this.m_stage = m_stage;
-        }
-
-    public MainController getMainController() {
-        return mainController;
+        });
     }
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
+    public Stage getM_stage() {
+        return m_stage;
     }
 
+    public void setM_stage(Stage m_stage) {
+        this.m_stage = m_stage;
+    }
+
+    public SampleTabController getSampleTabController() {
+        return sampleTabController;
+    }
+
+    public void setSampleTabController(SampleTabController sampleTabController) {
+        this.sampleTabController = sampleTabController;
+    }
+}
