@@ -27,10 +27,10 @@ public class Sample implements Serializable {
     private Project project;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "sample")
-    private List<Unit> data;
+    private List<Unit> data = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sample")
-    private List<Analysis> analyses;
+    private List<Analysis> analyses = new ArrayList<>();
 
     @SuppressWarnings("UnusedDeclaration")
     public Sample() {
@@ -48,8 +48,6 @@ public class Sample implements Serializable {
     public Sample(String name){
         this.setId(-1L);
         this.setName(name);
-        this.setData(new ArrayList<>());
-        this.setAnalyses(new ArrayList<>());
     }
 
     public long getId() {
@@ -73,6 +71,9 @@ public class Sample implements Serializable {
     }
 
     public void setData(List<Unit> data) {
+        for (Unit unit : data){
+            unit.setSample(this);
+        }
         this.data = data;
     }
 
@@ -81,6 +82,9 @@ public class Sample implements Serializable {
     }
 
     public void setAnalyses(List<Analysis> analyses) {
+        for (Analysis analysis : analyses){
+            analysis.setSample(this);
+        }
         this.analyses = analyses;
     }
 
