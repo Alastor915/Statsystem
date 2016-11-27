@@ -127,7 +127,7 @@ public class InterpolationController implements Initializable {
         yAxis.setForceZeroInRange(false);
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName(sample.getName());
+        series.setName("Update");
         for (int i = 0; i < sample.getData().size(); ++i) {
             series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
         }

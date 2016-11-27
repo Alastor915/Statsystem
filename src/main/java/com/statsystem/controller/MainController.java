@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,17 +25,21 @@ import java.util.*;
  */
 public class MainController implements Initializable {
 
-    @FXML private InterpolationController interpolationController;
+    //@FXML private InterpolationController interpolationController;
     @FXML private Tab sampleTab;
+    @FXML private Tab addSample;
     @FXML private MenuItem createProject;
+    @FXML private TabPane samplesTab;
+    private List<SampleTabController> tabControllers = Collections.EMPTY_LIST;
     private Stage m_stage;
 
     public void initialize(URL location, ResourceBundle resources) {
-        Sample sample = hardcode();
+        tabControllers = new ArrayList<>();
+       /* Sample sample = hardcode();
         interpolationController.setMainController(this);
         interpolationController.setSample(sample);
         interpolationController.start();
-        sampleTab.setText(sample.getName());
+        sampleTab.setText(sample.getName());*/
         createProject.setOnAction(e->{
             try {
                 String fxmlFile = "/fxml/create_project_dialog.fxml";
@@ -47,6 +52,7 @@ public class MainController implements Initializable {
                 stage.setTitle("Система обработки данных");
                 stage.setScene(new Scene(root));
                 createProjectController.setM_stage(stage);
+                createProjectController.setMainController(this);
                 stage.showAndWait();
             }
             catch (Exception ex) {
@@ -216,5 +222,26 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
         return sample;
+    }
+    public void loadXLSXSamples(List<Sample> samples) {
+        if(samples.isEmpty())
+            return;
+        for(Sample sample : samples) {
+            try {
+                String fxmlFile = "/fxml/samples_tabs.fxml";
+                FXMLLoader loader = new FXMLLoader();
+                Tab tab = (Tab)loader.load(getClass().getResource(fxmlFile).openStream());
+                SampleTabController sampleTabController = loader.getController();
+                sampleTabController.setMainController(this);
+                sampleTabController.setSample(sample);
+                sampleTabController.start();
+                samplesTab.getTabs().remove(addSample);
+                samplesTab.getTabs().addAll(tab);
+                samplesTab.getTabs().addAll(addSample);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
