@@ -231,6 +231,7 @@ public class MainController implements Initializable {
                 String fxmlFile = "/fxml/samples_tabs.fxml";
                 FXMLLoader loader = new FXMLLoader();
                 Tab tab = (Tab)loader.load(getClass().getResource(fxmlFile).openStream());
+                tab.setText(sample.getName());
                 SampleTabController sampleTabController = loader.getController();
                 sampleTabController.setMainController(this);
                 sampleTabController.setSample(sample);

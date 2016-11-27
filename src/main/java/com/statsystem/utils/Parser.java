@@ -47,8 +47,8 @@ public class Parser {
         System.out.println(columnCount);
 
         for(int i = 1; i < columnCount; ++i) {
+            String sampleName = "";
             rowIterator = excelSheet.iterator();
-            rowIterator.next();
             ArrayList<Unit> units = new ArrayList<>();
             while(rowIterator.hasNext()) {
                 Row row = rowIterator.next();
@@ -59,9 +59,13 @@ public class Parser {
                     unit.setValue(value);
                     units.add(unit);
                 }
+                if (row.getCell(i) != null && row.getCell(i).getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                    sampleName = row.getCell(i).getStringCellValue();
+                }
             }
             Sample sample = new Sample();
             sample.setData(units);
+            sample.setName(sampleName);
             samples.add(sample);
         }
         System.out.println(samples.size());
