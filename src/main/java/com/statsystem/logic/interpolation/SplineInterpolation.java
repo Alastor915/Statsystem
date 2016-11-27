@@ -22,9 +22,7 @@ public class SplineInterpolation {
             polynomialCoefficients.add(polinomial.getCoefficients());
         }
 
-        List<Unit> units = new ArrayList<>();
-        //todo fill units
-
+        List<Unit> units = null;
 
         return new SplineAnalysisData(f.getKnots(), polynomialCoefficients, units);
     }

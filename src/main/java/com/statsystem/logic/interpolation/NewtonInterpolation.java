@@ -16,9 +16,7 @@ public class NewtonInterpolation {
         DividedDifferenceInterpolator interpolator = new DividedDifferenceInterpolator();
         PolynomialFunctionNewtonForm functionNewtonForm = interpolator.interpolate(sample.getDates(), sample.getValues());
 
-        List<Unit> units = new ArrayList<>();
-        //todo fill units
-
+        List<Unit> units = null;
         return new NewtonAnalysisData(functionNewtonForm.getNewtonCoefficients(), functionNewtonForm.getCenters(), units);
     }
 }
