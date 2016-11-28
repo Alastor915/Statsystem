@@ -1,105 +1,71 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.statsystem.dbservice.DAO.impl;
 
-/**
- *
- * @author sereg
- */
-
-
 import com.statsystem.dbservice.DAO.ProjectDAO;
+import com.statsystem.dbservice.DAO.SampleDAO;
+import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Project;
-import com.statsystem.dbservice.execute.HibernateUtil;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
+import com.statsystem.entity.Sample;
+import com.statsystem.entity.Unit;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
-public class ProjectDAOImpl implements ProjectDAO {
+import java.util.List;
 
-    public void addProject(Project project) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(project);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
+public class ProjectDAOImpl implements ProjectDAO{
+
+    private Session session;
+
+    public ProjectDAOImpl(Session session) {
+        this.session = session;
     }
 
-    public void updateProject(Project project) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(project);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
+    @Override
+    public long insertProject(Project project) throws HibernateException {
+        long id = (Long) session.save(project);
+        List<Sample> samples = project.getSamples();
+        if (!samples.isEmpty()) {
+            SampleDAO dao = new SampleDAOImpl(session);
+            samples.forEach(dao::insertSample);
         }
+        return id;
     }
 
-    public Project getProjectById(long id) throws SQLException {
-        Session session = null;
-        Project project = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            project =(Project) session.load(Project.class, id);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
+    @Override
+    public void updateProject(Project project) throws HibernateException {
+        session.update(project);
+    }
+
+    @Override
+    public Project getProject(long id) throws HibernateException {
+        Project project = (Project) session.get(Project.class, id);
+        if (project != null) {
+            List<Sample> samples = project.getSamples();
+            if (samples.isEmpty()) {
+                samples.size();
+                for (Sample next : samples) {
+                    List<Analysis> analyses = next.getAnalyses();
+                    if (!analyses.isEmpty()) {
+                        analyses.size();
+                    }
+                }
             }
         }
         return project;
     }
 
-    public List<Project> getAllProjects() throws SQLException {
-        Session session = null;
-        List<Project> projects = new ArrayList<Project>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            projects = session.createCriteria(Project.class).list();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
-        }
-        return projects;
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Project> getAllProjects() throws HibernateException {
+        return (List<Project>) session.createCriteria(Project.class).list();
     }
 
-    public void deleteProject(Project project) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(project);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            if (session != null && session.isOpen()){
-                session.close();
-            }
+    @Override
+    public void deleteProject(Project project) throws HibernateException {
+        session.delete(project);
+        List<Sample> samples = project.getSamples();
+        if (!samples.isEmpty()) {
+            SampleDAO dao = new SampleDAOImpl(session);
+            samples.forEach(dao::deleteSample);
         }
-    }    
+    }
 }

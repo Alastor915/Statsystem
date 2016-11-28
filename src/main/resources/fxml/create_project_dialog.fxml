@@ -23,6 +23,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="28.0" layoutY="131.0" prefHeight="25.0" prefWidth="188.0" />
+      <TextField fx:id="projectName" layoutX="28.0" layoutY="131.0" prefHeight="25.0" prefWidth="188.0" />
     </children>
 </AnchorPane>
