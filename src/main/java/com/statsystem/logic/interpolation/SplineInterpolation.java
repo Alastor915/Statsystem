@@ -1,26 +1,30 @@
 package com.statsystem.logic.interpolation;
 
+
 import com.statsystem.entity.*;
+import com.statsystem.entity.impl.SplineAnalysisData;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.*;
 import org.apache.commons.math3.analysis.polynomials.*;
 import org.apache.commons.math3.exception.*;
 
-/**
- * Created by DELL on 15.11.2016.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class SplineInterpolation {
 
-    public static PolynomialSplineFunction interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
-
-        SplineInterpolator interpolator = new SplineInterpolator(); //fixme это не ньютонская интерполяция
+    public AnalysisData interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException {
+        SplineInterpolator interpolator = new SplineInterpolator();
         PolynomialSplineFunction f = interpolator.interpolate(sample.getDates(), sample.getValues());
 
-//        double[] coeff = f.getNewtonCoefficients();
+        List<double[]> polynomialCoefficients = new ArrayList<>();
+        for (PolynomialFunction polinomial:f.getPolynomials()){
+            polynomialCoefficients.add(polinomial.getCoefficients());
+        }
 
-        //Long id = Long.valueOf(1123214); //todo read or generate id, or make constructor Analysis(name, AnalysisType.NEWTON, dataList );
-        //String name = "Newton"; // todo read from UI or db or auto generate
+        List<Unit> units = null;
 
-        return f;
-        //return InterpolationHelper.createResult(id, name, AnalysisType.NEWTON, coeff);
+        return new SplineAnalysisData(f.getKnots(), polynomialCoefficients, units);
     }
 }
+
