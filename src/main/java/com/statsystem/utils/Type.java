@@ -1,4 +1,6 @@
-package com.statsystem.entity;
+package com.statsystem.utils;
+
+import com.statsystem.entity.AnalysisType;
 
 public class Type {
     AnalysisType type;
@@ -31,6 +33,10 @@ public class Type {
                 break;
 
             case DISTRIBUTION:
+                name = "";
+                break;
+
+            case CORRELATION:
                 name = "";
                 break;
 

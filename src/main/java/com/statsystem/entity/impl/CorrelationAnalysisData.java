@@ -4,8 +4,9 @@ import com.statsystem.entity.AnalysisData;
 import com.statsystem.logic.statchars.CorrelationFunction;
 /**
  * Created by Илья on 25.11.2016.
+ *
  */
-public class CorrelationAnalisisData implements AnalysisData {
+public class CorrelationAnalysisData implements AnalysisData {
 
     private double[] values;
 
@@ -13,9 +14,9 @@ public class CorrelationAnalisisData implements AnalysisData {
 
     private transient CorrelationFunction f;
 
-    public CorrelationAnalisisData() {
+    public CorrelationAnalysisData() {
     }
-    public CorrelationAnalisisData(double[] values, double[] quantity) {
+    public CorrelationAnalysisData(double[] values, double[] quantity) {
         this.values = values;
         this.quantity = quantity;
         this.f = new CorrelationFunction(values, quantity);

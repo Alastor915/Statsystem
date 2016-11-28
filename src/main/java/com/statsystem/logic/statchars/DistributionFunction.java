@@ -4,28 +4,21 @@ import com.statsystem.entity.*;
 import java.util.Arrays;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 
-/**
- * Created by Djdf on 22.11.2016.
- */
 public class DistributionFunction implements UnivariateFunction{
 
     private double[] values;
 
     private double[] quantity;
 
+    public DistributionFunction() {
+    }
+
     public DistributionFunction(double[] values, double[] quantity) {
         this.values = values;
         this.quantity = quantity;
     }
 
-    public DistributionFunction(double[] sample){
-        this.values = null;//рассчитать количество вхождений
-        this.quantity = null;
-
-    }
-
-    public DistributionFunction getDistributionFunction(Sample sample){ //Функция распределения
-
+    public DistributionFunction(Sample sample){
         double[] variational = new double[sample.getValues().length];
         System.arraycopy(sample.getValues(),0, variational,0,sample.getValues().length);
         Arrays.sort(variational);
@@ -46,7 +39,6 @@ public class DistributionFunction implements UnivariateFunction{
         for (int i=0;i<quantity.length;i++) {
             quantity[i]/=variational.length;
         }
-        return new DistributionFunction(values, quantity); // y = values (ось вправо), F(y) = quantity (ось вверх)
     }
 
     public DistributionFunction getBarChart(Sample sample, int intervalsquantity){ //Гистограмма
@@ -98,6 +90,14 @@ public class DistributionFunction implements UnivariateFunction{
 
     @Override
     public double value(double value) {
-        return 0; // возвращает количество элементов выборки, меньших value.
+        double res = 0;
+        int i = 0;
+        while ( value < values[i] && i < values.length ){
+            i++;
+        }
+        for (int j = 0; j < i; j++) {
+            res += quantity[j];
+        }
+        return res;
     }
 }

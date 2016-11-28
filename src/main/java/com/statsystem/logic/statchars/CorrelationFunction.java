@@ -8,6 +8,7 @@ import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 
 /**
  * Created by Илья on 25.11.2016.
+ *
  */
 public class CorrelationFunction implements UnivariateFunction{
 
@@ -20,7 +21,7 @@ public class CorrelationFunction implements UnivariateFunction{
         this.quantity = quantity;
     }
 
-    public CorrelationFunction getCorrelationFunction(Sample sample){
+    public CorrelationFunction(Sample sample){
         PearsonsCorrelation correlation = new PearsonsCorrelation();
         double[][] data = new double[sample.getValues().length][2];
         for (int i=0;i<sample.getValues().length;i++){
@@ -42,7 +43,6 @@ public class CorrelationFunction implements UnivariateFunction{
             values[i] = mean[i][1]; //Ox
             quantity[i] = mean[i][0]/mean[i][1]; //Oy
         }
-        return new CorrelationFunction(values, quantity);
     }
 
 
@@ -63,9 +63,12 @@ public class CorrelationFunction implements UnivariateFunction{
     }
 
     @Override
-    public double value(double value) {
-        return 0; // возвращает количество элементов выборки, меньших value.
+    public double value(double y) {
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == y) {
+                return quantity[i];
+            }
+        }
+        return 0;
     }
-
-
 }

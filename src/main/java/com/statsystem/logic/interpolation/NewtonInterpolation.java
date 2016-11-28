@@ -6,17 +6,14 @@ import org.apache.commons.math3.analysis.interpolation.*;
 import org.apache.commons.math3.analysis.polynomials.*;
 import org.apache.commons.math3.exception.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class NewtonInterpolation {
 
-    public AnalysisData interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
+    public static NewtonAnalysisData interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
         DividedDifferenceInterpolator interpolator = new DividedDifferenceInterpolator();
         PolynomialFunctionNewtonForm functionNewtonForm = interpolator.interpolate(sample.getDates(), sample.getValues());
-
-        List<Unit> units = null;
-        return new NewtonAnalysisData(functionNewtonForm.getNewtonCoefficients(), functionNewtonForm.getCenters(), units);
+        return new NewtonAnalysisData(functionNewtonForm.getNewtonCoefficients(), functionNewtonForm.getCenters(), null);
     }
 }

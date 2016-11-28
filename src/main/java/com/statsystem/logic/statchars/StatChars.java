@@ -1,11 +1,13 @@
 package com.statsystem.logic.statchars;
 
 import com.statsystem.entity.*;
+import com.statsystem.entity.impl.CorrelationAnalysisData;
 import com.statsystem.entity.impl.SimpleAnalysisData;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 /**
  * Created by Илья on 20.11.2016.
+ *
  */
 public class StatChars{
 
@@ -34,5 +36,10 @@ public class StatChars{
             stats.addValue(sample.getValues()[i]);
         }
         return new SimpleAnalysisData(stats.getStandardDeviation());
+    }
+
+    public static CorrelationAnalysisData getCorrelationFunction(Sample sample){
+        CorrelationFunction f = new CorrelationFunction(sample);
+        return new CorrelationAnalysisData(f.getValues(), f.getQuantity());
     }
 }
