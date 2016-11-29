@@ -2,6 +2,7 @@ package com.statsystem.controller;
 
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
+import com.statsystem.entity.impl.NewtonAnalysisData;
 import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -70,7 +71,7 @@ public class InterpolationController implements Initializable {
 
     }
     public void start() {
-        f = NewtonInterpolation.interpolite(sample);
+        f =  NewtonInterpolation.interpolite(sample).getF();
         chartInit();
         calcBtn.setOnAction(e -> {
             interpolate();

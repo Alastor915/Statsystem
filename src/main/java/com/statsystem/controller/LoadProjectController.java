@@ -92,7 +92,7 @@ public class LoadProjectController implements Initializable {
         });
     }
 
-    class Choice {
+    static class Choice {
         Long id;
         String displayString;
         Choice(Long id, String displayString) { this.id = id; this.displayString = displayString; }

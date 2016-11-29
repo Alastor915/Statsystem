@@ -9,7 +9,7 @@
 
 <AnchorPane fx:controller="com.statsystem.controller.NewCalcController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ComboBox fx:id="choiceCalcBox" layoutX="63.0" layoutY="55.0" prefWidth="200.0" promptText="...">
+      <ComboBox fx:id="choiceCalcBox" layoutX="63.0" layoutY="55.0" prefWidth="200.0" promptText="Выберите тип анализа">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>

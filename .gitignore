@@ -16,3 +16,4 @@ out/
 log/
 target/
 h2db.mv.db
+*.db
