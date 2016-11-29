@@ -1,8 +1,12 @@
 package com.statsystem.controller;
 
+import com.statsystem.dbservice.execute.DBService;
+import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
 import com.statsystem.entity.impl.NewtonAnalysisData;
+import com.statsystem.entity.impl.SplineAnalysisData;
+import com.statsystem.logic.AnalysisService;
 import com.statsystem.logic.interpolation.NewtonInterpolation;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -31,13 +35,11 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Created by User on 10.11.2016.
+ *
  */
 public class InterpolationController implements Initializable {
     @FXML SplitPane splitPane;
@@ -48,13 +50,17 @@ public class InterpolationController implements Initializable {
     @FXML Button calcBtn;
     @FXML TextField xField;
     @FXML TextArea resultTextArea;
+    @FXML Tab tab;
     private MainController mainController;
     private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
+    private Analysis analysis;
+    SplineAnalysisData analysisData;
     private Sample sample;
     private DateFormat format;
     private DateFormat formatView;
     private boolean isInterpolationDrawn = false;
     private UnivariateFunction f;
+    private DBService dbService;
 
     public void initialize(URL location, ResourceBundle resources) {
         format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
@@ -62,18 +68,37 @@ public class InterpolationController implements Initializable {
         xField.setText(DEFULT_X_FIELD_VALUE);
         resultTextArea.setEditable(false);
     }
-    public void setSample(Sample sample) {
-        this.sample = sample;
+
+    public void setAnalysis(Analysis analysis) {
+        this.analysis = analysis;
+        analysisData = (SplineAnalysisData) analysis.getData();
+        sample = analysis.getSample();
+        tab.setText(analysis.getName());
+        if (analysisData != null) {
+            List<Unit> units = analysisData.getUnits();
+            for (Unit unit : units){
+                resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(unit.getDate()) + "; " + String.format("%.5f", unit.getValue()));
+            }
+        }
     }
 
     public void setMainController(MainController controller) {
         mainController = controller;
 
     }
+
+    public void setDbService(DBService dbService) {
+        this.dbService = dbService;
+    }
+
     public void start() {
-        f =  NewtonInterpolation.interpolite(sample).getF();
         chartInit();
         calcBtn.setOnAction(e -> {
+            if (analysisData == null) {
+                analysisData = AnalysisService.getSplineInterpolationFunction(sample);
+                analysis.setData(analysisData);
+            }
+            f = analysisData.getF();
             interpolate();
         });
     }
@@ -96,6 +121,16 @@ public class InterpolationController implements Initializable {
                         start += step;
                     }
                     lineChart.getData().add(series2);
+                    List<Unit> units = analysisData.getUnits();
+                    for (Unit unit : units) {
+                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                        XYChart.Data<Number, Number> data = new XYChart.Data<>(unit.getDate(), unit.getValue());
+                        series.getData().add(data);
+                        series.setName("x = " + format.format(new Date(unit.getDate().longValue())));
+                        lineChart.getData().add(series);
+                        series.getData().get(0).getNode().setCursor(Cursor.HAND);
+                        Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + formatView.format(new Date(unit.getDate().longValue())) + "; " + String.format("%.5f", unit.getValue()) + ')'));
+                    }
                     isInterpolationDrawn = true;
                 }
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
@@ -107,6 +142,16 @@ public class InterpolationController implements Initializable {
                 Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
             }
             resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "; " + String.format("%.5f", f.value(date)));
+            analysisData.getUnits().add(new Unit(date, f.value(date)));
+            if (analysis.getId() < 0) {
+                analysis.setName("Расчет в базе");
+                dbService.insertAnalysis(analysis);
+                tab.setText(analysis.getName());
+            } else {
+                analysis.setName(analysis.getName() + "+");
+                dbService.updateAnalysis(analysis);
+                tab.setText(analysis.getName());
+            }
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -138,6 +183,7 @@ public class InterpolationController implements Initializable {
             if (mouseEvent.getButton() == MouseButton.SECONDARY ||
                     (mouseEvent.getButton() == MouseButton.PRIMARY &&
                             mouseEvent.isShortcutDown())) {
+                // do action
             } else {
                 mouseEvent.consume();
             }

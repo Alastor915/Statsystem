@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.embed.swing.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import org.gillius.jfxutils.chart.*?>
-<?import javafx.scene.layout.BorderPane?>
 
-<?import org.gillius.jfxutils.chart.StableTicksAxis?>
-<Tab text="Интерполяция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
+<Tab fx:id="tab" text="Интерполяция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
     <content>
         <SplitPane fx:id="splitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
             <items>

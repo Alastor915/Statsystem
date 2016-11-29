@@ -40,7 +40,7 @@ public class ProjectDAOImpl implements ProjectDAO{
         Project project = (Project) session.get(Project.class, id);
         if (project != null) {
             List<Sample> samples = project.getSamples();
-            if (samples.isEmpty()) {
+            if (!samples.isEmpty()) {
                 samples.size();
                 for (Sample next : samples) {
                     List<Analysis> analyses = next.getAnalyses();

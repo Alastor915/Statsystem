@@ -1,5 +1,7 @@
 package com.statsystem.controller;
 
+import com.statsystem.entity.Analysis;
+import com.statsystem.entity.AnalysisType;
 import com.statsystem.entity.Sample;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +54,14 @@ public class SampleTabController implements Initializable {
 
     public void start(){
         interpolationController.setMainController(mainController);
-        interpolationController.setSample(sample);
+        interpolationController.setDbService(mainController.getDbService());
+        Analysis analysis;
+        if (sample.getAnalyses().isEmpty()){
+            analysis = new Analysis(-1L, "Расчет", AnalysisType.SPLINE, null, sample);
+        } else {
+            analysis = sample.getAnalyses().get(0);
+        }
+        interpolationController.setAnalysis(analysis);
         interpolationController.start();
     }
 

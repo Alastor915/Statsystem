@@ -39,11 +39,6 @@ public class SplineAnalysisData implements AnalysisData {
         this.knots = knots;
         this.polynomialCoefficients = polynomialCoefficients;
         this.units = units;
-        PolynomialFunction polynomials[] = new PolynomialFunction[polynomialCoefficients.size()];
-        for (int i = 0; i < polynomialCoefficients.size();i++) {
-            polynomials[i] = new PolynomialFunction(polynomialCoefficients.get(i));
-        }
-        this.f = new PolynomialSplineFunction(knots, polynomials);
     }
 
     public double[] getKnots() {
@@ -59,6 +54,13 @@ public class SplineAnalysisData implements AnalysisData {
     }
 
     public PolynomialSplineFunction getF() {
+        if (f == null) {
+            PolynomialFunction polynomials[] = new PolynomialFunction[polynomialCoefficients.size()];
+            for (int i = 0; i < polynomialCoefficients.size(); i++) {
+                polynomials[i] = new PolynomialFunction(polynomialCoefficients.get(i));
+            }
+            this.f = new PolynomialSplineFunction(knots, polynomials);
+        }
         return f;
     }
 }

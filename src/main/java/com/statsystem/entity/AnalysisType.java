@@ -8,42 +8,29 @@ import java.util.Map;
  * Типы анализа
  */
 public enum AnalysisType implements Serializable {
-    NEWTON(0,"Интерполяция полиномом Ньютона"),
-    SPLINE(1,"Интерполяция сплайном"),
-    LSM(2,"Апроксимация методом наименьших квадратов"),
-    EXPECTATION(3,"Математическое ожидание"),
-    VARIANCE(4,"Дисперсия"),
-    DISTRIBUTION(5,"Функция распределение"),
-    CORRELATION(6,"Автокорреляционная функция");
+    NEWTON("Интерполяция полиномом Ньютона", "/fxml/interpolation_tab.fxml"),
+    SPLINE("Интерполяция сплайном", "/fxml/interpolation_tab.fxml"),
+    LSM("Апроксимация методом наименьших квадратов", ""),
+    EXPECTATION("Математическое ожидание", ""),
+    VARIANCE("Дисперсия", ""),
+    DISTRIBUTION("Функция распределение", ""),
+    CORRELATION("Автокорреляционная функция", "");
 
-        private final long value;
-        private final String name;
-        private static Map<Long,String> pathes = new HashMap<>();
+    private final String name;
+    private final String path;
 
-        private AnalysisType(long value, String name) {
-            this.value = value; this.name = name;
-        }
+    AnalysisType(String name, String path) {
+        this.name = name;
+        this.path = path;
+    }
 
-        static {
-            pathes.put(0L,"/fxml/interpolation_tab.fxml");
-            pathes.put(1L,"/fxml/interpolation_tab.fxml");
-            pathes.put(2L,"");
-            pathes.put(3L,"");
-            pathes.put(4L,"");
-            pathes.put(5L,"");
-            pathes.put(6L,"");
-        }
-
-        public long getValue() {
-            return value;
-        }
-        public String getName() {
+    public String getName() {
         return name;
     }
 
-        public static String getPath(long index){
-            return pathes.get(index);
-        }
+    public String getPath() {
+        return path;
+    }
 }
 
 

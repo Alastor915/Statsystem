@@ -21,7 +21,7 @@ public class SplineInterpolation {
             polynomialCoefficients.add(polinomial.getCoefficients());
         }
 
-        return new SplineAnalysisData(f.getKnots(), polynomialCoefficients, null);
+        return new SplineAnalysisData(f.getKnots(), polynomialCoefficients, new ArrayList<>());
     }
 }
 

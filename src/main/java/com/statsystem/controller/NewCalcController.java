@@ -1,6 +1,7 @@
 package com.statsystem.controller;
 
 import com.statsystem.dbservice.execute.DBException;
+import com.statsystem.entity.Analysis;
 import com.statsystem.entity.AnalysisType;
 import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
@@ -36,20 +37,23 @@ import java.util.ResourceBundle;
     private SampleTabController sampleTabController;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void initialize(URL location, ResourceBundle resources) {
 
         cancelBtn.setOnAction(e -> m_stage.close());
         okBtn.setOnAction(e -> {
-            LoadProjectController.Choice selected = (LoadProjectController.Choice) choiceCalcBox.getValue();
+            Choice selected = (Choice) choiceCalcBox.getValue();
             try {
                 m_stage.close();
-                String fxmlFile = AnalysisType.getPath(selected.id);
+                String fxmlFile = selected.id.getPath();
                 Sample sample = sampleTabController.getSample();
+                Analysis analysis = new Analysis(selected.displayString, selected.id);
+                sample.addAnalysis(analysis);
                 FXMLLoader loader = new FXMLLoader();
                 Tab tab = loader.load(getClass().getResource(fxmlFile).openStream());
                 tab.setText(selected.displayString);
                 InterpolationController interpolationController = loader.getController();
-                interpolationController.setSample(sample);
+                interpolationController.setAnalysis(analysis);
                 interpolationController.start();
                 sampleTabController.getCalcTabPane().getTabs().remove(sampleTabController.getCalcNew());
                 sampleTabController.getCalcTabPane().getTabs().addAll(tab);
@@ -62,14 +66,12 @@ import java.util.ResourceBundle;
         });
 
         choiceCalcBox.setOnShowing(e -> {
-            ObservableList<LoadProjectController.Choice> choices = FXCollections.observableArrayList();
+            ObservableList<Choice> choices = FXCollections.observableArrayList();
 
             List<AnalysisType> analysisTypes = null;
-                analysisTypes = Arrays.asList(AnalysisType.values());
-             if (analysisTypes != null) {
-                for (AnalysisType analysisType : analysisTypes) {
-                    choices.add(new LoadProjectController.Choice(analysisType.getValue(), analysisType.getName()));
-                }
+            analysisTypes = Arrays.asList(AnalysisType.values());
+            for (AnalysisType analysisType : analysisTypes) {
+                choices.add(new Choice(analysisType, analysisType.getName()));
             }
             choiceCalcBox.setItems(choices);
             choiceCalcBox.getSelectionModel().select(0);
@@ -91,5 +93,12 @@ import java.util.ResourceBundle;
 
     public void setSampleTabController(SampleTabController sampleTabController) {
         this.sampleTabController = sampleTabController;
+    }
+
+    static class Choice {
+        AnalysisType id;
+        String displayString;
+        Choice(AnalysisType id, String displayString) { this.id = id; this.displayString = displayString; }
+        @Override public String toString() { return displayString; }
     }
 }
