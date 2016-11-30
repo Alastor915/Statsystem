@@ -15,7 +15,7 @@ public class NewtonInterpolation {
     public AnalysisData interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
         DividedDifferenceInterpolator interpolator = new DividedDifferenceInterpolator();
         PolynomialFunctionNewtonForm functionNewtonForm = interpolator.interpolate(sample.getDates(), sample.getValues());
-        
-        return new NewtonAnalysisData(functionNewtonForm.getNewtonCoefficients(), functionNewtonForm.getCenters(), null);
+
+        return new NewtonAnalysisData(functionNewtonForm.getCoefficients(), functionNewtonForm.getCenters(), null);
     }
 }
