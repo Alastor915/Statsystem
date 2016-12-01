@@ -118,6 +118,7 @@ public class MainController implements Initializable {
         if(samples.isEmpty())
             return;
         samplesTab.getTabs().remove(addSample);
+        samplesTab.getTabs().removeAll(samplesTab.getTabs());
         for(Sample sample : samples) {
             try {
                 String fxmlFile = "/fxml/samples_tabs.fxml";
