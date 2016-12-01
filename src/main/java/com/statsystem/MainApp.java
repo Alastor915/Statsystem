@@ -23,6 +23,7 @@ public class MainApp extends Application {
         MainController controller = (MainController)loader.getController();
         stage.setTitle("Система обработки данных");
         stage.setScene(new Scene(root));
+        root.getStylesheets().addAll(getClass().getResource("/css/style.css").toExternalForm());
         controller.setM_stage(stage);
         controller.setDbService(dbService);
         stage.show();

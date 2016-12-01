@@ -19,7 +19,7 @@
         <TabPane fx:id="calcTabPane" prefHeight="371.0" prefWidth="600.0">
             <tabs>
                 <fx:include fx:id="interpolation" source="/fxml/interpolation_tab.fxml" />
-                <Tab closable="false" text="+" fx:id="newCalc">
+                <Tab closable="false" fx:id="newCalc">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>

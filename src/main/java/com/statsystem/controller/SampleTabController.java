@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Modality;
@@ -28,27 +29,30 @@ public class SampleTabController implements Initializable {
     @FXML private TabPane calcTabPane;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        newCalc.setOnSelectionChanged(e->{
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("tab-button");
+        addButton.setOnAction(e -> {
             try {
-                if (newCalc.isSelected()) {
-                    String fxmlFile = "/fxml/choice_type_calc_dialog.fxml";
-                    FXMLLoader loader = new FXMLLoader();
-                    Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
-                    NewCalcController newCalcController = loader.getController();
-                    Stage stage = new Stage();
-                    stage.initModality(Modality.APPLICATION_MODAL);
+                //if (newCalc.isSelected()) {
+                String fxmlFile = "/fxml/choice_type_calc_dialog.fxml";
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
+                NewCalcController newCalcController = loader.getController();
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
 //                    stage.initOwner(m_stage);
-                    stage.setTitle("Система обработки данных");
-                    stage.setScene(new Scene(root));
-                    newCalcController.setM_stage(stage);
-                    newCalcController.setSampleTabController(this);
-                    stage.showAndWait();
-                }
-            }
-            catch (Exception ex) {
+                stage.setTitle("Система обработки данных");
+                stage.setScene(new Scene(root));
+                newCalcController.setM_stage(stage);
+                newCalcController.setSampleTabController(this);
+                stage.showAndWait();
+                //}
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
+        newCalc.setGraphic(addButton);
+        newCalc.getStyleClass().add("tab-button-holder");
 
     }
 
