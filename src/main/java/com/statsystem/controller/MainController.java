@@ -117,7 +117,7 @@ public class MainController implements Initializable {
     public void loadXLSXSamples(List<Sample> samples) {
         if(samples.isEmpty())
             return;
-        samplesTab.getTabs().remove(addSample);
+        //samplesTab.getTabs().remove(addSample);
         samplesTab.getTabs().removeAll(samplesTab.getTabs());
         for(Sample sample : samples) {
             try {
