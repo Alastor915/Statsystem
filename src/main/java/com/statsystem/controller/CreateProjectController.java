@@ -64,14 +64,21 @@ public class CreateProjectController implements Initializable {
         cancelBtn.setOnAction(e-> m_stage.close());
         okBtn.setOnAction(e-> {
             try {
-                List<Sample> samples = Parser.parse(pathField.getText().trim());
-                Project project = new Project(projectName.getText());
-                project.setSamples(samples);
-                dbService.insertProject(project);
-                mainController.setProject(project);
-                mainController.loadXLSXSamples(samples);
-                mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
-                m_stage.close();
+                if (pathField.getText() != null && !pathField.getText().trim().isEmpty()) {
+                    if (!projectName.getText().trim().isEmpty()) {
+                        List<Sample> samples = Parser.parse(pathField.getText().trim());
+                        Project project = new Project(projectName.getText().trim());
+                        project.setSamples(samples);
+                        dbService.insertProject(project);
+                        mainController.setProject(project);
+                        mainController.loadXLSXSamples(samples);
+                        mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
+                        m_stage.close();
+                    }
+                    else {
+                        projectName.setPromptText("Введите название проекта");
+                    }
+                }
             }
             catch (Exception ex){
                 ex.printStackTrace();

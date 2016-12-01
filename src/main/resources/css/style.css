@@ -3,6 +3,7 @@
     -fx-border-width: 0;
     -fx-background-radius: 0;
     -fx-background-color: transparent;
+    -fx-font: 16px arial;
 }
 .tab-button-holder {
     -fx-focus-color: transparent;

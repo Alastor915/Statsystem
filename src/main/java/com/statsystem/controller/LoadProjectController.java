@@ -61,19 +61,21 @@ public class LoadProjectController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cancelBtn.setOnAction(e-> m_stage.close());
         okBtn.setOnAction(e-> {
-            Choice selected = (Choice) chooseBox.getValue();
-            try {
-                Project project = dbService.getProject(selected.id);
-                mainController.setProject(project);
-                mainController.loadXLSXSamples(project.getSamples());
-                mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
-                m_stage.close();
-            } catch (DBException e1) {
-                e1.printStackTrace();
+            if(chooseBox.getSelectionModel().getSelectedIndex() != -1) {
+                Choice selected = (Choice) chooseBox.getValue();
+                try {
+                    Project project = dbService.getProject(selected.id);
+                    mainController.setProject(project);
+                    mainController.loadXLSXSamples(project.getSamples());
+                    mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
+                    m_stage.close();
+                } catch (DBException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
-        chooseBox.setOnShowing(e-> {
+        chooseBox.setOnShowing(e -> {
             ObservableList<Choice> choices = FXCollections.observableArrayList();
             List<Project> projects = null;
             try {

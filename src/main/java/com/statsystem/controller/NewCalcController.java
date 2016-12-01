@@ -42,28 +42,31 @@ import java.util.ResourceBundle;
 
         cancelBtn.setOnAction(e -> m_stage.close());
         okBtn.setOnAction(e -> {
-            Choice selected = (Choice) choiceCalcBox.getValue();
-            try {
-                m_stage.close();
-                String fxmlFile = selected.id.getPath();
-                Sample sample = sampleTabController.getSample();
-                Analysis analysis = new Analysis(-1L, selected.displayString, selected.id, null, sample);
-                FXMLLoader loader = new FXMLLoader();
-                Tab tab = loader.load(getClass().getResource(fxmlFile).openStream());
-                tab.setText(selected.displayString);
-                InterpolationController interpolationController = loader.getController();
-                interpolationController.setAnalysis(analysis);
-                interpolationController.setDbService(sampleTabController.getMainController().getDbService());
-                interpolationController.start();
-                sampleTabController.getCalcTabPane().getTabs().remove(sampleTabController.getCalcNew());
-                sampleTabController.getCalcTabPane().getTabs().addAll(tab);
-                sampleTabController.getCalcTabPane().getSelectionModel().selectLast();
-                sampleTabController.getCalcTabPane().getTabs().addAll(sampleTabController.getCalcNew());
+            if(choiceCalcBox.getSelectionModel().getSelectedIndex() != -1) {
+                Choice selected = (Choice) choiceCalcBox.getValue();
+                try {
+                    m_stage.close();
+                    String fxmlFile = selected.id.getPath();
+                    Sample sample = sampleTabController.getSample();
+                    Analysis analysis = new Analysis(-1L, selected.displayString, selected.id, null, sample);
+                    FXMLLoader loader = new FXMLLoader();
+                    Tab tab = loader.load(getClass().getResource(fxmlFile).openStream());
+                    tab.setText(selected.displayString);
+                    InterpolationController interpolationController = loader.getController();
+                    interpolationController.setAnalysis(analysis);
+                    interpolationController.setDbService(sampleTabController.getMainController().getDbService());
+                    interpolationController.start();
+                    sampleTabController.getCalcTabPane().getTabs().remove(sampleTabController.getCalcNew());
+                    sampleTabController.getCalcTabPane().getTabs().addAll(tab);
+                    sampleTabController.getCalcTabPane().getSelectionModel().selectLast();
+                    sampleTabController.getCalcTabPane().getTabs().addAll(sampleTabController.getCalcNew());
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
+
 
         choiceCalcBox.setOnShowing(e -> {
             ObservableList<Choice> choices = FXCollections.observableArrayList();
