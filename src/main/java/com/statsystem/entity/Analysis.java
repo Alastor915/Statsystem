@@ -107,7 +107,6 @@ public class Analysis implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
-                ", data=" + data +
                 '}';
     }
 }

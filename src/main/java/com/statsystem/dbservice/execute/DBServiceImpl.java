@@ -68,7 +68,7 @@ public class DBServiceImpl implements DBService {
             ProjectDAO dao = new ProjectDAOImpl(session);
             return dao.getProject(id);
         } catch (HibernateException e) {
-            throw new DBException(e);
+            throw new DBException("Не удалось загрузить проект с идентификатором " + id, e);
         } finally {
             session.close();
         }
@@ -80,7 +80,7 @@ public class DBServiceImpl implements DBService {
             ProjectDAO dao = new ProjectDAOImpl(session);
             return dao.getAllProjects();
         } catch (HibernateException e) {
-            throw new DBException(e);
+            throw new DBException("Не удалось получить список проектов ", e);
         } finally {
             session.close();
         }
@@ -98,7 +98,7 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при добавлении проекта: "+ project.toString(), e);
         } finally {
             session.close();
         }
@@ -116,7 +116,7 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при добавлении выборки: "+ sample.toString(), e);
         } finally {
             session.close();
         }
@@ -134,7 +134,7 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при добавлении результатов расчета: "+ analysis.toString(), e);
         } finally {
             session.close();
         }
@@ -151,24 +151,24 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при обновлении проекта: "+ project.toString(), e);
         } finally {
             session.close();
         }
     }
 
-    public void updateSample(Sample project) throws DBException{
+    public void updateSample(Sample sample) throws DBException{
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
             SampleDAO dao = new SampleDAOImpl(session);
-            dao.updateSample(project);
+            dao.updateSample(sample);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при обновлении выборки: "+ sample.toString(), e);
         } finally {
             session.close();
         }
@@ -185,24 +185,24 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при обновлении результатов расчета: "+ analysis.toString(), e);
         } finally {
             session.close();
         }
     }
 
-    public void updateUnit(Unit project) throws DBException{
+    public void updateUnit(Unit unit) throws DBException{
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
             UnitDAO dao = new UnitDAOImpl(session);
-            dao.updateUnit(project);
+            dao.updateUnit(unit);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при обновлении элемента выборки: "+ unit.toString(), e);
         } finally {
             session.close();
         }
@@ -220,7 +220,7 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при удалении проекта: "+ project.toString(), e);
         } finally {
             session.close();
         }
@@ -237,7 +237,7 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при удалении выборки: "+ sample.toString(), e);
         } finally {
             session.close();
         }
@@ -254,7 +254,7 @@ public class DBServiceImpl implements DBService {
         } catch (HibernateException e) {
             if (transaction != null)
                 transaction.rollback();
-            throw new DBException(e);
+            throw new DBException("Ошибка при удалении результатов расчета: "+ analysis.toString(), e);
         } finally {
             session.close();
         }

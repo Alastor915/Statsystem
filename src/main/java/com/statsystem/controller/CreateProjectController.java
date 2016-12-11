@@ -1,5 +1,6 @@
 package com.statsystem.controller;
 
+import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
@@ -10,12 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.POIXMLException;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 
 /**
  * Created by User on 20.11.2016.
@@ -79,9 +84,23 @@ public class CreateProjectController implements Initializable {
                         projectName.setPromptText("Введите название проекта");
                     }
                 }
-            }
-            catch (Exception ex){
-                ex.printStackTrace();
+            } catch (DBException ex){
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при сохранении нового проекта в базу данных." +
+                        " Отчет об ошибке: \n" + ex.toString());
+            } catch (IOException ex){
+                showErrorMessage("Ошибка при работе с файлом", "Ошибка при загрузке данных из файла " + pathField.getText()
+                        + ". Отчет об ошибке: \n" + ex.toString());
+            } catch (ParseException ex){
+                showErrorMessage("Ошибка при работе с содержимым файла " + pathField.getText(),
+                        "Ошибка при работе с содержимым файла " + pathField.getText() + ". Убедитесь, что файл " +
+                                "соответсвует требуемому формату(см. Справка, Создание проекта). Отчет об ошибке: \n"
+                                + ex.toString());
+            } catch (POIXMLException ex){
+                showErrorMessage("Неверный формат файла",
+                        "Отчет об ошибке: \n" + ex.toString());
+            } catch (Exception ex){
+                showErrorMessage("Непридвиденная ошибка",
+                        "Отчет об ошибке: \n" + ex.toString());
             }
         });
     }

@@ -16,11 +16,14 @@ import javafx.scene.control.TabPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 
 /**
  * Created by Нестеренко Д. Ю. on 06.11.2016.
@@ -85,9 +88,12 @@ public class MainController implements Initializable {
                 createProjectController.setMainController(this);
                 createProjectController.setDbService(dbService);
                 stage.showAndWait();
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (IOException ex){
+                showErrorMessage("Ошибка при создании диалогового окна", "Невозможно загрузить fxml форму. Возможно, программа " +
+                        "повреждена. Отчет об ошибке: \n" + ex.toString());
+            }  catch (Exception ex){
+                showErrorMessage("Непридвиденная ошибка",
+                        "Отчет об ошибке: \n" + ex.toString());
             }
 
         });
@@ -107,9 +113,12 @@ public class MainController implements Initializable {
                 loadProjectController.setMainController(this);
                 loadProjectController.setDbService(dbService);
                 stage.showAndWait();
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (IOException ex){
+                showErrorMessage("Ошибка при создании диалогового окна", "Невозможно загрузить fxml форму. Возможно, программа " +
+                        "повреждена. Отчет об ошибке: \n" + ex.toString());
+            }  catch (Exception ex){
+                showErrorMessage("Непридвиденная ошибка",
+                        "Отчет об ошибке: \n" + ex.toString());
             }
         });
     }
@@ -130,9 +139,12 @@ public class MainController implements Initializable {
                 sampleTabController.setSample(sample);
                 sampleTabController.start();
                 samplesTab.getTabs().addAll(tab);
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (IOException ex){
+                showErrorMessage("Ошибка при создании новой вкладки", "Невозможно загрузить fxml форму. Возможно, программа " +
+                        "повреждена. Отчет об ошибке: \n" + ex.toString());
+            }  catch (Exception ex){
+                showErrorMessage("Непридвиденная ошибка",
+                        "Отчет об ошибке: \n" + ex.toString());
             }
         }
         samplesTab.getTabs().addAll(addSample);

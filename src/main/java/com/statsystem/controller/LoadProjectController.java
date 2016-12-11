@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+
 /**
  * Created by Нестеренко on 27.11.2016.
  *
@@ -69,8 +71,9 @@ public class LoadProjectController implements Initializable {
                     mainController.loadXLSXSamples(project.getSamples());
                     mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
                     m_stage.close();
-                } catch (DBException e1) {
-                    e1.printStackTrace();
+                } catch (DBException ex){
+                    showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрзке проекта из базы данных." +
+                            " Отчет об ошибке: \n" + ex.toString());
                 }
             }
         });
@@ -80,8 +83,9 @@ public class LoadProjectController implements Initializable {
             List<Project> projects = null;
             try {
                 projects = dbService.getAllProjects();
-            } catch (DBException ex) {
-                ex.printStackTrace();
+            } catch (DBException ex){
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при получении списка проектов из базы данных." +
+                        " Отчет об ошибке: \n" + ex.toString());
             }
             if (projects != null) {
                 for (Project project : projects) {

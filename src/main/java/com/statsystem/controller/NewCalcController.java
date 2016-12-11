@@ -17,10 +17,13 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 
 /**
  * Created by Нестеренко on 27.11.2016.
@@ -58,11 +61,12 @@ import java.util.ResourceBundle;
                     sampleTabController.getCalcTabPane().getSelectionModel().selectLast();
                     sampleTabController.getCalcTabPane().getTabs().addAll(sampleTabController.getCalcNew());
 
-                } catch (Exception ex) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Произошла ошибка");
-                    alert.setContentText(ex.toString());
-                    alert.showAndWait();
+                } catch (IOException ex){
+                    showErrorMessage("Ошибка при создании новой вкладки", "Невозможно загрузить fxml форму. Возможно, программа " +
+                            "повреждена. Отчет об ошибке: \n" + ex.toString());
+                }  catch (Exception ex){
+                    showErrorMessage("Непридвиденная ошибка",
+                            "Отчет об ошибке: \n" + ex.toString());
                 }
             }
         });

@@ -96,7 +96,6 @@ public class Project implements Serializable {
         return "Project{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", samples=" + samples +
                 '}';
     }
 }

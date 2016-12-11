@@ -131,8 +131,6 @@ public class Sample implements Serializable {
         return "Sample{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", data=" + data +
-                ", analyses=" + analyses +
                 '}';
     }
 

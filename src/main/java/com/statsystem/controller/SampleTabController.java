@@ -14,8 +14,11 @@ import javafx.scene.control.TabPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 
 /**
  * Created by User on 27.11.2016.
@@ -47,8 +50,12 @@ public class SampleTabController implements Initializable {
                 newCalcController.setSampleTabController(this);
                 stage.showAndWait();
                 //}
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (IOException ex){
+                showErrorMessage("Ошибка при создании диалогового окна", "Невозможно загрузить fxml форму. Возможно, программа " +
+                        "повреждена. Отчет об ошибке: \n" + ex.toString());
+            }  catch (Exception ex){
+                showErrorMessage("Непридвиденная ошибка",
+                        "Отчет об ошибке: \n" + ex.toString());
             }
         });
         newCalc.setGraphic(addButton);

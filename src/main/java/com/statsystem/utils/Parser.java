@@ -18,9 +18,10 @@ import java.util.*;
 
 /**
  * Created by User on 24.11.2016.
+ *
  */
 public class Parser {
-    public static List<Sample> parse(String file) throws Exception {
+    public static List<Sample> parse(String file) throws ParseException, IOException {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
         ArrayList<Date> dates = new ArrayList<>();
         ArrayList<Sample> samples = new ArrayList<>();
@@ -37,7 +38,7 @@ public class Parser {
         }
         rowIterator = excelSheet.iterator();
         rowIterator.next();
-        int columnCount = 0;
+        int columnCount;
         if(rowIterator.hasNext()) {
             Row row = rowIterator.next();
             columnCount = row.getLastCellNum();

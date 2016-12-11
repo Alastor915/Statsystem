@@ -1,5 +1,6 @@
 package com.statsystem.controller;
 
+import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Sample;
@@ -26,6 +27,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.apache.commons.math3.exception.DimensionMismatchException;
+import org.apache.commons.math3.exception.NonMonotonicSequenceException;
+import org.apache.commons.math3.exception.NumberIsTooSmallException;
+import org.apache.commons.math3.exception.OutOfRangeException;
 import org.gillius.jfxutils.chart.ChartPanManager;
 import org.gillius.jfxutils.chart.FixedFormatTickFormatter;
 import org.gillius.jfxutils.chart.JFXChartUtil;
@@ -34,8 +39,11 @@ import org.gillius.jfxutils.chart.StableTicksAxis;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 
 /**
  * Created by User on 10.11.2016.
@@ -95,8 +103,22 @@ public class InterpolationController implements Initializable {
         chartInit();
         calcBtn.setOnAction(e -> {
             if (analysisData == null) {
-                analysisData = AnalysisService.getSplineInterpolationFunction(sample);
-                analysis.setData(analysisData);
+                try {
+                    analysisData = AnalysisService.getSplineInterpolationFunction(sample);
+                    analysis.setData(analysisData);
+                } catch (DimensionMismatchException ex) {
+                    showErrorMessage("Невозможно построить интерполирующую функцию", "Необходимо, чтобы выборка имела" +
+                            "равные интервалы по x. Отчет об ошибке: " + ex.toString());
+                } catch (NonMonotonicSequenceException ex) {
+                    showErrorMessage("Невозможно построить интерполирующую функцию", "Необходимо, чтобы выборка была" +
+                            "монотонна по x. Отчет об ошибке: " + ex.toString());
+                } catch (NumberIsTooSmallException ex) {
+                    showErrorMessage("Невозможно построить интерполирующую функцию", "Выборка имеет слишком мальнькие" +
+                            "значения. Отчет об ошибке: " + ex.toString());
+                } catch (Exception ex){
+                    showErrorMessage("Непридвиденная ошибка",
+                            "Отчет об ошибке: \n" + ex.toString());
+                }
             }
             f = analysisData.getF();
             interpolate();
@@ -152,9 +174,20 @@ public class InterpolationController implements Initializable {
                 dbService.updateAnalysis(analysis);
                 tab.setText(analysis.getName());
             }
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
+        } catch (ParseException ex){
+            showErrorMessage("Ошибка при распознавании даты",
+                    "Ошибка при распознавании даты. Убедитесь, что дата (по значению x) соответсвует требуемому формату" +
+                            "(см. Справка, Создание проекта). Отчет об ошибке: \n"
+                            + ex.toString());
+        } catch (DBException ex){
+            showErrorMessage("Ошибка при работе с базой данных", "Ошибка при сохранении результатов расчета в базу данных." +
+                    " Отчет об ошибке: \n" + ex.toString());
+        } catch (OutOfRangeException ex){
+            showErrorMessage("Ошибка при расчете интерполяции", "Полученное значение x не попадает в интевал выборки. " +
+                    "Измените параметр x. Отчет об ошибке: \n" + ex.toString());
+        } catch (Exception ex){
+            showErrorMessage("Непридвиденная ошибка",
+                    "Отчет об ошибке: \n" + ex.toString());
         }
     }
     private void chartInit(){
