@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.gillius.jfxutils.chart.*?>
+
+<Tab fx:id="dispersionTab" text="Автокорреляционная функция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.CorrelationController">
+    <content>
+        <SplitPane fx:id="correlationSplitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
+            <items>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Label text="Автокорреляционная функция" textOverrun="CLIP" translateX="22.0" translateY="15.0">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="0" top="0" bottom="15" />
+                            </VBox.margin>
+                        </Label>
+                        <CheckBox fx:id="correlationDrawChart" mnemonicParsing="false" text="Отобразить на графике">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="15.0" top="10.0" bottom="7" />
+                            </VBox.margin>
+                        </CheckBox>
+                        <BorderPane prefHeight="288.0" prefWidth="397.0">
+                            <center>
+                                <TextArea fx:id="correlationResultTextArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <BorderPane.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                                    </BorderPane.margin>
+                                </TextArea>
+                            </center>
+                            <top>
+                                <Label text="Результат" BorderPane.alignment="CENTER_LEFT">
+                                    <BorderPane.margin>
+                                        <Insets bottom="10.0" left="15.0" top="5.0" />
+                                    </BorderPane.margin>
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                            </top>
+                            <bottom>
+                                <Group BorderPane.alignment="CENTER_RIGHT">
+                                    <children>
+                                        <Button fx:id="correlationCalcBtn" prefWidth="80.0" mnemonicParsing="false" text="Рассчитать" />
+                                    </children>
+                                    <BorderPane.margin>
+                                        <Insets bottom="10.0" right="10.0" />
+                                    </BorderPane.margin>
+                                </Group>
+                            </bottom>
+                        </BorderPane>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </VBox>
+                <StackPane>
+                    <LineChart fx:id="expectedValueLineChart">
+                        <xAxis>
+                            <StableTicksAxis fx:id="correlationXAxis" animated="true" side="BOTTOM" />
+                        </xAxis>
+                        <yAxis>
+                            <StableTicksAxis fx:id="correlationYAxis" animated="true" side="LEFT" />
+                        </yAxis>
+                    </LineChart>
+                </StackPane>
+            </items>
+        </SplitPane>
+    </content>
+</Tab>
