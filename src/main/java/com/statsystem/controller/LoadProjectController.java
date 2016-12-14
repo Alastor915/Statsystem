@@ -3,6 +3,7 @@ package com.statsystem.controller;
 import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.Project;
+import com.statsystem.entity.Sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -11,10 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,6 +40,7 @@ public class LoadProjectController implements Initializable {
     private DBService dbService;
     private Stage m_stage;
     private Stage create_project_stage;
+    List<Project> projects = null;
 
     public Stage getM_stage() {
         return m_stage;
@@ -81,7 +80,6 @@ public class LoadProjectController implements Initializable {
 
         chooseBox.setOnShowing(e -> {
             ObservableList<Choice> choices = FXCollections.observableArrayList();
-            List<Project> projects = null;
             try {
                 projects = dbService.getAllProjects();
             } catch (DBException ex){
@@ -102,16 +100,18 @@ public class LoadProjectController implements Initializable {
             if(chooseBox.getSelectionModel().getSelectedIndex() != -1) {
                 Choice selected = (Choice) chooseBox.getValue();
                 try {
-                    Project project = dbService.getProject(selected.id);
-                    boolean delOk = showDelDialog(project);
+                    Project project = new Project(selected.id, null, new ArrayList<Sample>());
+                    project = projects.get(projects.indexOf(project));
+                    boolean delOk = showDelDialog(project, selected);
                     if (delOk) {
-                        Alert alert = new Alert(AlertType.INFORMATION);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Information Dialog");
                         alert.setHeaderText(null);
                         alert.setContentText("Проект удален!");
                         alert.showAndWait();
+                        m_stage.close();
                     }
-                } catch (DBException ex){
+                } catch (Exception ex){
                     showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрузке проекта из базы данных." +
                             " Отчет об ошибке: \n" + ex.toString());
                 }
@@ -120,15 +120,25 @@ public class LoadProjectController implements Initializable {
         });
     }
 
-    public boolean showDelDialog(project){
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+    public boolean showDelDialog(Project project, Choice selected) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Удаление выборки");
         alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            //здесь идет команда на удаление проекта
+            try {
+                if (mainController.getProject().equals(project)) {
+                    mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
+                    mainController.getM_stage().setTitle("Система обработки данных");
+                }
+                mainController.getDbService().deleteProject(project);
+                chooseBox.getItems().remove(selected);
+                chooseBox.getSelectionModel().select(0);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
             return true;
             //alert.close();
         } else {

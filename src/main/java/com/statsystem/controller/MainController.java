@@ -66,6 +66,10 @@ public class MainController implements Initializable {
         this.project = project;
     }
 
+    public TabPane getSamplesTab() {
+        return samplesTab;
+    }
+
     public void initialize(URL location, ResourceBundle resources) {
         tabControllers = new ArrayList<>();
        /* Sample sample = hardcode();
@@ -147,6 +151,6 @@ public class MainController implements Initializable {
                         "Отчет об ошибке: \n" + ex.toString());
             }
         }
-        samplesTab.getTabs().addAll(addSample);
+//        samplesTab.getTabs().addAll(addSample);
     }
 }

@@ -1,21 +1,24 @@
 package com.statsystem.controller;
 
+import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.entity.Analysis;
 import com.statsystem.entity.AnalysisType;
 import com.statsystem.entity.Sample;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.statsystem.utils.ErrorMessage.showErrorMessage;
@@ -30,6 +33,7 @@ public class SampleTabController implements Initializable {
     @FXML private InterpolationController interpolationController;
     @FXML private Tab newCalc;
     @FXML private TabPane calcTabPane;
+    @FXML private Tab sampleTab;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Button addButton = new Button("+");
@@ -62,26 +66,27 @@ public class SampleTabController implements Initializable {
         newCalc.getStyleClass().add("tab-button-holder");
 
         //Удаление вкладки при нажатии ПКМ
-        newCalc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        sampleTab.setOnClosed(new EventHandler<Event>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.isMiddleButtonDown()) {
-                    showDelDialog(newCalc);
-                }
+            public void handle(Event event) {
+                showDelDialog(sampleTab);
             }
         });
     }
 
-    public void showDelDialog(Tab newCalc){
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+    public void showDelDialog(Tab sampleTab){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Удаление выборки");
         alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            calcTabPane.getTabs().remove(newCalc);
-            //alert.close();
+            try {
+                mainController.getDbService().deleteSample(sample);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
         } else {
             //alert.close();
         }
