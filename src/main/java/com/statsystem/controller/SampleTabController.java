@@ -12,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,7 +20,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
 
 /**
  * Created by User on 27.11.2016.
@@ -66,12 +65,7 @@ public class SampleTabController implements Initializable {
         newCalc.getStyleClass().add("tab-button-holder");
 
         //Удаление вкладки при нажатии ПКМ
-        sampleTab.setOnClosed(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                showDelDialog(sampleTab);
-            }
-        });
+        sampleTab.setOnClosed(event -> showDelDialog(sampleTab));
     }
 
     public void showDelDialog(Tab sampleTab){
@@ -87,8 +81,6 @@ public class SampleTabController implements Initializable {
             } catch (DBException e) {
                 e.printStackTrace();
             }
-        } else {
-            //alert.close();
         }
     }
 

@@ -6,25 +6,17 @@ import com.statsystem.entity.Analysis;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
 import com.statsystem.entity.impl.NewtonAnalysisData;
-import com.statsystem.entity.impl.SplineAnalysisData;
 import com.statsystem.logic.AnalysisService;
-import com.statsystem.logic.interpolation.NewtonInterpolation;
-import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.Node;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.DimensionMismatchException;
@@ -43,7 +35,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
+import static com.statsystem.utils.Message.showInfoMessage;
 
 /**
  * Created by User on 10.11.2016.
@@ -62,7 +55,7 @@ public class InterpolationController implements Initializable {
     private MainController mainController;
     private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
     private Analysis analysis;
-    SplineAnalysisData analysisData;
+    NewtonAnalysisData analysisData;
     private Sample sample;
     private DateFormat format;
     private DateFormat formatView;
@@ -79,7 +72,7 @@ public class InterpolationController implements Initializable {
 
     public void setAnalysis(Analysis analysis) {
         this.analysis = analysis;
-        analysisData = (SplineAnalysisData) analysis.getData();
+        analysisData = (NewtonAnalysisData) analysis.getData();
         sample = analysis.getSample();
         tab.setText(analysis.getName());
         if (analysisData != null) {
@@ -104,7 +97,7 @@ public class InterpolationController implements Initializable {
         calcBtn.setOnAction(e -> {
             if (analysisData == null) {
                 try {
-                    analysisData = AnalysisService.getSplineInterpolationFunction(sample);
+                    analysisData = AnalysisService.getNewtonInterpolationFunction(sample);
                     analysis.setData(analysisData);
                 } catch (DimensionMismatchException ex) {
                     showErrorMessage("Невозможно построить интерполирующую функцию", "Необходимо, чтобы выборка имела" +
@@ -239,13 +232,28 @@ public class InterpolationController implements Initializable {
             node.setOnMouseDragged(e -> {
                 if(e.getButton() == MouseButton.PRIMARY) {
                     Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
-                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
+//                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
                     double yAxisLoc = yAxis.sceneToLocal(pointInScene).getY();
-                    Number x = xAxis.getValueForDisplay(xAxisLoc);
+//                    Number x = xAxis.getValueForDisplay(xAxisLoc);
                     Number y = yAxis.getValueForDisplay(yAxisLoc);
-                    data.setXValue(x);
+//                    data.setXValue(x);
                     data.setYValue(y);
-                    Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                }
+            });
+            node.setOnMouseReleased(ev -> {
+                Point2D pointInScene = new Point2D(ev.getSceneX(), ev.getSceneY());
+//                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
+                double yAxisLoc = yAxis.sceneToLocal(pointInScene).getY();
+//                    Number x = xAxis.getValueForDisplay(xAxisLoc);
+                Number y = yAxis.getValueForDisplay(yAxisLoc);
+                Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                Unit unit = analysis.getSample().getUnitByDate((Double) data.getXValue());
+                unit.setValue((Double) y);
+                try {
+                    dbService.updateUnit(unit);
+                    showInfoMessage("Значение элемента выборки обновлено", unit.toString());
+                } catch (DBException e1) {
+                    e1.printStackTrace();
                 }
             });
         }

@@ -70,6 +70,15 @@ public class Sample implements Serializable {
         return data;
     }
 
+    public Unit getUnitByDate(Double date) {
+        Unit unit = null;
+        for (Unit u: data){
+            if (u.getDate().equals(date))
+                unit = u;
+        }
+        return unit;
+    }
+
     public void setData(List<Unit> data) {
         for (Unit unit : data){
             unit.setSample(this);

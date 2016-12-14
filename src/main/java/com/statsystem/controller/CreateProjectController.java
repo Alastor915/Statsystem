@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
 
 /**
  * Created by User on 20.11.2016.

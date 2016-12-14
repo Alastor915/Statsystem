@@ -8,23 +8,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 
-import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
 
 /**
  * Created by Нестеренко on 27.11.2016.
@@ -100,7 +93,7 @@ public class LoadProjectController implements Initializable {
             if(chooseBox.getSelectionModel().getSelectedIndex() != -1) {
                 Choice selected = (Choice) chooseBox.getValue();
                 try {
-                    Project project = new Project(selected.id, null, new ArrayList<Sample>());
+                    Project project = new Project(selected.id, null, new ArrayList<>());
                     project = projects.get(projects.indexOf(project));
                     boolean delOk = showDelDialog(project, selected);
                     if (delOk) {
