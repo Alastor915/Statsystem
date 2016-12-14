@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.gillius.jfxutils.chart.*?>
 
-<Tab fx:id="dispersionTab" text="Математическое ожидание" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.ExpectedValueController">
+<Tab fx:id="meanTab" text="Математическое ожидание" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.ExpectedValueController">
     <content>
         <SplitPane fx:id="expectedValueSplitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
             <items>

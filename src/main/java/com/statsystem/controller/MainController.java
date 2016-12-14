@@ -14,9 +14,13 @@ import javafx.scene.control.TabPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 import static com.statsystem.utils.Message.showErrorMessage;
 
@@ -27,10 +31,10 @@ import static com.statsystem.utils.Message.showErrorMessage;
 public class MainController implements Initializable {
 
     //@FXML private InterpolationController interpolationController;
-    @FXML private Tab sampleTab;
     @FXML private Tab addSample;
     @FXML private MenuItem createProject;
     @FXML private MenuItem loadProject;
+    @FXML private MenuItem help;
     @FXML private TabPane samplesTab;
     private List<SampleTabController> tabControllers = Collections.EMPTY_LIST;
     private Stage m_stage;
@@ -59,6 +63,10 @@ public class MainController implements Initializable {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
     }
 
     public TabPane getSamplesTab() {
@@ -118,6 +126,14 @@ public class MainController implements Initializable {
             }  catch (Exception ex){
                 showErrorMessage("Непридвиденная ошибка",
                         "Отчет об ошибке: \n" + ex.toString());
+            }
+        });
+        help.setOnAction(e->{
+            File htmlFile = new File("html/main.html");
+            try {
+                Desktop.getDesktop().browse(new URL("file://" + htmlFile.getAbsolutePath()).toURI());
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
     }

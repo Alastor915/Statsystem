@@ -2,9 +2,7 @@ package com.statsystem.controller;
 
 import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
-import com.statsystem.entity.Analysis;
-import com.statsystem.entity.Sample;
-import com.statsystem.entity.Unit;
+import com.statsystem.entity.*;
 import com.statsystem.entity.impl.NewtonAnalysisData;
 import com.statsystem.logic.AnalysisService;
 import javafx.fxml.FXML;
@@ -42,7 +40,7 @@ import static com.statsystem.utils.Message.showInfoMessage;
  * Created by User on 10.11.2016.
  *
  */
-public class InterpolationController implements Initializable {
+public class InterpolationController implements Initializable, CalculationController {
     @FXML SplitPane splitPane;
     @FXML LineChart<Number,Number> lineChart;
     @FXML StableTicksAxis xAxis;
@@ -55,7 +53,7 @@ public class InterpolationController implements Initializable {
     private MainController mainController;
     private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
     private Analysis analysis;
-    NewtonAnalysisData analysisData;
+    AnalysisData analysisData;
     private Sample sample;
     private DateFormat format;
     private DateFormat formatView;
@@ -72,11 +70,17 @@ public class InterpolationController implements Initializable {
 
     public void setAnalysis(Analysis analysis) {
         this.analysis = analysis;
-        analysisData = (NewtonAnalysisData) analysis.getData();
+        analysisData = analysis.getData();
         sample = analysis.getSample();
         tab.setText(analysis.getName());
         if (analysisData != null) {
-            List<Unit> units = analysisData.getUnits();
+            List<Unit> units;
+            if(analysis.getType() == AnalysisType.NEWTON) {
+                units = ((NewtonAnalysisData) analysisData).getUnits();
+            }
+            else {
+                units = ((SplineAnalysisData) analysisData).getUnits();
+            }
             for (Unit unit : units){
                 resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(unit.getDate()) + "; " + String.format("%.5f", unit.getValue()));
             }
@@ -97,7 +101,12 @@ public class InterpolationController implements Initializable {
         calcBtn.setOnAction(e -> {
             if (analysisData == null) {
                 try {
-                    analysisData = AnalysisService.getNewtonInterpolationFunction(sample);
+                    if (analysis.getType() == AnalysisType.NEWTON) {
+                        analysisData = AnalysisService.getNewtonInterpolationFunction(sample);
+                    }
+                    else {
+                        analysisData = AnalysisService.getSplineInterpolationFunction(sample);
+                    }
                     analysis.setData(analysisData);
                 } catch (DimensionMismatchException ex) {
                     showErrorMessage("Невозможно построить интерполирующую функцию", "Необходимо, чтобы выборка имела" +
@@ -113,11 +122,16 @@ public class InterpolationController implements Initializable {
                             "Отчет об ошибке: \n" + ex.toString());
                 }
             }
-            f = analysisData.getF();
+            if (analysis.getType() == AnalysisType.NEWTON) {
+                f = ((NewtonAnalysisData)analysisData).getF();
+            }
+            else {
+                f = ((SplineAnalysisData)analysisData).getF();
+            }
             interpolate();
         });
     }
-    public void interpolate() {
+    private void interpolate() {
         try {
             double date = new Long(format.parse(xField.getText().trim()).getTime()).doubleValue();
             if (drawChart.isSelected()) {
@@ -136,7 +150,13 @@ public class InterpolationController implements Initializable {
                         start += step;
                     }
                     lineChart.getData().add(series2);
-                    List<Unit> units = analysisData.getUnits();
+                    List<Unit> units;
+                    if(analysis.getType() == AnalysisType.NEWTON) {
+                        units = ((NewtonAnalysisData) analysisData).getUnits();
+                    }
+                    else {
+                        units = ((SplineAnalysisData) analysisData).getUnits();
+                    }
                     for (Unit unit : units) {
                         XYChart.Series<Number, Number> series = new XYChart.Series<>();
                         XYChart.Data<Number, Number> data = new XYChart.Data<>(unit.getDate(), unit.getValue());
@@ -157,7 +177,12 @@ public class InterpolationController implements Initializable {
                 Tooltip.install(series.getData().get(0).getNode(), new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
             }
             resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "; " + String.format("%.5f", f.value(date)));
-            analysisData.getUnits().add(new Unit(date, f.value(date)));
+            if(analysis.getType() == AnalysisType.NEWTON) {
+                ((NewtonAnalysisData) analysisData).getUnits().add(new Unit(date, f.value(date)));
+            }
+            else {
+                ((SplineAnalysisData) analysisData).getUnits().add(new Unit(date, f.value(date)));
+            }
             if (analysis.getId() < 0) {
                 analysis.setName("Расчет в базе");
                 dbService.insertAnalysis(analysis);
