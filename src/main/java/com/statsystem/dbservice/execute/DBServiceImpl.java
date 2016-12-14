@@ -25,7 +25,7 @@ import java.util.List;
 
 public class DBServiceImpl implements DBService {
     private static final String hibernate_show_sql = "true";
-    private static final String hibernate_hbm2ddl_auto = "create";
+    private static final String hibernate_hbm2ddl_auto = "validate";
 
     private final SessionFactory sessionFactory;
 
