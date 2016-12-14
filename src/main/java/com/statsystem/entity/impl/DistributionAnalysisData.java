@@ -38,6 +38,8 @@ public class DistributionAnalysisData implements AnalysisData {
     }
 
     public DistributionFunction getF() {
+        if (f == null)
+            this.f = new DistributionFunction(values, quantity);
         return f;
     }
 }

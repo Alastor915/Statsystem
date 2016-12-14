@@ -31,6 +31,8 @@ public class CorrelationAnalysisData implements AnalysisData {
     }
 
     public CorrelationFunction getF() {
+        if (f == null)
+            this.f = new CorrelationFunction(values, quantity);
         return f;
     }
 }

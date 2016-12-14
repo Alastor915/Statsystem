@@ -54,6 +54,8 @@ public class NewtonAnalysisData implements AnalysisData{
     }
 
     public PolynomialFunctionNewtonForm getF() {
+        if (f == null)
+            this.f = new PolynomialFunctionNewtonForm(newtonCoefficients, centers);
         return f;
     }
 }
