@@ -16,7 +16,7 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Помощь">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Справка" />
+                  <MenuItem fx:id="help" mnemonicParsing="false" text="Справка" />
                </items>
             </Menu>
         </menus>

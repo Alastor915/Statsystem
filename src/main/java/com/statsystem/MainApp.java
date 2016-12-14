@@ -19,13 +19,14 @@ public class MainApp extends Application {
         DBService dbService = new DBServiceImpl();
         String fxmlFile = "/fxml/main_window.fxml";
         FXMLLoader loader = new FXMLLoader();
-        Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-        MainController controller = (MainController)loader.getController();
+        Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
+        MainController controller = loader.getController();
         stage.setTitle("Система обработки данных");
         stage.setScene(new Scene(root));
         root.getStylesheets().addAll(getClass().getResource("/css/style.css").toExternalForm());
         controller.setM_stage(stage);
         controller.setDbService(dbService);
+        controller.setHostServices(getHostServices());
         stage.show();
     }
 

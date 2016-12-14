@@ -135,7 +135,6 @@ public class CorrelationController implements Initializable, CalculationControll
                         //TODO: What should be written
                         //resultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "; " + String.format("%.5f", f.value(date)));
                         if (analysis.getId() < 0) {
-                                analysis.setName("Расчет в базе");
                                 dbService.insertAnalysis(analysis);
                                 correlTab.setText(analysis.getName());
                         } else {

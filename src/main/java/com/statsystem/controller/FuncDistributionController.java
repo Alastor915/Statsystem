@@ -36,10 +36,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 /**
@@ -77,7 +74,7 @@ public class FuncDistributionController implements Initializable, CalculationCon
                 sample = analysis.getSample();
                 funcDistrbTab.setText(analysis.getName());
                 if (analysisData != null) {
-                        //TODO: What should be written
+                        funcDistrbResultTextArea.setText(analysisData.getF().toString());
                 }
         }
 
@@ -121,8 +118,11 @@ public class FuncDistributionController implements Initializable, CalculationCon
                                 if (!isDistribDrawn) {
                                         XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
                                         series2.setName("Интерполяционный полином");
-                                        double start = sample.getData().get(0).getDate();
-                                        double end = sample.getData().get(sample.getData().size() - 1).getDate();
+                                        double[] variational = new double[sample.getValues().length];
+                                        System.arraycopy(sample.getValues(),0, variational,0,sample.getValues().length);
+                                        Arrays.sort(variational);
+                                        double start = variational[0] - variational[0]/1000;
+                                        double end = variational[variational.length - 1] + variational[variational.length - 1]/1000;
                                         double step = (end - start) / 3000;
                                         while (start < end) {
                                                 XYChart.Data<Number, Number> data = new XYChart.Data<>(start, f.value(start));
@@ -136,8 +136,7 @@ public class FuncDistributionController implements Initializable, CalculationCon
                                         isDistribDrawn = true;
                                 }
                         }
-                        //TODO: What should be written
-                        //funcDistrbResultTextArea.setText(resultTextArea.getText() + "\n" + format.format(date) + "; " + String.format("%.5f", f.value(date)));
+                        funcDistrbResultTextArea.setText(f.toString());
                         if (analysis.getId() < 0) {
                                 analysis.setName("Расчет в базе");
                                 dbService.insertAnalysis(analysis);
@@ -170,8 +169,8 @@ public class FuncDistributionController implements Initializable, CalculationCon
                         dateFormat.format(new Date(sample.getData().get(0).getDate().longValue())));
                 funcDistrbLineChart.setAnimated(false);
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-                funcDistrbXAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+//                funcDistrbXAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
                 funcDistrbXAxis.setLabel("Время");
                 funcDistrbXAxis.setForceZeroInRange(false);
                 funcDistrbYAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.0000")));
@@ -183,7 +182,7 @@ public class FuncDistributionController implements Initializable, CalculationCon
                 for (int i = 0; i < sample.getData().size(); ++i) {
                         series.getData().add(new XYChart.Data<>(sample.getData().get(i).getDate(), sample.getData().get(i).getValue()));
                 }
-                funcDistrbLineChart.getData().add(series);
+//                funcDistrbLineChart.getData().add(series);
                 ChartPanManager panner = new ChartPanManager( funcDistrbLineChart );
                 panner.setMouseFilter(mouseEvent -> {
                         if (mouseEvent.getButton() == MouseButton.SECONDARY ||
@@ -205,23 +204,23 @@ public class FuncDistributionController implements Initializable, CalculationCon
 
                 JFXChartUtil.addDoublePrimaryClickAutoRangeHandler(funcDistrbLineChart);
 
-                for (XYChart.Data<Number, Number> data : series.getData()) {
-                        Node node = data.getNode() ;
-                        Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
-                        node.setCursor(Cursor.HAND);
-                        node.setOnMouseDragged(e -> {
-                                if(e.getButton() == MouseButton.PRIMARY) {
-                                        Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
-                                        double xAxisLoc = funcDistrbXAxis.sceneToLocal(pointInScene).getX();
-                                        double yAxisLoc = funcDistrbYAxis.sceneToLocal(pointInScene).getY();
-                                        Number x = funcDistrbXAxis.getValueForDisplay(xAxisLoc);
-                                        Number y = funcDistrbYAxis.getValueForDisplay(yAxisLoc);
-                                        data.setXValue(x);
-                                        data.setYValue(y);
-                                        Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
-                                }
-                        });
-                }
+//                for (XYChart.Data<Number, Number> data : series.getData()) {
+//                        Node node = data.getNode() ;
+//                        Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+//                        node.setCursor(Cursor.HAND);
+//                        node.setOnMouseDragged(e -> {
+//                                if(e.getButton() == MouseButton.PRIMARY) {
+//                                        Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
+//                                        double xAxisLoc = funcDistrbXAxis.sceneToLocal(pointInScene).getX();
+//                                        double yAxisLoc = funcDistrbYAxis.sceneToLocal(pointInScene).getY();
+//                                        Number x = funcDistrbXAxis.getValueForDisplay(xAxisLoc);
+//                                        Number y = funcDistrbYAxis.getValueForDisplay(yAxisLoc);
+//                                        data.setXValue(x);
+//                                        data.setYValue(y);
+//                                        Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+//                                }
+//                        });
+//                }
         }
 }
 

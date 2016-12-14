@@ -16,6 +16,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.apache.commons.math3.exception.DimensionMismatchException;
 import org.apache.commons.math3.exception.NonMonotonicSequenceException;
@@ -33,6 +34,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -59,6 +61,7 @@ public class ExpectedValueController implements Initializable, CalculationContro
         Analysis analysis;
         DBService dbService;
         MainController mainController;
+        private boolean isExDrawn = false;
 
         @Override
         @SuppressWarnings("unchecked")
@@ -118,15 +121,31 @@ public class ExpectedValueController implements Initializable, CalculationContro
 
         private void calculate() {
                 try {
-                        expectedValueResultTextArea.setText(mean.toString());
-                        if (analysis.getId() < 0) {
-                                analysis.setName("Расчет в базе");
-                                dbService.insertAnalysis(analysis);
-                                meanTab.setText(analysis.getName());
-                        } else {
-                                analysis.setName(analysis.getName() + "+");
-                                dbService.updateAnalysis(analysis);
-                                meanTab.setText(analysis.getName());
+                        if (!isExDrawn) {
+                                XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
+                                series2.setName("Мат ожидание");
+                                XYChart.Data<Number, Number> data = new XYChart.Data<>(sample.getData().get(0).getDate(), mean);
+                                XYChart.Data<Number, Number> data2 = new XYChart.Data<>(sample.getData().get(sample.getData().size() - 1).getDate(), mean);
+                                Rectangle rect = new Rectangle(0, 0);
+                                rect.setVisible(false);
+                                Rectangle rect2 = new Rectangle(0, 0);
+                                rect2.setVisible(false);
+                                data.setNode(rect);
+                                data2.setNode(rect2);
+                                series2.getData().add(data);
+                                series2.getData().add(data2);
+                                expectedValueResultTextArea.setText(mean.toString());
+                                expectedValueLineChart.getData().add(series2);
+                                if (analysis.getId() < 0) {
+                                        analysis.setName("Расчет в базе");
+                                        dbService.insertAnalysis(analysis);
+                                        meanTab.setText(analysis.getName());
+                                } else {
+                                        analysis.setName(analysis.getName() + "+");
+                                        dbService.updateAnalysis(analysis);
+                                        meanTab.setText(analysis.getName());
+                                }
+                                isExDrawn = true;
                         }
                 } catch (DBException ex){
                         showErrorMessage("Ошибка при работе с базой данных", "Ошибка при сохранении результатов расчета в базу данных." +

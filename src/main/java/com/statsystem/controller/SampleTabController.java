@@ -27,7 +27,6 @@ import static com.statsystem.utils.ErrorMessage.showErrorMessage;
 public class SampleTabController implements Initializable {
     private MainController mainController;
     private Sample sample;
-    @FXML private InterpolationController interpolationController;
     @FXML private Tab newCalc;
     @FXML private TabPane calcTabPane;
     @Override
@@ -64,16 +63,27 @@ public class SampleTabController implements Initializable {
     }
 
     public void start(){
-        interpolationController.setMainController(mainController);
-        interpolationController.setDbService(mainController.getDbService());
-        Analysis analysis;
-        if (sample.getAnalyses().isEmpty()){
-            analysis = new Analysis(-1L, "Расчет", AnalysisType.SPLINE, null, sample);
-        } else {
-            analysis = sample.getAnalyses().get(0);
+        if (!sample.getAnalyses().isEmpty()){
+            for (Analysis analysis : sample.getAnalyses()) {
+                String fxmlFile = analysis.getType().getPath();
+                FXMLLoader loader = new FXMLLoader();
+                Tab tab = null;
+                try {
+                    tab = loader.load(getClass().getResource(fxmlFile).openStream());
+                    tab.setText(analysis.getName());
+                    CalculationController calcController = loader.getController();
+                    calcController.setAnalysis(analysis);
+                    calcController.setDbService(mainController.getDbService());
+                    calcController.start();
+                    this.getCalcTabPane().getTabs().remove(this.getCalcNew());
+                    this.getCalcTabPane().getTabs().addAll(tab);
+                    this.getCalcTabPane().getSelectionModel().selectLast();
+                    this.getCalcTabPane().getTabs().addAll(this.getCalcNew());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        interpolationController.setAnalysis(analysis);
-        interpolationController.start();
     }
 
     public MainController getMainController() {

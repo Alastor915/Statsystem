@@ -23,7 +23,8 @@ public class DistributionFunction implements UnivariateFunction{
         System.arraycopy(sample.getValues(),0, variational,0,sample.getValues().length);
         Arrays.sort(variational);
         int norepsnumber = 0; //int quantnumber = 0;
-        //double[] values = new double[variational.length];
+        values = new double[variational.length];
+        quantity = new double[variational.length];
         values[0] = variational[0];
         quantity[0] = 1;
         for (int i=1;i<variational.length;i++){
@@ -36,7 +37,7 @@ public class DistributionFunction implements UnivariateFunction{
             }
         }
 
-        for (int i=0;i<quantity.length;i++) {
+        for (int i=0;i < quantity.length;i++) {
             quantity[i]/=variational.length;
         }
     }
@@ -92,11 +93,24 @@ public class DistributionFunction implements UnivariateFunction{
     public double value(double value) {
         double res = 0;
         int i = 0;
-        while ( value < values[i] && i < values.length ){
+        while (i < values.length && value > values[i]){
+            if(values[i] == 0)
+                return 1;
+            res = quantity[i];
             i++;
         }
-        for (int j = 0; j < i; j++) {
-            res += quantity[j];
+        return res;
+    }
+
+    @Override
+    public String toString() {
+        String res = "values: ";
+        for (int i = 0; i < values.length; i++) {
+            res += values[i] + "  |||  ";
+        }
+        res += "\n quantities: ";
+        for (int i = 0; i < values.length; i++) {
+            res += quantity[i] + "  |||  ";
         }
         return res;
     }
