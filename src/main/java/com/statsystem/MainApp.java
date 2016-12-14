@@ -26,7 +26,6 @@ public class MainApp extends Application {
         root.getStylesheets().addAll(getClass().getResource("/css/style.css").toExternalForm());
         controller.setM_stage(stage);
         controller.setDbService(dbService);
-        controller.setHostServices(getHostServices());
         stage.show();
     }
 

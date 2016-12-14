@@ -88,7 +88,7 @@ public class SampleTabController implements Initializable {
             for (Analysis analysis : sample.getAnalyses()) {
                 String fxmlFile = analysis.getType().getPath();
                 FXMLLoader loader = new FXMLLoader();
-                Tab tab = null;
+                Tab tab;
                 try {
                     tab = loader.load(getClass().getResource(fxmlFile).openStream());
                     tab.setText(analysis.getName());

@@ -5,6 +5,7 @@ import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.Analysis;
 import com.statsystem.entity.AnalysisData;
 import com.statsystem.entity.Sample;
+import com.statsystem.entity.Unit;
 import com.statsystem.entity.impl.SimpleAnalysisData;
 import com.statsystem.logic.AnalysisService;
 import javafx.fxml.FXML;
@@ -27,7 +28,8 @@ import org.gillius.jfxutils.chart.FixedFormatTickFormatter;
 import org.gillius.jfxutils.chart.JFXChartUtil;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
+import static com.statsystem.utils.Message.showInfoMessage;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -137,13 +139,13 @@ public class ExpectedValueController implements Initializable, CalculationContro
                                 expectedValueResultTextArea.setText(mean.toString());
                                 expectedValueLineChart.getData().add(series2);
                                 if (analysis.getId() < 0) {
-                                        analysis.setName("Расчет в базе");
                                         dbService.insertAnalysis(analysis);
                                         meanTab.setText(analysis.getName());
+                                        showInfoMessage("Расчет записан в базу данных", analysis.toString());
                                 } else {
-                                        analysis.setName(analysis.getName() + "+");
                                         dbService.updateAnalysis(analysis);
                                         meanTab.setText(analysis.getName());
+                                        showInfoMessage("Расчет обновлен в базе данных", analysis.toString());
                                 }
                                 isExDrawn = true;
                         }
@@ -208,15 +210,31 @@ public class ExpectedValueController implements Initializable, CalculationContro
                         node.setOnMouseDragged(e -> {
                                 if(e.getButton() == MouseButton.PRIMARY) {
                                         Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
-                                        double xAxisLoc = expectedValueXAxis.sceneToLocal(pointInScene).getX();
+//                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
                                         double yAxisLoc = expectedValueYAxis.sceneToLocal(pointInScene).getY();
-                                        Number x = expectedValueXAxis.getValueForDisplay(xAxisLoc);
+//                    Number x = xAxis.getValueForDisplay(xAxisLoc);
                                         Number y = expectedValueYAxis.getValueForDisplay(yAxisLoc);
-                                        data.setXValue(x);
+//                    data.setXValue(x);
                                         data.setYValue(y);
-                                        Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
                                 }
                         });
+                        node.setOnMouseReleased(ev -> {
+                                Point2D pointInScene = new Point2D(ev.getSceneX(), ev.getSceneY());
+//                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
+                                double yAxisLoc = expectedValueYAxis.sceneToLocal(pointInScene).getY();
+//                    Number x = xAxis.getValueForDisplay(xAxisLoc);
+                                Number y = expectedValueYAxis.getValueForDisplay(yAxisLoc);
+                                Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                                Unit unit = analysis.getSample().getUnitByDate((Double) data.getXValue());
+                                unit.setValue((Double) y);
+                                try {
+                                        dbService.updateUnit(unit);
+                                        showInfoMessage("Значение элемента выборки обновлено", unit.toString());
+                                } catch (DBException e1) {
+                                        e1.printStackTrace();
+                                }
+                        });
+
                 }
         }
 }

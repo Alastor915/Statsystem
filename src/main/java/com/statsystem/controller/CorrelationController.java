@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
 /**
  * Created by Нестеренко on 13.12.2016.
  */

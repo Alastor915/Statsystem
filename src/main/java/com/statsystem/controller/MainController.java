@@ -65,10 +65,6 @@ public class MainController implements Initializable {
         this.project = project;
     }
 
-    public void setHostServices(HostServices hostServices) {
-        this.hostServices = hostServices;
-    }
-
     public TabPane getSamplesTab() {
         return samplesTab;
     }

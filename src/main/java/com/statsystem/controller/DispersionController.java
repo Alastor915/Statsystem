@@ -38,7 +38,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
+import static com.statsystem.utils.Message.showInfoMessage;
 
 /**
  * Created by Нестеренко on 13.12.2016.
@@ -122,13 +123,13 @@ public class DispersionController implements Initializable, CalculationControlle
                 try {
                         dispersionResultTextArea.setText(variance.toString());
                         if (analysis.getId() < 0) {
-                                analysis.setName("Расчет в базе");
                                 dbService.insertAnalysis(analysis);
                                 varianceTab.setText(analysis.getName());
+                                showInfoMessage("Расчет записан в базу данных", analysis.toString());
                         } else {
-                                analysis.setName(analysis.getName() + "+");
                                 dbService.updateAnalysis(analysis);
                                 varianceTab.setText(analysis.getName());
+                                showInfoMessage("Расчет обновлен в базе данных", analysis.toString());
                         }
                 } catch (DBException ex){
                         showErrorMessage("Ошибка при работе с базой данных", "Ошибка при сохранении результатов расчета в базу данных." +
@@ -191,13 +192,28 @@ public class DispersionController implements Initializable, CalculationControlle
                         node.setOnMouseDragged(e -> {
                                 if(e.getButton() == MouseButton.PRIMARY) {
                                         Point2D pointInScene = new Point2D(e.getSceneX(), e.getSceneY());
-                                        double xAxisLoc = dispersionXAxis.sceneToLocal(pointInScene).getX();
+//                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
                                         double yAxisLoc = dispersionYAxis.sceneToLocal(pointInScene).getY();
-                                        Number x = dispersionXAxis.getValueForDisplay(xAxisLoc);
+//                    Number x = xAxis.getValueForDisplay(xAxisLoc);
                                         Number y = dispersionYAxis.getValueForDisplay(yAxisLoc);
-                                        data.setXValue(x);
+//                    data.setXValue(x);
                                         data.setYValue(y);
-                                        Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                                }
+                        });
+                        node.setOnMouseReleased(ev -> {
+                                Point2D pointInScene = new Point2D(ev.getSceneX(), ev.getSceneY());
+//                    double xAxisLoc = xAxis.sceneToLocal(pointInScene).getX();
+                                double yAxisLoc = dispersionYAxis.sceneToLocal(pointInScene).getY();
+//                    Number x = xAxis.getValueForDisplay(xAxisLoc);
+                                Number y = dispersionYAxis.getValueForDisplay(yAxisLoc);
+                                Tooltip.install(node, new Tooltip('(' + formatView.format(new Date(data.getXValue().longValue())) + "; " + String.format("%.5f", data.getYValue()) + ')'));
+                                Unit unit = analysis.getSample().getUnitByDate((Double) data.getXValue());
+                                unit.setValue((Double) y);
+                                try {
+                                        dbService.updateUnit(unit);
+                                        showInfoMessage("Значение элемента выборки обновлено", unit.toString());
+                                } catch (DBException e1) {
+                                        e1.printStackTrace();
                                 }
                         });
                 }

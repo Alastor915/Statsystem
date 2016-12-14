@@ -60,6 +60,7 @@ public class LoadProjectController implements Initializable {
                 Choice selected = (Choice) chooseBox.getValue();
                 try {
                     Project project = dbService.getProject(selected.id);
+                    mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
                     mainController.setProject(project);
                     mainController.loadXLSXSamples(project.getSamples());
                     mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());

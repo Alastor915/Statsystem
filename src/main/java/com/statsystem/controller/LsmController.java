@@ -36,10 +36,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
 
 /**
  * Created by Нестеренко on 13.12.2016.
+ *
  */
 public class LsmController implements Initializable, CalculationController {
 

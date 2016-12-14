@@ -4,6 +4,7 @@ import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.*;
 import com.statsystem.entity.impl.NewtonAnalysisData;
+import com.statsystem.entity.impl.SplineAnalysisData;
 import com.statsystem.logic.AnalysisService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -184,13 +185,13 @@ public class InterpolationController implements Initializable, CalculationContro
                 ((SplineAnalysisData) analysisData).getUnits().add(new Unit(date, f.value(date)));
             }
             if (analysis.getId() < 0) {
-                analysis.setName("Расчет в базе");
                 dbService.insertAnalysis(analysis);
                 tab.setText(analysis.getName());
+                showInfoMessage("Расчет записан в базу данных", analysis.toString());
             } else {
-                analysis.setName(analysis.getName() + "+");
                 dbService.updateAnalysis(analysis);
                 tab.setText(analysis.getName());
+                showInfoMessage("Расчет обновлен в базе данных", analysis.toString());
             }
         } catch (ParseException ex){
             showErrorMessage("Ошибка при распознавании даты",

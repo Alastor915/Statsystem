@@ -38,7 +38,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.statsystem.utils.ErrorMessage.showErrorMessage;
+import static com.statsystem.utils.Message.showErrorMessage;
+import static com.statsystem.utils.Message.showInfoMessage;
+
 /**
  * Created by Нестеренко on 13.12.2016.
  */
@@ -117,7 +119,7 @@ public class FuncDistributionController implements Initializable, CalculationCon
                         if (funcDistrbDrawChart.isSelected()) {
                                 if (!isDistribDrawn) {
                                         XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-                                        series2.setName("Интерполяционный полином");
+                                        series2.setName("Функция распределения");
                                         double[] variational = new double[sample.getValues().length];
                                         System.arraycopy(sample.getValues(),0, variational,0,sample.getValues().length);
                                         Arrays.sort(variational);
@@ -138,13 +140,13 @@ public class FuncDistributionController implements Initializable, CalculationCon
                         }
                         funcDistrbResultTextArea.setText(f.toString());
                         if (analysis.getId() < 0) {
-                                analysis.setName("Расчет в базе");
                                 dbService.insertAnalysis(analysis);
                                 funcDistrbTab.setText(analysis.getName());
+                                showInfoMessage("Расчет записан в базу данных", analysis.toString());
                         } else {
-                                analysis.setName(analysis.getName() + "+");
                                 dbService.updateAnalysis(analysis);
                                 funcDistrbTab.setText(analysis.getName());
+                                showInfoMessage("Расчет обновлен в базе данных", analysis.toString());
                         }
 //                } catch (ParseException ex){
 //                        showErrorMessage("Ошибка при распознавании даты",
