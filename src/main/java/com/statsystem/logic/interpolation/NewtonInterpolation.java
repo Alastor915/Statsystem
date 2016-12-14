@@ -24,8 +24,10 @@ public class NewtonInterpolation {
         while (i < x.length){
             double[] x1 = new double[10];
             double[] y1 = new double[10];
-            for (int j=0; j < 10 && i < x.length; j++){
+            int j = 0;
+            while (j < 10 && i < x.length){
                 i++;
+                j++;
                 x1[j] = x[j];
                 y1[j] = y[j];
             }
