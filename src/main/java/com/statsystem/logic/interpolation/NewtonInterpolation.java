@@ -12,10 +12,28 @@ import java.util.List;
 
 public class NewtonInterpolation {
 
-    public AnalysisData interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
+    public static NewtonAnalysisData interpolite(Sample sample) throws DimensionMismatchException, NumberIsTooSmallException, NonMonotonicSequenceException{
+        double[] x = sample.getDates();
+        double[] y = sample.getValues();
         DividedDifferenceInterpolator interpolator = new DividedDifferenceInterpolator();
-        PolynomialFunctionNewtonForm functionNewtonForm = interpolator.interpolate(sample.getDates(), sample.getValues());
 
-        return new NewtonAnalysisData(functionNewtonForm.getCoefficients(), functionNewtonForm.getCenters(), null);
+        List<double[]> coeff = new ArrayList<>();
+        List<double[]> center = new ArrayList<>();
+
+        int i = 0;
+        while (i < x.length){
+            double[] x1 = new double[10];
+            double[] y1 = new double[10];
+            for (int j=0; j < 10 && i < x.length; j++){
+                i++;
+                x1[j] = x[j];
+                y1[j] = y[j];
+            }
+            PolynomialFunctionNewtonForm functionNewtonForm = interpolator.interpolate(x1, y1);
+            coeff.add(functionNewtonForm.getNewtonCoefficients());
+            center.add(functionNewtonForm.getCenters());
+        }
+
+        return new NewtonAnalysisData(coeff, center , new ArrayList<>());
     }
 }
