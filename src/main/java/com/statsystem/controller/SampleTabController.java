@@ -61,6 +61,30 @@ public class SampleTabController implements Initializable {
         newCalc.setGraphic(addButton);
         newCalc.getStyleClass().add("tab-button-holder");
 
+        //Удаление вкладки при нажатии ПКМ
+        newCalc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.isMiddleButtonDown()) {
+                    showDelDialog(newCalc);
+                }
+            }
+        });
+    }
+
+    public void showDelDialog(Tab newCalc){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Удаление выборки");
+        alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            calcTabPane.getTabs().remove(newCalc);
+            //alert.close();
+        } else {
+            //alert.close();
+        }
     }
 
     public void start(){

@@ -37,6 +37,7 @@ public class LoadProjectController implements Initializable {
     @FXML ComboBox chooseBox;
     @FXML Button cancelBtn;
     @FXML Button okBtn;
+    @FXML Button deleteBtn; //"кнопка в форме загрузки проектов для удаления проекта"
     private MainController mainController;
     private DBService dbService;
     private Stage m_stage;
@@ -72,7 +73,7 @@ public class LoadProjectController implements Initializable {
                     mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
                     m_stage.close();
                 } catch (DBException ex){
-                    showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрзке проекта из базы данных." +
+                    showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрузке проекта из базы данных." +
                             " Отчет об ошибке: \n" + ex.toString());
                 }
             }
@@ -96,6 +97,44 @@ public class LoadProjectController implements Initializable {
             chooseBox.getSelectionModel().select(0);
             chooseBox.setOnShowing(Event::consume);
         });
+
+        deleteBtn.setOnAction(e-> {
+            if(chooseBox.getSelectionModel().getSelectedIndex() != -1) {
+                Choice selected = (Choice) chooseBox.getValue();
+                try {
+                    Project project = dbService.getProject(selected.id);
+                    boolean delOk = showDelDialog(project);
+                    if (delOk) {
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Information Dialog");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Проект удален!");
+                        alert.showAndWait();
+                    }
+                } catch (DBException ex){
+                    showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрузке проекта из базы данных." +
+                            " Отчет об ошибке: \n" + ex.toString());
+                }
+            }
+
+        });
+    }
+
+    public boolean showDelDialog(project){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Удаление выборки");
+        alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            //здесь идет команда на удаление проекта
+            return true;
+            //alert.close();
+        } else {
+            return false;
+            //alert.close();
+        }
     }
 
     static class Choice {

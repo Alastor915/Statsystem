@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -7,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.statsystem.controller.LoadProjectController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.LoadProjectController">
     <children>
         <ComboBox fx:id="chooseBox" layoutX="63.0" layoutY="48.0" prefWidth="200.0" promptText="Выберите проект">
             <opaqueInsets>
@@ -22,7 +27,8 @@
                 <Font name="System Bold" size="13.0" />
             </font>
         </Label>
-        <Button fx:id="okBtn" layoutX="163.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="OK" />
-        <Button fx:id="cancelBtn" layoutX="245.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="Отмена" />
+        <Button fx:id="okBtn" layoutX="104.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="OK" />
+        <Button fx:id="cancelBtn" layoutX="175.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="Отмена" />
+        <Button fx:id="deleteBtn" layoutX="245.0" layoutY="102.0" mnemonicParsing="false" prefWidth="60.0" text="Удалить" />
     </children>
 </AnchorPane>
