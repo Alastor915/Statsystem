@@ -52,7 +52,7 @@ public class InterpolationController implements Initializable, CalculationContro
     @FXML TextArea resultTextArea;
     @FXML Tab tab;
     private MainController mainController;
-    private static String DEFULT_X_FIELD_VALUE = "08.04.2013 21:19:14";
+    private static String DEFULT_X_FIELD_VALUE = "08.04.2013 01:19:14";
     private Analysis analysis;
     AnalysisData analysisData;
     private Sample sample;
