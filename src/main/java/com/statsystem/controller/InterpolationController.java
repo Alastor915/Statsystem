@@ -277,6 +277,8 @@ public class InterpolationController implements Initializable, CalculationContro
                 unit.setValue((Double) y);
                 try {
                     dbService.updateUnit(unit);
+                    isInterpolationDrawn = false;
+                    analysisData = null;
                     showInfoMessage("Значение элемента выборки обновлено", unit.toString());
                 } catch (DBException e1) {
                     e1.printStackTrace();
