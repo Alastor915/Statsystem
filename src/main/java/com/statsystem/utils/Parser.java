@@ -45,8 +45,6 @@ public class Parser {
         }
         else return Collections.EMPTY_LIST;
 
-        System.out.println(columnCount);
-
         for(int i = 1; i < columnCount; ++i) {
             String sampleName = "";
             rowIterator = excelSheet.iterator();
@@ -69,7 +67,6 @@ public class Parser {
             sample.setName(sampleName);
             samples.add(sample);
         }
-        System.out.println(samples.size());
         return samples;
     }
 }

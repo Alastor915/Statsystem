@@ -230,8 +230,9 @@ public class ExpectedValueController implements Initializable, CalculationContro
                                 try {
                                         dbService.updateUnit(unit);
                                         showInfoMessage("Значение элемента выборки обновлено", unit.toString());
-                                } catch (DBException e1) {
-                                        e1.printStackTrace();
+                                } catch (DBException ex) {
+                                        showErrorMessage("Ошибка при работе с базой данных", "Ошибка при обновлении элемента выборки в базе данных." +
+                                                " Отчет об ошибке: \n" + ex.toString());
                                 }
                         });
 

@@ -129,7 +129,8 @@ public class MainController implements Initializable {
             try {
                 Desktop.getDesktop().browse(new URL("file://" + htmlFile.getAbsolutePath()).toURI());
             } catch (Exception ex) {
-                ex.printStackTrace();
+                showErrorMessage("Ошибка при открытии справки", "Возможно, отсутвуют файлы справки" +
+                        " Отчет об ошибке: \n" + e.toString());
             }
         });
     }

@@ -62,23 +62,54 @@ public class SampleTabController implements Initializable {
         });
         newCalc.setGraphic(addButton);
         newCalc.getStyleClass().add("tab-button-holder");
-
-        //Удаление вкладки при нажатии ПКМ
-        sampleTab.setOnClosed(event -> showDelDialog(sampleTab));
+        sampleTab.setOnCloseRequest(event -> showDelDialogReq(event));
+        sampleTab.setOnClosed(event -> showDelSampleDialog());
     }
 
-    public void showDelDialog(Tab sampleTab){
+    private void showDelDialogReq(Event e) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Закрытие вкладки");
+        alert.setContentText("Вы уверены, что хотите закрыть вкладку?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+        } else {
+            e.consume();
+        }
+    }
+
+
+    public void showDelSampleDialog(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Удаление выборки");
-        alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
+        alert.setContentText("Вы хотите удалить эту выборку из быза данных?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             try {
                 mainController.getDbService().deleteSample(sample);
             } catch (DBException e) {
-                e.printStackTrace();
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении выборки из базы данных." +
+                        " Отчет об ошибке: \n" + e.toString());
+            }
+        }
+    }
+
+    public void showDelAnalysisDialog(Analysis analysis){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Удаление результатов расчета");
+        alert.setContentText("Вы хотите удалить эти результаты расчета из базы данных?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                mainController.getDbService().deleteAnalysis(analysis);
+            } catch (DBException e) {
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении расчетов из базы данных." +
+                        " Отчет об ошибке: \n" + e.toString());
             }
         }
     }
@@ -92,6 +123,8 @@ public class SampleTabController implements Initializable {
                 try {
                     tab = loader.load(getClass().getResource(fxmlFile).openStream());
                     tab.setText(analysis.getName());
+                    tab.setOnCloseRequest(e -> showDelDialogReq(e));
+                    tab.setOnClosed(event -> showDelAnalysisDialog(analysis));
                     CalculationController calcController = loader.getController();
                     calcController.setAnalysis(analysis);
                     calcController.setDbService(mainController.getDbService());
@@ -100,8 +133,9 @@ public class SampleTabController implements Initializable {
                     this.getCalcTabPane().getTabs().addAll(tab);
                     this.getCalcTabPane().getSelectionModel().selectLast();
                     this.getCalcTabPane().getTabs().addAll(this.getCalcNew());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                    showErrorMessage("Ошибка при создании новой вкладки", "Невозможно загрузить fxml форму. Возможно, программа " +
+                            "повреждена. Отчет об ошибке: \n" + ex.toString());
                 }
             }
         }

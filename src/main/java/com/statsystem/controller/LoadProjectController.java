@@ -131,7 +131,8 @@ public class LoadProjectController implements Initializable {
                 chooseBox.getItems().remove(selected);
                 chooseBox.getSelectionModel().select(0);
             } catch (DBException e) {
-                e.printStackTrace();
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении расчетов из базы данных." +
+                        " Отчет об ошибке: \n" + e.toString());
             }
             return true;
             //alert.close();
