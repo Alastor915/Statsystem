@@ -1,9 +1,5 @@
 package com.statsystem.entity;
 
-import com.sun.istack.internal.Nullable;
-import org.hibernate.annotations.Cascade;
-import org.omg.CORBA.PERSIST_STORE;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;

@@ -93,21 +93,16 @@ public class LoadProjectController implements Initializable {
         deleteBtn.setOnAction(e-> {
             if(chooseBox.getSelectionModel().getSelectedIndex() != -1) {
                 Choice selected = (Choice) chooseBox.getValue();
-                try {
-                    Project project = new Project(selected.id, null, new ArrayList<>());
-                    project = projects.get(projects.indexOf(project));
-                    boolean delOk = showDelDialog(project, selected);
-                    if (delOk) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Dialog");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Проект удален!");
-                        alert.showAndWait();
-                        m_stage.close();
-                    }
-                } catch (Exception ex){
-                    showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрузке проекта из базы данных." +
-                            " Отчет об ошибке: \n" + ex.toString());
+                Project project = new Project(selected.id, null, new ArrayList<>());
+                project = projects.get(projects.indexOf(project));
+                boolean delOk = showDelDialog(project, selected);
+                if (delOk) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Проект удален!");
+                    alert.showAndWait();
+                    m_stage.close();
                 }
             }
 
@@ -117,28 +112,26 @@ public class LoadProjectController implements Initializable {
     public boolean showDelDialog(Project project, Choice selected) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Удаление выборки");
-        alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
+        alert.setHeaderText("Удаление проекта");
+        alert.setContentText("Вы уверены, что хотите удалить проект?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             try {
-                if (mainController.getProject().equals(project)) {
+                if (mainController.getProject() != null && mainController.getProject().equals(project)) {
                     mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
                     mainController.getM_stage().setTitle("Система обработки данных");
                 }
                 mainController.getDbService().deleteProject(project);
                 chooseBox.getItems().remove(selected);
                 chooseBox.getSelectionModel().select(0);
+                return true;
             } catch (DBException e) {
-                e.printStackTrace();
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении расчетов из базы данных." +
+                        " Отчет об ошибке: \n" + e.toString());
             }
-            return true;
-            //alert.close();
-        } else {
-            return false;
-            //alert.close();
         }
+        return false;
     }
 
     static class Choice {

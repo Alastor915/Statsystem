@@ -7,6 +7,7 @@ import com.statsystem.dbservice.execute.DBServiceImpl;
 import com.statsystem.entity.Project;
 import com.statsystem.entity.Sample;
 import com.statsystem.entity.Unit;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -136,5 +137,13 @@ public class ProjectTest extends Assert {
         unit = sampleFromDB.getData().get(1);
         assertEquals(unit.getDate(), new Double(333));
         assertEquals(unit.getValue(), new Double(444));
+    }
+
+    @AfterClass
+    public static void cleanup() throws DBException{
+        dbService.deleteProject(project);
+        dbService.deleteProject(project2);
+        dbService.deleteProject(project3);
+        dbService.deleteProject(project4);
     }
 }

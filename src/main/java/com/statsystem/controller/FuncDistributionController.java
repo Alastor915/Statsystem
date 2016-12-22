@@ -167,16 +167,16 @@ public class FuncDistributionController implements Initializable, CalculationCon
         private void chartInit(){
                 funcDistrbLineChart.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-                funcDistrbLineChart.setTitle("График зависимости мощности от времени. Рассматриваемый день: " +
+                funcDistrbLineChart.setTitle("Функция распределения мощности. Рассматриваемый день: " +
                         dateFormat.format(new Date(sample.getData().get(0).getDate().longValue())));
                 funcDistrbLineChart.setAnimated(false);
 
 //                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 //                funcDistrbXAxis.setAxisTickFormatter(new FixedFormatTickFormatter(simpleDateFormat));
-                funcDistrbXAxis.setLabel("Время");
+                funcDistrbXAxis.setLabel("Мощность");
                 funcDistrbXAxis.setForceZeroInRange(false);
                 funcDistrbYAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.0000")));
-                funcDistrbYAxis.setLabel("Мощность");
+                funcDistrbYAxis.setLabel("Функция распределения");
                 funcDistrbYAxis.setForceZeroInRange(false);
 
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
