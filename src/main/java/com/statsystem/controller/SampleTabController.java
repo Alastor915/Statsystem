@@ -67,8 +67,8 @@ public class SampleTabController implements Initializable {
     }
 
     private void showDelDialogReq(Event e) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Вы уверены, что хотите удалить эту выборку?", okBtnType, cancelBtnType);
-        alert.setTitle("Confirmation Dialog");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Вы уверены, что хотите закрыть вкладку?");
         alert.setHeaderText("Закрытие вкладки");
         alert.setContentText("Вы уверены, что хотите закрыть вкладку?");
 
@@ -82,7 +82,7 @@ public class SampleTabController implements Initializable {
 
     public void showDelSampleDialog(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("Вы хотите удалить эту выборку из базы данных?");
         alert.setHeaderText("Удаление выборки");
         alert.setContentText("Вы хотите удалить эту выборку из базы данных?");
 
@@ -91,7 +91,25 @@ public class SampleTabController implements Initializable {
             try {
                 mainController.getDbService().deleteSample(sample);
             } catch (DBException e) {
-                e.printStackTrace();
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении выборки из базы данных." +
+                        " Отчет об ошибке: \n" + e.toString());
+            }
+        }
+    }
+
+    public void showDelAnalysisDialog(Analysis analysis){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Вы хотите удалить эти результаты расчета из базы данных?");
+        alert.setHeaderText("Удаление результатов расчета");
+        alert.setContentText("Вы хотите удалить эти результаты расчета из базы данных?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                mainController.getDbService().deleteAnalysis(analysis);
+            } catch (DBException e) {
+                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении расчетов из базы данных." +
+                        " Отчет об ошибке: \n" + e.toString());
             }
         }
     }
