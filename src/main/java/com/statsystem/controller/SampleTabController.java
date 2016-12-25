@@ -67,7 +67,7 @@ public class SampleTabController implements Initializable {
     }
 
     private void showDelDialogReq(Event e) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Вы уверены, что хотите удалить эту выборку?", okBtnType, cancelBtnType);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Закрытие вкладки");
         alert.setContentText("Вы уверены, что хотите закрыть вкладку?");
@@ -84,32 +84,14 @@ public class SampleTabController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Удаление выборки");
-        alert.setContentText("Вы хотите удалить эту выборку из быза данных?");
+        alert.setContentText("Вы хотите удалить эту выборку из базы данных?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             try {
                 mainController.getDbService().deleteSample(sample);
             } catch (DBException e) {
-                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении выборки из базы данных." +
-                        " Отчет об ошибке: \n" + e.toString());
-            }
-        }
-    }
-
-    public void showDelAnalysisDialog(Analysis analysis){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Удаление результатов расчета");
-        alert.setContentText("Вы хотите удалить эти результаты расчета из базы данных?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            try {
-                mainController.getDbService().deleteAnalysis(analysis);
-            } catch (DBException e) {
-                showErrorMessage("Ошибка при работе с базой данных", "Ошибка при удалении расчетов из базы данных." +
-                        " Отчет об ошибке: \n" + e.toString());
+                e.printStackTrace();
             }
         }
     }

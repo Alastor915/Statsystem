@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -179,22 +181,30 @@ public class MainController implements Initializable {
         });
 
         help.setOnAction(e->{
-            File htmlFile = new File("html/main.html");
-            try {
-                Desktop.getDesktop().browse(new URL("file://" + htmlFile.getAbsolutePath()).toURI());
-            } catch (Exception ex) {
-                showErrorMessage("Ошибка при открытии справки", "Возможно, отсутвуют файлы справки" +
-                        " Отчет об ошибке: \n" + e.toString());
-            }
+            final WebView browser = new WebView();
+            final WebEngine webEngine = browser.getEngine();
+            URL url = getClass().getResource("/html/main.html");
+            webEngine.load(url.toExternalForm());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(m_stage);
+            stage.setTitle("Система обработки данных");
+            stage.setScene(new Scene(browser));
+            stage.showAndWait();
+
         });
         helpBut.setOnAction(e->{
-            File htmlFile = new File("html/main.html");
-            try {
-                Desktop.getDesktop().browse(new URL("file://" + htmlFile.getAbsolutePath()).toURI());
-            } catch (Exception ex) {
-                showErrorMessage("Ошибка при открытии справки", "Возможно, отсутвуют файлы справки" +
-                        " Отчет об ошибке: \n" + e.toString());
-            }
+            final WebView browser = new WebView();
+            final WebEngine webEngine = browser.getEngine();
+            URL url = getClass().getResource("/html/main.html");
+            webEngine.load(url.toExternalForm());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(m_stage);
+            stage.setTitle("Система обработки данных");
+            stage.setScene(new Scene(browser));
+            stage.showAndWait();
+
         });
     }
 
