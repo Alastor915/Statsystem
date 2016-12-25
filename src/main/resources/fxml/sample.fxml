@@ -16,7 +16,7 @@
                     <center>
                         <Group>
                             <children>
-                                <Button fx:id="newCalcBtn" prefWidth="80.0" mnemonicParsing="false" text="Добавить расчет" />
+                                <Button fx:id="newCalcBtn" prefWidth="140.0" mnemonicParsing="false" text="Добавить расчет" />
                             </children>
                             <BorderPane.margin>
                                 <Insets top="10.0" left="10.0" bottom="10.0" right="10.0" />

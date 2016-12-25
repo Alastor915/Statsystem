@@ -33,7 +33,7 @@
    <center>
        <TabPane fx:id="samplesTab" prefHeight="366.0" prefWidth="600.0" BorderPane.alignment="CENTER">
            <tabs>
-               <Tab closable="false" text="Добро пожаловать">
+               <Tab fx:id="welcome" closable="false" text="Добро пожаловать">
                    <BorderPane prefHeight="288.0" prefWidth="397.0">
                        <center>
                            <Group>
@@ -44,7 +44,7 @@
                                        </font></Label>
                                    <Button fx:id="createBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-95.0" mnemonicParsing="false" text="Создать проект" />
                                    <Button fx:id="loadBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-60.0"  mnemonicParsing="false" text="Загрузить проект" />
-                                   <Button fx:id="helpBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-25.0"  mnemonicParsing="false" text="Помощь" />
+                                   <Button fx:id="helpBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-25.0"  mnemonicParsing="false" text="Справка" />
                                </children>
                                <BorderPane.margin>
                                    <Insets top="10.0" left="10.0" bottom="10.0" right="10.0" />

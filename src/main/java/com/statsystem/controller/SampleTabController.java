@@ -74,6 +74,8 @@ public class SampleTabController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
+            if (getMainController().getSamplesTab().getTabs().size() == 1)
+                getMainController().getSamplesTab().getTabs().addAll(getMainController().getWelcome());
         } else {
             e.consume();
         }

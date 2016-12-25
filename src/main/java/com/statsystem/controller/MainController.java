@@ -34,7 +34,7 @@ import static com.statsystem.utils.Message.showErrorMessage;
 public class MainController implements Initializable {
 
     //@FXML private InterpolationController interpolationController;
-    @FXML private Tab addSample;
+    @FXML private Tab welcome;
     @FXML private MenuItem createProject;
     @FXML private MenuItem loadProject;
     @FXML private Button createBut;
@@ -73,6 +73,10 @@ public class MainController implements Initializable {
 
     public TabPane getSamplesTab() {
         return samplesTab;
+    }
+
+    public Tab getWelcome(){
+        return welcome;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
