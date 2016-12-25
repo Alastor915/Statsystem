@@ -68,10 +68,12 @@ public class SampleTabController implements Initializable {
     }
 
     public void showDelDialog(Tab sampleTab){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
+        ButtonType okBtnType = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelBtnType = new ButtonType("Отмена", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Вы уверены, что хотите удалить эту выборку?", okBtnType, cancelBtnType);
+        alert.setTitle("");
         alert.setHeaderText("Удаление выборки");
-        alert.setContentText("Вы уверены, что хотите удалить эту выборку?");
+
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
