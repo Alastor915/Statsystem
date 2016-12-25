@@ -9,3 +9,6 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+.tab-button-holder:hover {
+    -fx-border-color: #87cefa;
+}
