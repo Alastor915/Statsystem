@@ -10,7 +10,7 @@
 
 <Tab fx:id="varianceTab" text="Дисперсия" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.DispersionController">
     <content>
-        <SplitPane fx:id="dispersionSplitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
+        <SplitPane fx:id="dispersionSplitPane" dividerPositions="0.3" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
             <items>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>

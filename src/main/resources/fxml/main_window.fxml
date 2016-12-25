@@ -3,7 +3,13 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
+<?import javafx.scene.Group?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.MainController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -26,9 +32,29 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane fx:id="samplesTab" prefHeight="366.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-        <tabs>
-        </tabs>
-      </TabPane>
+       <TabPane fx:id="samplesTab" prefHeight="366.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+           <tabs>
+               <Tab closable="false" text="Добро пожаловать">
+                   <BorderPane prefHeight="288.0" prefWidth="397.0">
+                       <center>
+                           <Group>
+                               <children>
+                                   <Label layoutX="-100.0" layoutY="-100.0" text="Statsystem" textOverrun="CLIP" translateX="0" translateY="-125.0" >
+                                       <font>
+                                           <Font name="System Bold" size="16.0" />
+                                       </font></Label>
+                                   <Button fx:id="createBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-95.0" mnemonicParsing="false" text="Создать проект" />
+                                   <Button fx:id="loadBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-60.0"  mnemonicParsing="false" text="Загрузить проект" />
+                                   <Button fx:id="helpBut" prefWidth="130.0" layoutX="-100.0" layoutY="-100.0" translateX="-25.0" translateY="-25.0"  mnemonicParsing="false" text="Помощь" />
+                               </children>
+                               <BorderPane.margin>
+                                   <Insets top="10.0" left="10.0" bottom="10.0" right="10.0" />
+                               </BorderPane.margin>
+                           </Group>
+                       </center>
+                   </BorderPane>
+               </Tab>
+           </tabs>
+       </TabPane>
    </center>
 </BorderPane>

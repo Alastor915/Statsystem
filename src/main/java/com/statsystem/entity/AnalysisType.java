@@ -12,10 +12,9 @@ public enum AnalysisType implements Serializable {
     SPLINE("Интерполяция сплайном", "/fxml/interpolation_tab.fxml"),
     EXPECTATION("Математическое ожидание", "/fxml/expected_value_tab.fxml"),
     VARIANCE("Дисперсия", "/fxml/dispersion_tab.fxml"),
-    DISTRIBUTION("Функция распределения", "/fxml/func_distribution_tab.fxml");
+    DISTRIBUTION("Функция распределения", "/fxml/func_distribution_tab.fxml"),
+    CORRELATION("Автокорреляционная функция", "/fxml/correlation_tab.fxml");
 //    LSM("Апроксимация методом наименьших квадратов", "/fxml/lsm_tab.fxml"),
-//    CORRELATION("Автокорреляционная функция", "/fxml/correlation_tab.fxml"),
-
 
     private final String name;
     private final String path;

@@ -115,11 +115,28 @@ public class SampleTabController implements Initializable {
     }
 
     public void start(){
+        Tab tab;
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            tab = loader.load(getClass().getResource("/fxml/sample.fxml").openStream());
+            tab.setText("Выборка");
+            SampleController controller = loader.getController();
+            controller.setDbService(mainController.getDbService());
+            controller.setSample(sample);
+            controller.setSampleTabController(this);
+            controller.start();
+            this.getCalcTabPane().getTabs().remove(this.getCalcNew());
+            this.getCalcTabPane().getTabs().addAll(tab);
+            this.getCalcTabPane().getSelectionModel().selectLast();
+            this.getCalcTabPane().getTabs().addAll(this.getCalcNew());
+        } catch (IOException ex) {
+            showErrorMessage("Ошибка при создании новой вкладки", "Невозможно загрузить fxml форму. Возможно, программа " +
+                    "повреждена. Отчет об ошибке: \n" + ex.toString());
+        }
         if (!sample.getAnalyses().isEmpty()){
             for (Analysis analysis : sample.getAnalyses()) {
                 String fxmlFile = analysis.getType().getPath();
-                FXMLLoader loader = new FXMLLoader();
-                Tab tab;
+                loader = new FXMLLoader();
                 try {
                     tab = loader.load(getClass().getResource(fxmlFile).openStream());
                     tab.setText(analysis.getName());
