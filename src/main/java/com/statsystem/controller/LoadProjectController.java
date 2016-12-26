@@ -60,10 +60,10 @@ public class LoadProjectController implements Initializable {
                 Choice selected = (Choice) chooseBox.getValue();
                 try {
                     Project project = dbService.getProject(selected.id);
-                    mainController.setProject(project);
                     if (project.getSamples().isEmpty()){
                         throw new EmptyProjectException();
                     }
+                    mainController.setProject(project);
                     mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
                     mainController.loadXLSXSamples(project.getSamples());
                     mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
@@ -126,6 +126,7 @@ public class LoadProjectController implements Initializable {
             try {
                 if (mainController.getProject() != null && mainController.getProject().equals(project)) {
                     mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
+                    mainController.getSamplesTab().getTabs().addAll(mainController.getWelcome());
                     mainController.getM_stage().setTitle("Система обработки данных");
                 }
                 mainController.getDbService().deleteProject(project);

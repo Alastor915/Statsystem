@@ -14,9 +14,9 @@ public class NewtonFunction  implements UnivariateFunction {
     private List<double[]> newtonCoefficients;
     private List<double[]> centers;
 
-    private transient double [] maxEl = new double[centers.size()];
+    private double [] maxEl;
 
-    private transient List<PolynomialFunctionNewtonForm> flist;
+    private List<PolynomialFunctionNewtonForm> flist;
 
     public NewtonFunction(List<double[]> centers, List<double[]> newtonCoefficients, double [] maxEl) {
         this.centers = centers;
@@ -35,13 +35,13 @@ public class NewtonFunction  implements UnivariateFunction {
 
     private int getNumOfElemList(double v){
 
-        int i= 0;
-        for (i= 0; i < this.maxEl.length; i++ ){
+        int i;
+        for (i = 0; i < this.maxEl.length; i++ ){
             if (v <= maxEl[i]){
                 return i;
             }
         }
-        return i;
+        return --i;
     }
     @Override
     public double value(double v) {

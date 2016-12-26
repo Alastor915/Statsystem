@@ -34,7 +34,7 @@ public class NewtonAnalysisData implements AnalysisData{
      */
     private transient NewtonFunction f;
 
-    private transient double[] maxElem;
+    private double[] maxElem;
 
     public NewtonAnalysisData() {
     }

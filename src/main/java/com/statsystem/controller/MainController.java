@@ -194,7 +194,7 @@ public class MainController implements Initializable {
             stage.initOwner(m_stage);
             stage.setTitle("Система обработки данных");
             stage.setScene(new Scene(browser));
-            stage.setMinWidth(840);
+            stage.setMinWidth(900);
             stage.setMinHeight(600);
             stage.showAndWait();
 
@@ -209,7 +209,7 @@ public class MainController implements Initializable {
             stage.initOwner(m_stage);
             stage.setTitle("Система обработки данных");
             stage.setScene(new Scene(browser));
-            stage.setMinWidth(840);
+            stage.setMinWidth(900);
             stage.setMinHeight(600);
             stage.showAndWait();
 
