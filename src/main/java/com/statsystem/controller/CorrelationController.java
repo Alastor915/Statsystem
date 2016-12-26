@@ -128,7 +128,7 @@ public class CorrelationController implements Initializable, CalculationControll
             if (correlationDrawChart.isSelected()) {
                 if (!isCorrelDrawn) {
                     XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-                    series2.setName("Корре");
+                    series2.setName("Автокорреляционная функция");
                     for (int i = 0; i < f.getQuantity().length; i++) {
                         XYChart.Data<Number, Number> data = new XYChart.Data<>(f.getValues()[i], f.getQuantity()[i]);
                         series2.getData().add(data);
@@ -157,15 +157,13 @@ public class CorrelationController implements Initializable, CalculationControll
     private void chartInit() {
         correlationLineChart.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        correlationLineChart.setTitle("График зависимости мощности от времени. Рассматриваемый день: " +
+        correlationLineChart.setTitle("Автокорреляционная функция. Рассматриваемый день: " +
                 dateFormat.format(new Date(sample.getData().get(0).getDate().longValue())));
         correlationLineChart.setAnimated(false);
 
         correlationXAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.0000")));
-        correlationXAxis.setLabel("Время");
         correlationXAxis.setForceZeroInRange(false);
         correlationYAxis.setAxisTickFormatter(new FixedFormatTickFormatter(new DecimalFormat("#.0000")));
-        correlationYAxis.setLabel("Мощность");
         correlationYAxis.setForceZeroInRange(false);
 
 //                XYChart.Series<Number, Number> series = new XYChart.Series<>();
