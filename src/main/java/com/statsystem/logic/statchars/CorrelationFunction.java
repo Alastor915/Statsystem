@@ -50,7 +50,7 @@ public class CorrelationFunction implements UnivariateFunction{
         values = new double[mean.length];
         quantity = new double[mean.length];
         for (int i=0;i<mean.length;i++){
-            values[i] = mean[i][1]; //Ox
+            values[i] = diagnumber/(-2) + i; //Ox
             quantity[i] = mean[i][0]/mean[i][1]; //Oy
         }
     }
