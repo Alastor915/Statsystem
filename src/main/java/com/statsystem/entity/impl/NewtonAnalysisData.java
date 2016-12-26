@@ -2,8 +2,11 @@ package com.statsystem.entity.impl;
 
 import com.statsystem.entity.AnalysisData;
 import com.statsystem.entity.Unit;
+import com.statsystem.logic.interpolation.NewtonFunction;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionNewtonForm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,12 +17,12 @@ public class NewtonAnalysisData implements AnalysisData{
     /**
      * Массив, для хранения возвращаемого значения PolynomialFunctionNewtonForm.getNewtonCoefficients()
      */
-    private double[] newtonCoefficients;
+    private List<double[]> newtonCoefficients;
 
     /**
      * Массив, для хранения возвращаемого значения PolynomialFunctionNewtonForm.getCenters()
      */
-    private double[] centers;
+    private List<double[]> centers;
 
     /**
      * Список точек, для которых рассчитывалась интерполяция в точке
@@ -29,23 +32,26 @@ public class NewtonAnalysisData implements AnalysisData{
     /**
      * Поле для хранения функции в runtime
      */
-    private transient PolynomialFunctionNewtonForm f;
+    private transient NewtonFunction f;
+
+    private transient double[] maxElem;
 
     public NewtonAnalysisData() {
     }
 
-    public NewtonAnalysisData(double[] newtonCoefficients, double[] centers, List<Unit> units) {
+    public NewtonAnalysisData(List<double[]> newtonCoefficients, List<double[]> centers, List<Unit> units, double[] maxElem) {
         this.newtonCoefficients = newtonCoefficients;
         this.centers = centers;
         this.units = units;
-        this.f = new PolynomialFunctionNewtonForm(newtonCoefficients, centers);
+        this.maxElem = maxElem;
+        f = new NewtonFunction(newtonCoefficients, centers, maxElem );
     }
 
-    public double[] getNewtonCoefficients() {
+    public List<double[]> getNewtonCoefficients() {
         return newtonCoefficients;
     }
 
-    public double[] getCenters() {
+    public List<double[]> getCenters() {
         return centers;
     }
 
@@ -53,9 +59,9 @@ public class NewtonAnalysisData implements AnalysisData{
         return units;
     }
 
-    public PolynomialFunctionNewtonForm getF() {
+    public UnivariateFunction getF() {
         if (f == null)
-            this.f = new PolynomialFunctionNewtonForm(newtonCoefficients, centers);
+            this.f = new NewtonFunction(newtonCoefficients, centers, maxElem);
         return f;
     }
 }
