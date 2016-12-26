@@ -11,7 +11,7 @@
 
 <Tab fx:id="tab" text="Интерполяция" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.statsystem.controller.InterpolationController">
     <content>
-        <SplitPane fx:id="splitPane" dividerPositions="0.5" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
+        <SplitPane fx:id="splitPane" dividerPositions="0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0">
             <items>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
