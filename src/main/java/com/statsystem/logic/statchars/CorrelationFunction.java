@@ -47,6 +47,8 @@ public class CorrelationFunction implements UnivariateFunction{
             }
 
         }*/
+        values = new double[mean.length];
+        quantity = new double[mean.length];
         for (int i=0;i<mean.length;i++){
             values[i] = mean[i][1]; //Ox
             quantity[i] = mean[i][0]/mean[i][1]; //Oy
@@ -78,5 +80,18 @@ public class CorrelationFunction implements UnivariateFunction{
             }
         }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        String res = "values: ";
+        for (double value : values) {
+            res += value + "  |||  ";
+        }
+        res += "\n quantities: ";
+        for (int i = 0; i < values.length; i++) {
+            res += quantity[i] + "  |||  ";
+        }
+        return res;
     }
 }

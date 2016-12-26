@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statsystem/Формат файла с данным</title>
+    <link rel="stylesheet" href="navbar.css">
+</head>
+<body>
+<ul id="navbar">
+    <li><a href="main.html">Оглавление</a></li>
+    <li><a href="annotation.html">Общая информация</a></li>
+    <li><a href="instruction.html">Инструкция работы с системой</a>
+        <ul>
+            <li><a href="view.html">Внешний вид</a></li>
+            <li><a href="create.html">Создание проекта</a></li>
+            <li><a href="format.html">Формат файла с данными</a></li>
+            <li><a href="load.html">Загрузка проекта</a></li>
+            <li><a href="work.html">Работа с проектом</a></li>
+        </ul></li>
+    <li><a href="algorythms.html">Описание алгоритмов для проводимых расчетов</a></li>
+</ul>
+<h1>1.	Инструкция работы с системой</h1>
+<h2>1.3.	Формат файла с данными</h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; Система допускает загрузку файлов только в формате xlsx (Microsoft Excel). Допустимый формат описан в таблице 1. При описании в столбце «Ячейки» буквы «x» и «y» считать переменными.</p>
+<table border="1" cellpadding="20" cellspacing="0" align="center">
+    <caption>Таблица 1. Требования к загружаемому файлу.</caption>
+    <tr>
+        <th>Ячейки</th>
+        <th>Данные</th>
+        <th>Формат данных</th>
+    </tr>
+    <tr>
+        <td>А1 – x1 (первая строка)</td>
+        <td>Названия столбцов</td>
+        <td>Текст</td>
+    </tr>
+    <tr>
+        <td>B1 – x1 (все элементы первой строки, кроме первого)</td>
+        <td>Названия вкладок с выборками</td>
+        <td>Текст</td>
+    </tr>
+    <tr>
+        <td>А2 – Аy (первый столбец, кроме первого элемента)</td>
+        <td>Дата</td>
+        <td>ДД.ММ.ГГГГ</td>
+    </tr>
+    <tr>
+        <td>x2 – xy, x ≠ A (любой столбец, кроме первого, не учитывая первый элемент)</td>
+        <td>Данные</td>
+        <td>Число с плавающей точкой</td>
+    </tr>
+</table>
+</body>
+</html>
