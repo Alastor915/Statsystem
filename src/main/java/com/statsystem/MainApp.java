@@ -8,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.File;
+
 public class MainApp extends Application {
 
     public static void main(String[] args) throws Exception {
@@ -16,7 +19,13 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        DBService dbService = new DBServiceImpl();
+        File file = new File("h2db.mv.db");
+        DBService dbService;
+        if (file.exists()) {
+            dbService = new DBServiceImpl();
+        } else {
+            dbService = new DBServiceImpl(false,"create");
+        }
         String fxmlFile = "/fxml/main_window.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
