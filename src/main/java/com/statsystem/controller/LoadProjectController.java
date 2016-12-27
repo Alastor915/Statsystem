@@ -3,7 +3,7 @@ package com.statsystem.controller;
 import com.statsystem.dbservice.execute.DBException;
 import com.statsystem.dbservice.execute.DBService;
 import com.statsystem.entity.Project;
-import com.statsystem.entity.Sample;
+import com.statsystem.exception.EmptyProjectException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -60,14 +60,20 @@ public class LoadProjectController implements Initializable {
                 Choice selected = (Choice) chooseBox.getValue();
                 try {
                     Project project = dbService.getProject(selected.id);
-                    mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
+                    if (project.getSamples().isEmpty()){
+                        throw new EmptyProjectException();
+                    }
                     mainController.setProject(project);
+                    mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
                     mainController.loadXLSXSamples(project.getSamples());
                     mainController.getM_stage().setTitle("Система обработки данных - " + project.getName());
                     m_stage.close();
                 } catch (DBException ex){
                     showErrorMessage("Ошибка при работе с базой данных", "Ошибка при загрузке проекта из базы данных." +
                             " Отчет об ошибке: \n" + ex.toString());
+                } catch (EmptyProjectException ex){
+                    showErrorMessage("Проект не содержит выборок", "Функция добавления выборок в пустой проект " +
+                            "не предусмотрена. Удалите это проект и создайте новый. Отчет об ошибке: \n" + ex.toString());
                 }
             }
         });
@@ -120,6 +126,7 @@ public class LoadProjectController implements Initializable {
             try {
                 if (mainController.getProject() != null && mainController.getProject().equals(project)) {
                     mainController.getSamplesTab().getTabs().removeAll(mainController.getSamplesTab().getTabs());
+                    mainController.getSamplesTab().getTabs().addAll(mainController.getWelcome());
                     mainController.getM_stage().setTitle("Система обработки данных");
                 }
                 mainController.getDbService().deleteProject(project);

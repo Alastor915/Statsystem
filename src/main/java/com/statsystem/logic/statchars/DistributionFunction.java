@@ -40,6 +40,12 @@ public class DistributionFunction implements UnivariateFunction{
         for (int i=0;i < quantity.length;i++) {
             quantity[i]/=variational.length;
         }
+        double[] t1 = new double[norepsnumber+1];
+        double[] t2 = new double[norepsnumber+1];
+        System.arraycopy(quantity,0, t1,0,t1.length);
+        System.arraycopy(values,0, t2,0,t2.length);
+        quantity = t1;
+        values = t2;
     }
 
     public DistributionFunction getBarChart(Sample sample, int intervalsquantity){ //Гистограмма
@@ -105,8 +111,8 @@ public class DistributionFunction implements UnivariateFunction{
     @Override
     public String toString() {
         String res = "values: ";
-        for (int i = 0; i < values.length; i++) {
-            res += values[i] + "  |||  ";
+        for (double value : values) {
+            res += value + "  |||  ";
         }
         res += "\n quantities: ";
         for (int i = 0; i < values.length; i++) {

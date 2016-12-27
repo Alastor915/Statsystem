@@ -28,19 +28,29 @@ public class CorrelationFunction implements UnivariateFunction{
             data[i][0]=sample.getDates()[i];
             data[i][1]=sample.getValues()[i];
         }
-        int diagnumber = data.length*2-1; //количество диаголналей
-        double[][] mean = new double[diagnumber][2]; //значения и количество по диагоналям
         RealMatrix correlationMatrix = correlation.computeCorrelationMatrix(data);
+        int diagnumber = correlationMatrix.getColumnDimension()*2-1; //количество диагоналей
+        double[][] mean = new double[diagnumber][2]; //значения и количество по диагоналям
+        for (int i = 0; i< correlationMatrix.getColumnDimension(); i++){
+            for (int j = 0; j<correlationMatrix.getRowDimension(); j++){
+                //System.out.print(correlationMatrix.getEntry(i,j) + " ");
+                //System.out.print((diagnumber/2+j-i) + " ");
+                mean[(diagnumber/2)+j-i][0] += correlationMatrix.getEntry(i,j);
+                mean[(diagnumber/2)+j-i][1]++;
+            }
+        }
 
-        for (int i=0;i<diagnumber;i++){
+        /*for (int i=0;i<diagnumber;i++){
             for (int j=0;j<data.length;j++){
                 mean[diagnumber/2+j-i][0] += correlationMatrix.getData()[i][j];
                 mean[diagnumber/2+j-i][1]++;
             }
 
-        }
+        }*/
+        values = new double[mean.length];
+        quantity = new double[mean.length];
         for (int i=0;i<mean.length;i++){
-            values[i] = mean[i][1]; //Ox
+            values[i] = diagnumber/(-2) + i; //Ox
             quantity[i] = mean[i][0]/mean[i][1]; //Oy
         }
     }
@@ -70,5 +80,18 @@ public class CorrelationFunction implements UnivariateFunction{
             }
         }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        String res = "values: ";
+        for (double value : values) {
+            res += value + "  |||  ";
+        }
+        res += "\n quantities: ";
+        for (int i = 0; i < values.length; i++) {
+            res += quantity[i] + "  |||  ";
+        }
+        return res;
     }
 }

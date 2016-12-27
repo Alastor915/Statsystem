@@ -141,18 +141,11 @@ public class FuncDistributionController implements Initializable, CalculationCon
                         funcDistrbResultTextArea.setText(f.toString());
                         if (analysis.getId() < 0) {
                                 dbService.insertAnalysis(analysis);
-                                funcDistrbTab.setText(analysis.getName());
                                 showInfoMessage("Расчет записан в базу данных", analysis.toString());
                         } else {
                                 dbService.updateAnalysis(analysis);
-                                funcDistrbTab.setText(analysis.getName());
                                 showInfoMessage("Расчет обновлен в базе данных", analysis.toString());
                         }
-//                } catch (ParseException ex){
-//                        showErrorMessage("Ошибка при распознавании даты",
-//                                "Ошибка при распознавании даты. Убедитесь, что дата (по значению x) соответсвует требуемому формату" +
-//                                        "(см. Справка, Создание проекта). Отчет об ошибке: \n"
-//                                        + ex.toString());
                 } catch (DBException ex){
                         showErrorMessage("Ошибка при работе с базой данных", "Ошибка при сохранении результатов расчета в базу данных." +
                                 " Отчет об ошибке: \n" + ex.toString());
